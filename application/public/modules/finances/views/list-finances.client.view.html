@@ -1,0 +1,19 @@
+<section data-ng-controller="FinancesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Finances</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="finance in finances" data-ng-href="#!/finances/{{finance._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="finance.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="finance.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="finance.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!finances.$resolved || finances.length">
+    	No Finances yet, why don't you <a href="/#!/finances/create">create one</a>?
+    </div>
+</section>

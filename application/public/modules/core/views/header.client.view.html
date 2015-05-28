@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <div class="container" data-ng-controller="HeaderController">
 	<div class="navbar-header">
 		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
@@ -9,12 +10,18 @@
 		<a href="/#!/" class="navbar-brand">Azzenda</a>
 	</div>
 	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-		<ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
+		
+        <ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
 			<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
-				<a ng-switch-when="dropdown" class="dropdown-toggle">
-					<span data-ng-bind="item.title"></span>
-					<b class="caret"></b>
-				</a>
+				
+					                    
+                    <!--<a class="btn btn-bar" href="/#!/articles">
+                        <i class="fa fa-calendar fa-2x"></i>
+                        <div>Events</div>
+                    </a>-->
+                    
+                    
+				
 				<ul ng-switch-when="dropdown" class="dropdown-menu">
 					<li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
 						<a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
@@ -22,6 +29,50 @@
 				</ul>
 				<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
 			</li>
+            <div class="btn-bar-div">
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-calendar fa-2x"></i>
+                <div>Events</div>
+            </a>
+            
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-user fa-2x"></i>
+                <div>Roster</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-envelope-o fa-2x"></i>
+                <div>Messages</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-paperclip fa-2x"></i>
+                <div>Projects</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-users fa-2x"></i>
+                <div>Groups</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-archive fa-2x"></i>
+                <div>Inventory</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-usd fa-2x"></i>
+                <div>Finances</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-check fa-2x"></i>
+                <div>Tasks</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-clock-o fa-2x"></i>
+                <div>Time</div>
+            </a>
+            <a class="btn btn-bar" href="/#!/articles">
+                <i class="fa fa-cogs fa-2x"></i>
+                <div>Settings</div>
+            </a>
+        </div>
+            
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
 			<li ui-route="/signup" ng-class="{active: $uiRoute}">

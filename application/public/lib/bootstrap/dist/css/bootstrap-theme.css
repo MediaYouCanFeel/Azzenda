@@ -72,13 +72,14 @@
   padding-top: -10px;
   padding-bottom: -10px;
   width: 80px;
+  text-align: center;
 }
 
 .btn-bar-div {
   text-align:center;  
   margin-left: auto;
   margin-right: auto;
-
+ font-size: 12px;
 }
 
 .btn-default:hover,

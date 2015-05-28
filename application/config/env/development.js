@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/automatedmanagement-dev',
 	app: {
-		title: 'AutomatedManagement - Development Environment'
+		title: 'Azzenda'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

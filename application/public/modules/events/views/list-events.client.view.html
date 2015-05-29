@@ -1,7 +1,68 @@
 <section data-ng-controller="EventsController" data-ng-init="find()">
     <div class="page-header">
-        <h1>Events</h1>
+        <div class="h1 well">Events</div>
     </div>
+    
+    <div class="col-md-7">
+        <div class="col-md-12 row well">
+            <h2>
+                <strong>Upcoming Events</strong>
+            </h2>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Writing Meeting #2</h3>
+                    </div>
+                    <i>Fall 2015 Web Series</i>
+                    <p>Wednedsay, May 13, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Meeting #2</h3>
+                    </div>
+                    <i>Top-Tier Executive Board</i>
+                    <p>Tuesday, May 12, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 row">
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="row well">
+            <h2>
+                <strong>Create Event</strong>
+                <button>+</button>
+            </h2>
+        </div>
+        <div class="row well">
+            <h2>
+                <strong>Past Events</strong>
+            </h2>
+             <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Writing Meeting #2</h3>
+                    </div>
+                    <i>Fall 2015 Web Series</i>
+                    <p>Wednedsay, May 13, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Meeting #2</h3>
+                    </div>
+                    <i>Top-Tier Executive Board</i>
+                    <p>Tuesday, May 12, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--
     <div class="list-group">
         <a data-ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 			<small class="list-group-item-text">
@@ -12,7 +73,7 @@
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="event.name"></h4>
         </a>
-    </div>
+    </div> -->
     <div class="alert alert-warning text-center" data-ng-hide="!events.$resolved || events.length">
     	No Events yet, why don't you <a href="/#!/events/create">create one</a>?
     </div>

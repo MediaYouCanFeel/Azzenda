@@ -9,12 +9,12 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 /**
- * Create a Event
+ * Create an Event
  */
 exports.create = function(req, res) {
 	var event = new Event(req.body);
 	event.user = req.user;
-
+    //event.guests = {"user": req.user,"status": 'Attending'};
 	event.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -34,7 +34,7 @@ exports.read = function(req, res) {
 };
 
 /**
- * Update a Event
+ * Update an Event
  */
 exports.update = function(req, res) {
 	var event = req.event ;
@@ -71,8 +71,8 @@ exports.delete = function(req, res) {
 
 /**
  * List of Events
- */
-exports.list = function(req, res) { 
+ 
+exports.list = function(req, res) {
 	Event.find().sort('-created').populate('user', 'displayName').exec(function(err, events) {
 		if (err) {
 			return res.status(400).send({
@@ -83,6 +83,36 @@ exports.list = function(req, res) {
 		}
 	});
 };
+*/
+
+/**
+ * List of Events
+ */
+exports.list = function(req, res) {
+    var roles = ['admin'];
+    if(_.intersection(req.user.roles,roles).length) {
+        Event.find().sort('-created').populate('user', 'displayName').exec(function(err, events) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(events);
+            }
+        });
+    } else {
+        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('user', 'displayName').exec(function(err, events) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(events);
+            }
+        });
+    }
+};
+
 
 /**
  * Event middleware
@@ -91,7 +121,7 @@ exports.eventByID = function(req, res, next, id) {
 	Event.findById(id).populate('user', 'displayName').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
-		req.event = event ;
+		req.event = event;
 		next();
 	});
 };

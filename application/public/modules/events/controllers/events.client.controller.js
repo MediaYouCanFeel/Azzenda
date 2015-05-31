@@ -1,9 +1,46 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events',
-	function($scope, $stateParams, $location, Authentication, Events) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Events, $modal, $log) {
 		$scope.authentication = Authentication;
+        
+        $scope.events = Events.query();
+        
+        //Open Modal window for creating events
+        $scope.createModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/events/views/create-event.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+//                  $scope.events = events;
+//                  $scope.selected = {
+//                    event: $scope.events[0]
+//                  };
+
+                  $scope.ok = function () {
+                    $modalInstance.close($scope.selected.event);
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
 
 		// Create new Event
 		$scope.create = function() {

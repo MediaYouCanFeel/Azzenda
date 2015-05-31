@@ -9,7 +9,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		$scope.create = function() {
 			// Create new Event object
 			var event = new Events ({
-				name: this.name
+                name: this.name,
+                description: this.name,
+				requestedDateTimeRange: {
+                    //startDateTime: something
+                    //endDateTime: something
+                    //parameters: something
+                },
+                location: this.name,
+                type: this.name,
 			});
 
 			// Redirect after save
@@ -25,16 +33,20 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 		// Remove existing Event
 		$scope.remove = function(event) {
-			if ( event ) { 
+			if ( event ) {
+            //remove requested event, probably from event list view
 				event.$remove();
-
+                
+                //remove the deleted event from $scope.events
 				for (var i in $scope.events) {
 					if ($scope.events [i] === event) {
 						$scope.events.splice(i, 1);
 					}
 				}
 			} else {
+            //remove $scope.event, from single event view
 				$scope.event.$remove(function() {
+                    //return to event list view
 					$location.path('events');
 				});
 			}
@@ -42,9 +54,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 		// Update existing Event
 		$scope.update = function() {
+            //get modified event from $scope
 			var event = $scope.event;
 
 			event.$update(function() {
+                //return to single event view
 				$location.path('events/' + event._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
@@ -58,7 +72,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 		// Find existing Event
 		$scope.findOne = function() {
-			$scope.event = Events.get({ 
+            //find event with id $stateParams.eventId, then set $scope.event to it
+			$scope.event = Events.get({
 				eventId: $stateParams.eventId
 			});
 		};

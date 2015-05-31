@@ -1,8 +1,7 @@
 <section data-ng-controller="EventsController" data-ng-init="find()">
-    <div class="page-header">
+  
         <div class="h1 well">Events</div>
-    </div>
-    
+   
     <div class="col-md-7">
         <div class="col-md-12 row well">
             <h2>
@@ -34,7 +33,7 @@
         <div class="row well">
             <h2>
                 <strong>Create Event</strong>
-                <button>+</button>
+                <button ng-click="createModal('lg')">+</button>
             </h2>
         </div>
         <div class="row well">
@@ -74,7 +73,5 @@
 			<h4 class="list-group-item-heading" data-ng-bind="event.name"></h4>
         </a>
     </div> -->
-    <div class="alert alert-warning text-center" data-ng-hide="!events.$resolved || events.length">
-    	No Events yet, why don't you <a href="/#!/events/create">create one</a>?
-    </div>
+   
 </section>

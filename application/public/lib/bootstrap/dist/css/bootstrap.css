@@ -2621,7 +2621,7 @@ input[type="search"] {
   }
 }
 .form-group {
-  margin-bottom: 0px;
+  margin-bottom: 15px;
 }
 .radio,
 .checkbox {
@@ -5766,7 +5766,6 @@ button.close {
   outline: 0;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
           box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
-  padding-top: -100px;
 }
 .modal-backdrop {
   position: fixed;
@@ -5841,17 +5840,6 @@ button.close {
     width: 900px;
   }
 }
-
-.modal-col {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: -20px;
-}
-
-.modal-heading {
-  font-size: 24px;
-}
-
 .tooltip {
   position: absolute;
   z-index: 1070;
@@ -6350,19 +6338,6 @@ button.close {
 .modal-footer:after {
   clear: both;
 }
-
-.row.vdivide [class*='col-']:not(:last-child):after {
-  background: #e0e0e0;
-  width: 1px;
-  content: "";
-  display:block;
-  position: absolute;
-  top:0;
-  bottom: 0;
-  right: 0;
-  min-height: 70px;
-}
-
 .center-block {
   display: block;
   margin-right: auto;

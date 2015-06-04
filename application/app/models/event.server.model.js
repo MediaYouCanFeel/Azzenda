@@ -34,11 +34,6 @@ var EventSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Project'
     },
-    fixedDate: {
-        type: Boolean,
-        default: true,
-        required: 'Please select \'Fixed\' or \'Range\''
-    },
     scheduledDateTimeRange: {
         startDateTime: {
             type: Date
@@ -51,17 +46,11 @@ var EventSchema = new Schema({
         }
     },
     requestedDateTimeRange: {
-        startDateTime: {
-            type: Date
-        },
-        endDateTime: {
-            type: Date
-        },
-        length: {
-            type: String
-        },
-        parameters: [{
-            type: String
+        dateTime: [{
+            date: Date,
+            parameters: [{
+                type: String
+            }]
         }]
     },
     location: {
@@ -80,8 +69,15 @@ var EventSchema = new Schema({
             ref: 'User'
         },
         status: {
+            type: String,
+            enum: ['pending', 'attending','declined']
+        },
+        parameters: [{
             type: String
-        }
+        }]
+    }],
+    scheduleParameters: [{
+        type: String
     }]
 });
 

@@ -1,7 +1,6 @@
 <section data-ng-controller="EventsController">
     <div class="col-md-12 well">
         <h1 class="text-center">Create Event</h1>
-<<<<<<< HEAD
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
                 <div class="row vdivide">
@@ -13,21 +12,8 @@
                             <div class="controls">
                                 <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
                             </div>
-=======
-        <form class="form-horizontal model-content" data-ng-submit="create()" id="createEventForm" novalidate>
-            <fieldset>
-                <div class="row vdivide">
-                <div class="col-md-6 modal-col">
-                    <h3 class="text-center"><u>Basic Info:</u></h3>
-                    <!-- Name -->
-                    <div class="form-group">
-                        <label class="control-label" for="name">Name</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
->>>>>>> 856da8f56469c84db4f1b246a9c86609f6cba556
                         </div>
 
-<<<<<<< HEAD
                         <!-- Project -->
                         <div class="form-group">
                             <label class="control-label" for="project">Project</label>
@@ -50,21 +36,6 @@
                             <div class="controls">
                                 <input type="text" data-ng-model="location" id="location" class="form-control" placeholder="Location" required>
                             </div>
-=======
-                    <!-- Project -->
-                    <div class="form-group">
-                        <label class="control-label" for="project">Project</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="project" id="project" class="form-control" placeholder="Project" required>
-                        </div>
-                    </div>
-                    
-                    <!-- Type -->
-                    <div class="form-group">
-                        <label class="control-label" for="type">Type</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
->>>>>>> 856da8f56469c84db4f1b246a9c86609f6cba556
                         </div>
 
                         <!-- Description -->
@@ -76,7 +47,6 @@
                         </div>
 
                     </div>
-<<<<<<< HEAD
                 
                     <div class="col-md-6 modal-col" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
@@ -127,94 +97,20 @@
                             </div>
                         </div>
 
+                    <div class="form-group pull-right">
+                            <input type="submit" class="btn btn-default">
+                        </div>
                         <div data-ng-show="error" class="text-danger">
                             <strong data-ng-bind="error"></strong>
-                        </div>
+                        </div>    
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group pull-right">
-                            <input type="submit" class="btn btn-default">
-                        </div>
+                        
                     </div>
                 </div>
                 
-=======
-                    
-                    <!-- Location -->
-                    <div class="form-group">
-                        <label class="control-label" for="location">Location</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="location" id="location" class="form-control" placeholder="Location" required>
-                        </div>
-                    </div>
-                    
-                    <!-- Description -->
-                    <div class="form-group">
-                        <label class="control-label" for="location">Description</label>
-                        <div class="controls">
-                            <input type="text" data-ng-model="description" id="description" class="form-control" placeholder="Description" required>
-                        </div>
-                    </div>
-                
-                </div>
-                <div class="col-md-6 modal-col">
-                    <h3 class="text-center"><u>Date/Time:</u></h3>
-                    <!-- Fixed/Range -->
-                    <div class="form-group">
-                        <label class="control-label" for="fixedDate" ng-init="fixedDate=true">Fixed/Range</label>
-                        <div class="controls">
-                            <input type="radio" id="fixed" checked data-ng-model="fixedDate" value="true" checked> Fixed
-                            <input type="radio" id="range" data-ng-model="fixedDate" value="false"> Range
-                        </div>
-                    </div>
-                    
-                    <!-- "Fixed" Controls-->
- 
-                   
-                    <!--
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
-                            <div class="input-group">
-                                <input type="text" class="form-control" data-ng-model="requestedDateTimeRange.startDateTime">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="requestedDateTimeRange.startDateTime" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
-                        </ul>
-                    </div>
-                    -->
-                    
-                    <div ng-if="fixedDate">
-                        <!-- Date -->
-                        <div class="form-group">
-                            <label class="control-label" for="name">Date</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Date" required>
-                            </div>
-                        </div>
-
-                        <!-- Time -->
-                        <div class="form-group">
-                            <label class="control-label" for="name">Time</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Time" required>
-                            </div>
-                        </div>
-                    </div>
-                
-                    
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
-                </div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-                </div>
-                </div>
->>>>>>> 856da8f56469c84db4f1b246a9c86609f6cba556
             </fieldset>
         </form>
     </div>

@@ -34,6 +34,11 @@ var EventSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Project'
     },
+    fixedDate: {
+        type: Boolean,
+        default: true,
+        required: 'Please select \'Fixed\' or \'Range\''
+    },
     scheduledDateTimeRange: {
         startDateTime: {
             type: Date

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":NumberInt(1),"key":{"_id":NumberInt(1)},"name":"_id_","ns":"automatedmanagement-dev.users"},{"v":NumberInt(1),"unique":true,"key":{"username":NumberInt(1)},"name":"username_1","ns":"automatedmanagement-dev.users","background":true,"safe":null}]}

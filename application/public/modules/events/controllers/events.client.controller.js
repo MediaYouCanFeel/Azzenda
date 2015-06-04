@@ -47,14 +47,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			// Create new Event object
 			var event = new Events ({
                 name: this.name,
-                description: this.name,
+                description: this.description,
 				requestedDateTimeRange: {
                     //startDateTime: something
                     //endDateTime: something
                     //parameters: something
                 },
-                location: this.name,
-                type: this.name,
+                location: this.location,
+                type: this.type,
+                project: this.project
 			});
 
 			// Redirect after save

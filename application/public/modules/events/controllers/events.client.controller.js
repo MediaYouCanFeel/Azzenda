@@ -14,13 +14,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-//                  $scope.events = events;
-//                  $scope.selected = {
-//                    event: $scope.events[0]
-//                  };
 
                   $scope.ok = function () {
-                    $modalInstance.close($scope.selected.event);
+                      //$scope.selected.event
+                    modalInstance.close();
                   };
 
                   $scope.cancel = function () {
@@ -34,7 +31,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 }
               }
             });
-
+            
             modalInstance.result.then(function (selectedEvent) {
               $scope.selected = selectedEvent;
             }, function () {
@@ -57,7 +54,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 type: this.type,
                 project: this.project
 			});
-
+            
+            $scope.ok();
+            
 			// Redirect after save
 			event.$save(function(response) {
 				$location.path('events/' + response._id);

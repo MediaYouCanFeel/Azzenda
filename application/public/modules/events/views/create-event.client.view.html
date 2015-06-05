@@ -95,27 +95,76 @@
                                     <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Time" required>
                                 </div>
                             </div>
-                        </div>
-
-                        
+                        </div>                        
                     </div>
                     
+                    
+                    <!-- PAGE 2 -->
                     
                     <div class="col-md-6 modal-col" ng-show="createPage == 2">
-                        <div class="form-group pull-right">
-                            <input type="submit" class="btn btn-default">
+                        <div class="text-center modal-heading"><u>Required Guests</u></div>
+                        <!-- Required Guests -->
+                        <div class="form-group">
+                            <label class="control-label" for="name">Required Guests:</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="John Barton" required>
+                            </div>
                         </div>
-                        <div data-ng-show="error" class="text-danger">
-                            <strong data-ng-bind="error"></strong>
-                        </div>        
                     </div>
+                    
+                    <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                        <div class="text-center modal-heading"><u>Additional Guests</u></div>
+                        <!-- Additional Guests -->
+                        <div class="form-group">
+                            <label class="control-label" for="name">I need:</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="2" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label" for="name"></label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Directors" required>
+                            </div>
+                        </div>
+                    </div>
+                
+                <!-- PAGE 3 -->
+                <div class="col-md-6 modal-col" ng-show="createPage == 3">
+                    <div class="text-center modal-heading"><u>Basic Info</u></div>
+                    <div>Name: {{name}}</div>
+                    <div>Project: {{project}}</div>
+                    <div>Type: {{type}}</div>
+                    <div>Location: {{location}}</div>
+                    <div>Description: {{description}}</div>
+                </div>
                     
                 </div>
                 <div class="row">
-                    <div class="col-md-12" ng-show="createPage == 1">
-                        <div class="form-group pull-right">
-                        <div ng-click="createPage = 2" class="btn btn-default"> Invites > </div>
-                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group pull-right" ng-show="createPage == 1">
+                            <div ng-click="createPage = 2" class="btn btn-default"> Invites > </div>
+                        </div>
+                        
+                        <div class="form-group pull-left" ng-show="createPage == 2">
+                            <div ng-click="createPage = 1" class="btn btn-default"> < Info </div>
+                        </div>
+                            
+                        <div class="form-group pull-right" ng-show="createPage == 2">
+                            <div ng-click="createPage = 3" class="btn btn-default"> Review > </div>
+                        </div>
+                        
+                        <div class="form-group pull-left" ng-show="createPage == 3">
+                            <div ng-click="createPage = 2" class="btn btn-default"> < Invites </div>
+                        </div>    
+                            
+                        <div class="form-group pull-right" ng-show="createPage == 3">
+                            <input type="submit" class="btn btn-default">
+                        </div>
+                        <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">
+                            <strong data-ng-bind="error"></strong>
+                        </div>     
                     </div>
                 </div>
                 

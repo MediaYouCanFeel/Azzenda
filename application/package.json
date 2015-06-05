@@ -1,7 +1,8 @@
 {
-	"name": "Azzenda",
+	"name": "azzenda",
 	"description": "Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js",
 	"version": "0.0.1",
+	"author": "MYCF",
 	"engines": {
 		"node": "0.10.x",
 		"npm": "1.4.x"

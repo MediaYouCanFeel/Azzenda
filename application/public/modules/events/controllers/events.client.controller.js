@@ -5,7 +5,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, Authentication, Events, $modal, $log) {
 		$scope.authentication = Authentication;
         
-        $scope.events = Events.query({typeRequest: true});
+        $scope.events = Events.query();
+        console.log($scope.events);
         
         //Open Modal window for creating events
         $scope.createModal = function (size) {
@@ -108,7 +109,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 		// Find a list of Events
 		$scope.find = function() {
-			$scope.events = Events.query();
+            var response = Events.query();
+            console.log(response);
+            $scope.events = response.events;
+            console.log($scope.events);
 		};
 
 		// Find existing Event

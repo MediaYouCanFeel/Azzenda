@@ -97,7 +97,9 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                res.jsonp(events);
+                Event.distinct('type').exec(function(err, types) {
+                    res.jsonp({"events": events, "types": types});
+                });
             }
         });
     } else {
@@ -107,7 +109,9 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                res.jsonp(events);
+                Event.distinct('type').exec(function(err, types) {
+                    res.jsonp({"events": events, "types": types});
+                });
             }
         });
     }
@@ -134,11 +138,4 @@ exports.hasAuthorization = function(req, res, next) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();
-};
-
-exports.getTypes = function(req, res, next, id) {
-    Event.distinct('type').exec(function(err, types) {
-        req.types = types
-        next();
-    });
 };

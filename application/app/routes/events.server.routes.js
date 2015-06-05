@@ -16,5 +16,4 @@ module.exports = function(app) {
 
 	// Finish by binding the Event middleware
 	app.param('eventId', events.eventByID);
-    app.param('typeRequest',events.getTypes);
 };

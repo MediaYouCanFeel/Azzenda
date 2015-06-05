@@ -45,18 +45,18 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			var event = new Events ({
                 name: this.name,
                 description: this.description,
-				requestedDateTimeRange: {
-                    dateTime: [{
-                        date: new Date(),
-                        parameters: ['start','fixed','required']
-                    },{
-                        date: new Date(),
-                        parameters: ['end','fixed','required']
-                    }]
-                },
+				//requestedDateTimeRange: {
+                    //dateTime: [{
+                        //date: new Date(),
+                        //parameters: ['start','fixed','required']
+                    //},{
+                        //date: new Date(),
+                        //parameters: ['end','fixed','required']
+                    //}]
+                //},
                 location: this.location,
                 type: this.type,
-                project: this.project
+                //project: this.project
 			});
             
             //$scope.ok();

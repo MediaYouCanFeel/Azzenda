@@ -2,14 +2,19 @@
 	<div class="page-header">
 		<h1 data-ng-bind="event.name"></h1>
 	</div>
-    Description: <span data-ng-bind="event.description"></span>
+    
+    Project:
+    <div data-ng-bind="event.project"></div>
     <br>
-    Project: <span data-ng-bind="event.project"></span>
+    Type:
+    <div data-ng-bind="event.type"></div>
     <br>
-    Type: <span data-ng-bind="event.type"></span>
+    Location:
+    <div data-ng-bind="event.location"></div>
     <br>
-    Location: <span data-ng-bind="event.location"></span>
-    <br>
+    Description:
+    <div data-ng-bind="event.description"></div>
+    
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == event.user._id))">
 		<a class="btn btn-primary" href="/#!/events/{{event._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>

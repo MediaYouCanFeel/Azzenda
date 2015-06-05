@@ -135,3 +135,10 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
+
+exports.getTypes = function(req, res, next, id) {
+    Event.distinct('type').exec(function(err, types) {
+        req.types = types
+        next();
+    });
+};

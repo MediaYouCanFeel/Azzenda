@@ -5,7 +5,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 	function($scope, $stateParams, $location, Authentication, Events, $modal, $log) {
 		$scope.authentication = Authentication;
         
-        $scope.events = Events.query();
+        $scope.events = Events.query({typeRequest: true});
         
         //Open Modal window for creating events
         $scope.createModal = function (size) {
@@ -49,9 +49,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 description: this.description,
 				requestedDateTimeRange: {
-                    //startDateTime: something
-                    //endDateTime: something
-                    //parameters: something
+                    dateTime: [{
+                        date: new Date(),
+                        parameters: ['start','fixed','required']
+                    },{
+                        date: new Date(),
+                        parameters: ['end','fixed','required']
+                    }]
                 },
                 location: this.location,
                 type: this.type,

@@ -513,6 +513,10 @@
 }
 
 .azzenda-font {
-    font-family: corbert;
+  font-family: corbert;
+}
+
+.font-med {
+  font-size: 24px;
 }
 /*# sourceMappingURL=bootstrap-theme.css.map */

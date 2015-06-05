@@ -55,7 +55,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 project: this.project
 			});
             
-            $scope.ok();
+            //$scope.ok();
             
 			// Redirect after save
 			event.$save(function(response) {

@@ -3,8 +3,8 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row vdivide">
-                    <div class="col-md-6 modal-col">
+                <div class="row vdivide" ng-init="createPage=1">
+                    <div class="col-md-6 modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
                         <div class="form-group">
@@ -48,7 +48,7 @@
 
                     </div>
                 
-                    <div class="col-md-6 modal-col" ng-init="fixedDate=true">
+                    <div class="col-md-6 modal-col" ng-show="createPage == 1" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
                         <!-- Fixed/Range -->
                         <div class="form-group">
@@ -97,17 +97,25 @@
                             </div>
                         </div>
 
-                    <div class="form-group pull-right">
+                        
+                    </div>
+                    
+                    
+                    <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                        <div class="form-group pull-right">
                             <input type="submit" class="btn btn-default">
                         </div>
                         <div data-ng-show="error" class="text-danger">
                             <strong data-ng-bind="error"></strong>
-                        </div>    
+                        </div>        
                     </div>
+                    
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        
+                    <div class="col-md-12" ng-show="createPage == 1">
+                        <div class="form-group pull-right">
+                        <div ng-click="createPage = 2" class="btn btn-default"> Invites > </div>
+                    </div>
                     </div>
                 </div>
                 

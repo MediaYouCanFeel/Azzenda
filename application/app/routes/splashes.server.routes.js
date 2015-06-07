@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Splashes Routes
 	app.route('/splashes')
-		.get(splashes.list)
+		.get(users.requiresLogin, splashes.list)
 		.post(users.requiresLogin, splashes.create);
 
 	app.route('/splashes/:splashId')

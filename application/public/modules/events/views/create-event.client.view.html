@@ -3,8 +3,8 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row vdivide" ng-init="createPage=1">
-                    <div class="col-md-6 modal-col" ng-show="createPage == 1">
+                <div class="row" ng-init="createPage=1">
+                    <div class="col-md-5 modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
                         <div class="form-group">
@@ -48,7 +48,7 @@
 
                     </div>
                 
-                    <div class="col-md-6 modal-col" ng-show="createPage == 1" ng-init="fixedDate=true">
+                    <div class="col-md-7 modal-col" ng-show="createPage == 1" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
                         <!-- Fixed/Range -->
                         <div class="form-group">
@@ -61,19 +61,37 @@
 
                         <!-- Fixed -->
                         <div ng-show="fixedDate">
-                            <!-- Date -->
-                            <div class="form-group">
-                                <label class="control-label" for="name">Date</label>
-                                <div class="controls">
-                                    <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Date" required>
+                            <div class="col-md-6">
+                                <!-- Date -->
+                                <div class="form-group">
+                                    <label class="control-label text-center" for="name">Date</label>
+                                    <div class="controls">
+                                        <div class="col-md-2 date-picker-field">
+                                            <input type="text" data-ng-model="mm" id="name" class="form-control" placeholder="MM" required>
+                                        </div>
+                                        <div class="col-md-1 date-picker-divider">
+                                        /
+                                        </div>
+                                        <div class="col-md-2 date-picker-field">
+                                            <input type="text" data-ng-model="dd" id="name" class="form-control" placeholder="DD" required>
+                                        </div>
+                                        <div class="col-md-1 date-picker-divider">
+                                        /
+                                        </div>
+                                        <div class="col-md-2 date-picker-field">
+                                            <input type="text" data-ng-model="yy" id="name" class="form-control" placeholder="YY" required>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Time -->
-                            <div class="form-group">
-                                <label class="control-label" for="name">Time</label>
-                                <div class="controls">
-                                    <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Time" required>
+                            <div class="col-md-6">
+                                <!-- Time -->
+                                <div class="form-group">
+                                    <label class="control-label" for="fixedTime">Time</label>
+                                        <div class="col-md-2 date-picker-field">
+                                            <input type="text" data-ng-model="mm" id="fixedTime" class="form-control" placeholder="HH" required>
+                                        </div>
                                 </div>
                             </div>
                         </div>

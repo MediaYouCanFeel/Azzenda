@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Settings Routes
 	app.route('/settings')
-		.get(settings.list)
+		.get(users.requiresLogin, settings.list)
 		.post(users.requiresLogin, settings.create);
 
 	app.route('/settings/:settingId')

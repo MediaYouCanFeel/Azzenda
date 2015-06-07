@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Groups Routes
 	app.route('/groups')
-		.get(groups.list)
+		.get(users.requiresLogin, groups.list)
 		.post(users.requiresLogin, groups.create);
 
 	app.route('/groups/:groupId')

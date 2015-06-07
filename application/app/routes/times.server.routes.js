@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Times Routes
 	app.route('/times')
-		.get(times.list)
+		.get(users.requiresLogin, times.list)
 		.post(users.requiresLogin, times.create);
 
 	app.route('/times/:timeId')

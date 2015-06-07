@@ -49,7 +49,10 @@ template {
 }
 
 .splash-grid {
-  padding: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+  padding-top: 20px;
 }
 
 .splash-transitions {
@@ -2266,6 +2269,43 @@ pre code {
     margin-left: 0;
   }
 }
+
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths {
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.col-xs-5ths {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .col-sm-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-md-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-lg-5ths {
+        width: 20%;
+        float: left;
+    }
+}
+
 table {
   background-color: transparent;
 }
@@ -3155,8 +3195,8 @@ fieldset[disabled] .btn-primary.active {
 }
 .btn-success {
   color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #008080;
+  border-color: #00e0e0;
 }
 .btn-success:hover,
 .btn-success:focus,
@@ -3165,8 +3205,8 @@ fieldset[disabled] .btn-primary.active {
 .btn-success.active,
 .open > .dropdown-toggle.btn-success {
   color: #fff;
-  background-color: #449d44;
-  border-color: #398439;
+  background-color: #008080;
+  border-color: #00e0e0;
 }
 .btn-success:active,
 .btn-success.active,
@@ -3191,11 +3231,11 @@ fieldset[disabled] .btn-success:active,
 .btn-success.disabled.active,
 .btn-success[disabled].active,
 fieldset[disabled] .btn-success.active {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #008080;
+  border-color: #00e0e0;
 }
 .btn-success .badge {
-  color: #5cb85c;
+  color: #008080;
   background-color: #fff;
 }
 .btn-info {
@@ -6384,6 +6424,15 @@ button.close {
   bottom: 0;
   right: 0;
   min-height: 70px;
+}
+
+.date-picker-field {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.date-picker-divider {
+  font-size: 24px;
 }
 
 .center-block {

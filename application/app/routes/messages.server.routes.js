@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Messages Routes
 	app.route('/messages')
-		.get(messages.list)
+		.get(users.requiresLogin, messages.list)
 		.post(users.requiresLogin, messages.create);
 
 	app.route('/messages/:messageId')

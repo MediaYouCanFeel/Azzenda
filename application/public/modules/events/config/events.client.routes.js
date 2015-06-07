@@ -20,6 +20,10 @@ angular.module('events').config(['$stateProvider',
 		state('editEvent', {
 			url: '/events/:eventId/edit',
 			templateUrl: 'modules/events/views/edit-event.client.view.html'
+		}).
+        state('dateTimeModalEvent', {
+			url: '/events/create/dateTimeModal',
+			templateUrl: 'modules/events/views/calendar-modal-event.client.view.html'
 		});
 	}
 ]);

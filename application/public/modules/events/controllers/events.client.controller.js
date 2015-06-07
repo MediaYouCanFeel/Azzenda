@@ -41,6 +41,39 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
         };
 
+        //Open Modal window for picking Date/Time
+        $scope.createDateTimeModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/events/views/calendar-modal-event.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        
 		// Create new Event
 		$scope.create = function() {
 			// Create new Event object
@@ -128,5 +161,108 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.getTypes = function() {
             $scope.types = Events.getTypes();
         };
-	}
+	        
+        // DATEPICKER CONFIG
+    
+        $scope.today = function() {
+            $scope.dt = new Date();
+        };
+        
+        $scope.today();
+
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        // Disable weekend selection
+//        $scope.disabled = function(date, mode) {
+//            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+//        };
+
+        $scope.toggleMin = function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        };
+        
+        $scope.toggleMin();
+
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1,
+            showWeeks: false
+         };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[3];
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 2);
+        $scope.events =
+            [
+              {
+                date: tomorrow,
+                status: 'full'
+              },
+              {
+                date: afterTomorrow,
+                status: 'partially'
+              }
+            ];
+
+        $scope.getDayClass = function(date, mode) {
+            if (mode === 'day') {
+              var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+              for (var i=0;i<$scope.events.length;i++){
+                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+                if (dayToCheck === currentDay) {
+                  return $scope.events[i].status;
+                }
+              }
+            }
+
+            return '';
+          };      
+    
+        //TIMEPICKER OPTIONS
+        $scope.mytime = new Date();
+
+        $scope.hstep = 1;
+        $scope.mstep = 1;
+
+        $scope.options = {
+            hstep: [1, 2, 3],
+            mstep: [1, 5, 10, 15, 25, 30]
+        };
+
+        $scope.ismeridian = true;
+        $scope.toggleMode = function() {
+            $scope.ismeridian = ! $scope.ismeridian;
+        };
+
+        $scope.update = function() {
+            var d = new Date();
+            d.setHours( 14 );
+            d.setMinutes( 0 );
+            $scope.mytime = d;
+        };
+
+        $scope.changed = function () {
+            $log.log('Time changed to: ' + $scope.mytime);
+        };
+
+        $scope.clear = function() {
+            $scope.mytime = null;
+        };    
+        
+    }
 ]);

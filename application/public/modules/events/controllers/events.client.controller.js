@@ -6,6 +6,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		$scope.authentication = Authentication;
         
         $scope.events = Events.query();
+        console.log($scope.events);
         
         //Open Modal window for creating events
         $scope.createModal = function (size) {
@@ -14,7 +15,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-
+                  $scope.eventTypes = Events.getTypes();
+                  
                   $scope.ok = function () {
                       //$scope.selected.event
                     modalInstance.close();
@@ -79,13 +81,18 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 description: this.description,
 				requestedDateTimeRange: {
-                    //startDateTime: something
-                    //endDateTime: something
-                    //parameters: something
+                    dateTime: [{
+                        date: new Date(),
+                        parameters: ['start','fixed','required']
+                    },{
+                        date: new Date(),
+                        parameters: ['end','fixed','required']
+                    }],
+                    length: 1000000
                 },
                 location: this.location,
                 type: this.type,
-                project: this.project
+                //project: this.project
 			});
             
             //$scope.ok();
@@ -137,7 +144,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 		// Find a list of Events
 		$scope.find = function() {
-			$scope.events = Events.query();
+            var response = Events.query();
+            console.log(response);
+            $scope.events = response.events;
+            console.log($scope.events);
 		};
 
 		// Find existing Event
@@ -147,8 +157,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				eventId: $stateParams.eventId
 			});
 		};
-	
         
+        $scope.getTypes = function() {
+            $scope.eventTypes = Events.getTypes();
+        };
+	        
         // DATEPICKER CONFIG
         $scope.datepickers = {
             earliest: false,

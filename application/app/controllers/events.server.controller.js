@@ -15,6 +15,9 @@ exports.create = function(req, res) {
 	var event = new Event(req.body);
 	event.user = req.user;
     //event.guests = {"user": req.user,"status": 'Attending'};
+    for(var dt in event.requestedDateTimeRange.dateTime) {
+        
+    }
 	event.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -97,6 +100,9 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
+                //Event.distinct('type').exec(function(err, types) {
+                    //res.jsonp({'events': events, 'types': types});
+                //});
                 res.jsonp(events);
             }
         });
@@ -107,10 +113,19 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
+                //Event.distinct('type').exec(function(err, types) {
+                    //res.jsonp({'events': events, 'types': types});
+                //});
                 res.jsonp(events);
             }
         });
     }
+};
+
+exports.getTypes = function(req, res) {
+    Event.distinct('type').exec(function(err, types) {
+        res.jsonp(types);
+    });
 };
 
 

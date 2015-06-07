@@ -150,7 +150,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 	
         
         // DATEPICKER CONFIG
-    
+        $scope.datepickers = {
+            earliest: false,
+            latest: false
+        }
+        
         $scope.today = function() {
             $scope.dt = new Date();
         };
@@ -161,17 +165,12 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.dt = null;
         };
 
-        // Disable weekend selection
-//        $scope.disabled = function(date, mode) {
-//            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-//        };
-
         $scope.toggleMin = function() {
             $scope.minDate = $scope.minDate ? null : new Date();
         };
         
         $scope.toggleMin();
-
+        
         $scope.open = function($event) {
             $event.preventDefault();
             $event.stopPropagation();
@@ -179,6 +178,18 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.opened = true;
         };
 
+        $scope.openWhich = function($event, which) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            for(var datepicker in $scope.datepickers)
+            {
+                datepicker = false;
+            }
+            $scope.datepickers[which]= true;
+        };
+
+        
         $scope.dateOptions = {
             formatYear: 'yy',
             startingDay: 1,
@@ -250,6 +261,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.clear = function() {
             $scope.mytime = null;
         };    
+    
+        
+        //Combining Date & Time fields
+        $scope.combineDateTime = function(dateFromModal,timeFromModal) {
+            dateFromModal.setHours($scope.timeFromModal.getHours());
+            dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+        }
         
     }
 ]);

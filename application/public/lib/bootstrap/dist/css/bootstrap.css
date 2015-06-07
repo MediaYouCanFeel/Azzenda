@@ -6386,6 +6386,15 @@ button.close {
   min-height: 70px;
 }
 
+.date-picker-field {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.date-picker-divider {
+  font-size: 24px;
+}
+
 .center-block {
   display: block;
   margin-right: auto;

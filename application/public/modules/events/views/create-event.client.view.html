@@ -64,23 +64,14 @@
                             <div class="col-md-6">
                                 <!-- Date -->
                                 <div class="form-group">
-                                    <label class="control-label text-center" for="name">Date</label>
+                                    <label class="control-label text-center" for="name">Date/Time</label>
                                     <div class="controls">
-                                        <div class="col-md-2 date-picker-field">
-                                            <input type="text" data-ng-model="mm" id="name" class="form-control" placeholder="MM" required>
-                                        </div>
-                                        <div class="col-md-1 date-picker-divider">
-                                        /
-                                        </div>
-                                        <div class="col-md-2 date-picker-field">
-                                            <input type="text" data-ng-model="dd" id="name" class="form-control" placeholder="DD" required>
-                                        </div>
-                                        <div class="col-md-1 date-picker-divider">
-                                        /
-                                        </div>
-                                        <div class="col-md-2 date-picker-field">
-                                            <input type="text" data-ng-model="yy" id="name" class="form-control" placeholder="YY" required>
-                                        </div>
+                                            <p class="input-group">
+                                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                              <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                              </span>
+                                            </p>
                                     </div>
                                 </div>
                             </div>
@@ -88,11 +79,8 @@
                             <div class="col-md-6">
                                 <!-- Time -->
                                 <div class="form-group">
-                                    <label class="control-label text-center" for="name">Time</label>
-                                    <div class="controls">
-                                        <div class="col-md-2 date-picker-field">
-                                            <input type="text" data-ng-model="mm" id="name" class="form-control" placeholder="MM" required>
-                                        </div>
+                                    <div class="controls timepicker">
+                                       <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                                     </div>
                                 </div>
                             </div>

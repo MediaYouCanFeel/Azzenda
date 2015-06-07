@@ -6678,4 +6678,8 @@ button.close {
     display: none !important;
   }
 }
+.timepicker {
+  padding: 0px;
+  maring: 0px;
+}
 /*# sourceMappingURL=bootstrap.css.map */

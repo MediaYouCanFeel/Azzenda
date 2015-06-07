@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Dashes Routes
 	app.route('/dashes')
-		.get(dashes.list)
+		.get(users.requiresLogin, dashes.list)
 		.post(users.requiresLogin, dashes.create);
 
 	app.route('/dashes/:dashId')

@@ -6,7 +6,7 @@ angular.module('dashes').config(['$stateProvider',
 		// Dashes state routing
 		$stateProvider.
 		state('listDashes', {
-			url: '/dash',
+			url: '/dashes',
 			templateUrl: 'modules/dashes/views/list-dashes.client.view.html'
 		}).
 		state('createDash', {

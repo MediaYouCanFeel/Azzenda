@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Finances Routes
 	app.route('/finances')
-		.get(finances.list)
+		.get(users.requiresLogin, finances.list)
 		.post(users.requiresLogin, finances.create);
 
 	app.route('/finances/:financeId')

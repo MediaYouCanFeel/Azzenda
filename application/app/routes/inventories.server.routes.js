@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Inventories Routes
 	app.route('/inventories')
-		.get(inventories.list)
+		.get(users.requiresLogin, inventories.list)
 		.post(users.requiresLogin, inventories.create);
 
 	app.route('/inventories/:inventoryId')

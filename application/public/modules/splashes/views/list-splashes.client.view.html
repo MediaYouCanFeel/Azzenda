@@ -1,100 +1,97 @@
 <section data-ng-controller="SplashesController" data-ng-init="find()">
 <div class="col-md-12 well top-well">
-		<div class="text-center">
-            <span class="splash">This is </span> 
-            <span class="azzenda-font splash"> Azzenda.</span>
+		<div>
+            <span class="h2">Welcome to </span> 
+            <span class="azzenda-font h2"> Azzenda.</span>
         </div>
-		<div class="text-center">
-			<span class="azzenda-font"> Azzenda </span> is the world's most powerful team management application.
-		</div>
-</div> 
-<div id="splash-grid" class="text-center">
-    <div class="col-md-4">
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-calendar fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Events</u></div>
-            <span class="splash-transitions">
-                Schedule events like never before by letting <span class="azzenda-font">Azzenda</span> take the reigns.
-            </span>
+		<p>
+			This is some basic information and links.
+		</p>
+	</div>
+    <div class="col-md-7">
+        <div class="col-md-12 row well">
+            <h2>
+                <strong>Events</strong>
+            </h2>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Writing Meeting #2</h3>
+                    </div>
+                    <i>Fall 2015 Web Series</i>
+                    <p>Wednedsay, May 13, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Meeting #2</h3>
+                    </div>
+                    <i>Top-Tier Executive Board</i>
+                    <p>Tuesday, May 12, 2015 - 8:00 PM</p>
+                    <p>Google+ Hangout</p>
+                </div>
+            </div>
         </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-user fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Roster</u></div>
-            <span class="splash-transitions">
-                Let <span class="azzenda-font">Azzenda</span> manage your organization's roster, including skills, contact info, and more.
-            </span>
-        </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-envelope-o fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Messages</u></div>
-            <span class="splash-transitions">
-                Users can send and receive messages via their preferred method of communication (text, email, etc.) thanks to <span class="azzenda-font">Azzenda</span>.
-            </span>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-paperclip fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Projects</u></div>
-            <span class="splash-transitions">
-                <span class="azzenda-font">Azzenda</span> keeps projects organized by keeping Events, Members, and more all in one easy-to-find place.
-            </span>
-        </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-users fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Groups</u></div>
-            <span class="splash-transitions">
-                <span class="azzenda-font">Azzenda</span> simplifies team management by splitting members into flexible, overlapping groups.
-            </span>
-        </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-archive fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Inventory</u></div>
-            <span class="splash-transitions">
-                An organization's resources can be managed, tracked, and checked out with <span class="azzenda-font">Azzenda</span>.
-            </span>
+        <div class="col-md-12 row well">
+            <h2>
+                <strong>Finances</strong>
+            </h2>
+            <p>This is a look at the current financial situation.</p>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-usd fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Finances</u></div>
-            <span class="splash-transitions">
-                Don't let the money get away. <span class="azzenda-font">Azzenda</span>'s revolutionary visualizations help ensure that projects stay within their budgets.
-            </span>
+    <div class="col-md-5">
+        <div class="row well">
+            <h2>
+                <strong>Projects</strong>
+            </h2>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Fall 2015 Web Series</h3>
+                    </div>
+                    <i>Web Series - FA15</i>
+                    <p>Pre-Production</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Rules for Living the YOLO Lifestyle</h3>
+                    </div>
+                    <i>Web Series - RLY</i>
+                    <p>Post-Production</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Second Time</h3>
+                    </div>
+                    <i>Web Series - ST</i>
+                    <p>Post-Production</p>
+                </div>
+            </div>
         </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-check fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Tasks</u></div>
-            <span class="splash-transitions">
-                Keep track of tasks for projects and more with <span class="azzenda-font">Azzenda</span>.
-            </span>
-        </div>
-        <div class="row splash-grid">
-            <a class="btn-bar">
-                <i class="fa fa-clock-o fa-3x"></i>
-            </a>
-            <div class="font-med azzenda-font"><u>Time</u></div>
-            <span class="splash-transitions">
-                Monitor how much time team members spend on certain tasks with <span class="azzenda-font">Azzenda</span>'s time tracking tool.
-            </span>
+        <div class="row well">
+            <h2>
+                <strong>Groups</strong>
+            </h2>
+            <div class="list-group">
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Top-Tier Executive Board</h3>
+                    </div>
+                    <p>You, Ben Heuser, and Emma Green.</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Editors</h3>
+                    </div>
+                    <p>You, Michelle Stone, Valentina Verano, and 2 others.</p>
+                </div>
+                <div class="list-group-item">
+                    <div class="list-group-item-heading">
+                        <h3>Directors</h3>
+                    </div>
+                    <p>You and Ben Heuser.</p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </section>

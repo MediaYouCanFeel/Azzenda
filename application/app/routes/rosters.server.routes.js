@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Rosters Routes
 	app.route('/rosters')
-		.get(rosters.list)
+		.get(users.requiresLogin, rosters.list)
 		.post(users.requiresLogin, rosters.create);
 
 	app.route('/rosters/:rosterId')

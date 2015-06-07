@@ -81,18 +81,22 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 description: this.description,
 				requestedDateTimeRange: {
-                    dateTime: [{
-                        date: new Date(),
-                        parameters: ['start','fixed','required']
-                    },{
-                        date: new Date(),
-                        parameters: ['end','fixed','required']
+                    dateTimes: [{
+                        start: new Date(),
+                        //if left empty, endDate will either be calculated using length
+                        //if fixed, or endDate will be assumed to be midnight on startDate
+                        end: new Date(),
+                        //type: dateTime,date,time
+                        //scheduler interpretation: fixed,range,exception
+                        parameters: ['dateTime','fixed']
                     }],
+                    //miliseconds
                     length: 1000000
                 },
                 location: this.location,
                 type: this.type,
                 //project: this.project
+                scheduleParameters: ['']
 			});
             
             //$scope.ok();

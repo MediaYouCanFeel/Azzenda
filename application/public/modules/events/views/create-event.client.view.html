@@ -63,11 +63,11 @@
                         <div ng-show="fixedDate">
                             <div class="col-md-6">
                                 <!-- Date -->
-                                <div class="form-group">
-                                    <label class="control-label text-center" for="name">Date/Time</label>
+                                <div class="form-group timepicker">
+                                    <label class="control-label text-center" for="name">Date</label>
                                     <div class="controls">
                                             <p class="input-group">
-                                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="date" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                               <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                                               </span>
@@ -78,9 +78,10 @@
 
                             <div class="col-md-6">
                                 <!-- Time -->
-                                <div class="form-group">
-                                    <div class="controls timepicker">
-                                       <timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                <div class="form-group timepicker">
+                                    <label class="control-label text-center" for="name">Time</label>
+                                    <div class="controls">
+                                       <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                                     </div>
                                 </div>
                             </div>
@@ -88,21 +89,70 @@
                         
                         <!-- Range -->
                         <div ng-hide="fixedDate">
-                            <!-- Date -->
-                            <div class="form-group">
-                                <label class="control-label" for="name">Earliest DateTime</label>
-                                <div class="controls">
-                                    <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Date" required>
+                            <div class="row">
+                                <div class="col-md-2 text-center vertical-align-center-icons">
+                                <i class="fa fa-calendar fa-3x"></i>
                                 </div>
-                            </div>
+                                <div class="col-md-10">
+                                    <div class="row">
+                                        <!-- Date -->
+                                        <div class="form-group">
+                                            <label class="control-label text-center" for="name">Earliest</label>
+                                            <div class="controls">
+                                                    <p class="input-group">
+                                                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="earliestDateFromModal" is-open="datepickers.earliest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                      <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="openWhich($event,'earliest')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                      </span>
+                                                    </p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <!-- Time -->
-                            <div class="form-group">
-                                <label class="control-label" for="name">Latest DateTime</label>
-                                <div class="controls">
-                                    <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Time" required>
+                                    <div class="row">
+                                    <!-- Date -->
+                                        <div class="form-group">
+                                            <label class="control-label text-center" for="name">Latest</label>
+                                            <div class="controls">
+                                                    <p class="input-group">
+                                                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="latestDateFromModal" is-open="datepickers.latest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                      <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="openWhich($event,'latest')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                      </span>
+                                                    </p>
+                                            </div>
+                                        </div>
                                 </div>
+                            </div>    
+                            
+                            <div class="row">
+                                <div class="col-md-2 text-center vertical-align-center-icons">
+                                     <i class="fa fa-clock-o fa-3x"></i>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="row">
+                                    <!-- Time -->
+                                    <div class="form-group timepicker">
+                                        <label class="control-label text-center" for="name">Earliest</label>
+                                        <div class="controls">
+                                           <timepicker ng-model="earliestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                        </div>
+                                    </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <!-- Time -->
+                                        <div class="form-group timepicker">
+                                            <label class="control-label text-center" for="name">Latest</label>
+                                            <div class="controls">
+                                               <timepicker ng-model="latestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
+                            
                         </div>                        
                     </div>
                     
@@ -110,6 +160,7 @@
                     <!-- PAGE 2 -->
                     
                     <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                        DATE TIME: {{dateFromModal.toUTCString()}}
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         <!-- Required Guests -->
                         <div class="form-group">
@@ -146,13 +197,14 @@
                     <div>Type: {{type}}</div>
                     <div>Location: {{location}}</div>
                     <div>Description: {{description}}</div>
+                    <div>DateTime: {{dateFromModal}} </div>
                 </div>
                     
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group pull-right" ng-show="createPage == 1">
-                            <div ng-click="createPage = 2" class="btn btn-default"> Invites > </div>
+                            <div ng-click="createPage = 2; combineDateTime(dateFromModal, timeFromModal);" class="btn btn-default"> Invites > </div>
                         </div>
                         
                         <div class="form-group pull-left" ng-show="createPage == 2">

@@ -15,7 +15,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-
+                  $scope.types = Events.getTypes();
+                  
                   $scope.ok = function () {
                       //$scope.selected.event
                     modalInstance.close();
@@ -46,15 +47,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			var event = new Events ({
                 name: this.name,
                 description: this.description,
-				//requestedDateTimeRange: {
-                    //dateTime: [{
-                        //date: new Date(),
-                        //parameters: ['start','fixed','required']
-                    //},{
-                        //date: new Date(),
-                        //parameters: ['end','fixed','required']
-                    //}]
-                //},
+				requestedDateTimeRange: {
+                    dateTime: [{
+                        date: new Date(),
+                        parameters: ['start','fixed','required']
+                    },{
+                        date: new Date(),
+                        parameters: ['end','fixed','required']
+                    }],
+                    length: 1000000
+                },
                 location: this.location,
                 type: this.type,
                 //project: this.project
@@ -122,5 +124,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				eventId: $stateParams.eventId
 			});
 		};
+        
+        $scope.getTypes = function() {
+            $scope.types = Events.getTypes();
+        };
 	}
 ]);

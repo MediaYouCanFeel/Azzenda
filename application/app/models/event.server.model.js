@@ -42,7 +42,7 @@ var EventSchema = new Schema({
             type: Date
         },
         length: {
-            type: String
+            type: Number
         }
     },
     requestedDateTimeRange: {
@@ -51,7 +51,10 @@ var EventSchema = new Schema({
             parameters: [{
                 type: String
             }]
-        }]
+        }],
+        length: {
+            type: Number
+        }
     },
     location: {
         type: String,

@@ -170,7 +170,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.datepickers = {
             earliest: false,
             latest: false
-        }
+        };
         
         $scope.today = function() {
             $scope.dt = new Date();
@@ -284,7 +284,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.combineDateTime = function(dateFromModal,timeFromModal) {
             dateFromModal.setHours($scope.timeFromModal.getHours());
             dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
-        }
+        };
         
     }
 ]);

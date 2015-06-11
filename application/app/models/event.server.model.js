@@ -58,9 +58,12 @@ var EventSchema = new Schema({
         }
     },
     location: {
-        type: String,
-        required: 'Please enter a location',
-        trim: true
+        loc: {
+            type: String,
+            required: 'Please enter a location',
+            trim: true
+        },
+        isGooglePlaceCode: Boolean
     },
     type: {
         type: String,

@@ -1,8 +1,8 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Events, $modal, $log) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Events, Projects, $modal, $log) {
 		$scope.authentication = Authentication;
         
         $scope.events = Events.query();
@@ -93,7 +93,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                     //miliseconds
                     length: 1000000
                 },
-                location: this.location,
+                location:{
+                    loc: this.location
+                },
                 type: this.type,
                 //project: this.project
                 scheduleParameters: ['']
@@ -145,6 +147,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				$scope.error = errorResponse.data.message;
 			});
 		};
+        
+        //Find a list of Projects
+        //NOTE: This returns a list of all active (non-archived) projects
+        $scope.findProjects = function() {
+            var response = Projects.query();
+            console.log(response);
+            $scope.projects = response.projects;
+            console.log($scope.projects);
+        }
 
 		// Find a list of Events
 		$scope.find = function() {

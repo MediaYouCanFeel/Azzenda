@@ -81,18 +81,22 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 description: this.description,
 				requestedDateTimeRange: {
-                    dateTime: [{
-                        date: new Date(),
-                        parameters: ['start','fixed','required']
-                    },{
-                        date: new Date(),
-                        parameters: ['end','fixed','required']
+                    dateTimes: [{
+                        start: new Date(),
+                        //if left empty, endDate will either be calculated using length
+                        //if fixed, or endDate will be assumed to be midnight on startDate
+                        end: new Date(),
+                        //type: dateTime,date,time
+                        //scheduler interpretation: fixed,range,exception
+                        parameters: ['dateTime','fixed']
                     }],
+                    //miliseconds
                     length: 1000000
                 },
                 location: this.location,
                 type: this.type,
                 //project: this.project
+                scheduleParameters: ['']
 			});
             
             //$scope.ok();
@@ -166,7 +170,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.datepickers = {
             earliest: false,
             latest: false
-        }
+        };
         
         $scope.today = function() {
             $scope.dt = new Date();
@@ -274,13 +278,26 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.clear = function() {
             $scope.mytime = null;
         };    
-    
         
         //Combining Date & Time fields
-        $scope.combineDateTime = function(dateFromModal,timeFromModal) {
-            dateFromModal.setHours($scope.timeFromModal.getHours());
-            dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
-        }
+        $scope.combineDateTimes = function(dateFromModal,
+                                           timeFromModal,
+                                           earliestDateFromModal,
+                                           earliestTimeFromModal,
+                                           latestDateFromModal,
+                                           latestTimeFromModal) {
+            if (dateFromModal)
+            {
+                dateFromModal.setHours($scope.timeFromModal.getHours());
+                dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+            } else if (earliestDateFromModal) {
+                earliestDateFromModal.setHours($scope.earliestTimeFromModal.getHours());
+                earliestDateFromModal.setMinutes($scope.earliestTimeFromModal.getMinutes()); 
+                latestDateFromModal.setHours($scope.latestTimeFromModal.getHours());
+                latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
+            }
+            
+        };
         
     }
 ]);

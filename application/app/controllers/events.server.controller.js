@@ -16,7 +16,9 @@ exports.create = function(req, res) {
 	event.user = req.user;
     //event.guests = {"user": req.user,"status": 'Attending'};
     for(var dt in event.requestedDateTimeRange.dateTime) {
-        
+        for(var param in dt.parameters) {
+            
+        }
     }
 	event.save(function(err) {
 		if (err) {

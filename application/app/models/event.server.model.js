@@ -35,10 +35,10 @@ var EventSchema = new Schema({
         ref: 'Project'
     },
     scheduledDateTimeRange: {
-        startDateTime: {
+        start: {
             type: Date
         },
-        endDateTime: {
+        end: {
             type: Date
         },
         length: {
@@ -46,8 +46,9 @@ var EventSchema = new Schema({
         }
     },
     requestedDateTimeRange: {
-        dateTime: [{
-            date: Date,
+        dateTimes: [{
+            start: Date,
+            end: Date,
             parameters: [{
                 type: String
             }]
@@ -57,9 +58,12 @@ var EventSchema = new Schema({
         }
     },
     location: {
-        type: String,
-        required: 'Please enter a location',
-        trim: true
+        loc: {
+            type: String,
+            required: 'Please enter a location',
+            trim: true
+        },
+        isGooglePlaceCode: Boolean
     },
     type: {
         type: String,
@@ -79,6 +83,9 @@ var EventSchema = new Schema({
             type: String
         }]
     }],
+    status: {
+        type: String
+    },
     scheduleParameters: [{
         type: String
     }]

@@ -3439,6 +3439,54 @@ input[type="reset"].btn-block,
 input[type="button"].btn-block {
   width: 100%;
 }
+
+.btn-teal {
+  color: #fff;
+  background-color: #008080;
+  border-color: #00e0e0;
+}
+.btn-teal:hover,
+.btn-teal:focus,
+.btn-teal.focus,
+.btn-teal:active,
+.btn-teal.active,
+.open > .dropdown-toggle.btn-teal {
+  color: #fff;
+  background-color: #008080;
+  border-color: #00e0e0;
+}
+.btn-teal:active,
+.btn-teal.active,
+.open > .dropdown-toggle.btn-teal {
+  background-image: none;
+}
+.btn-teal.disabled,
+.btn-teal[disabled],
+fieldset[disabled] .btn-teal,
+.btn-teal.disabled:hover,
+.btn-teal[disabled]:hover,
+fieldset[disabled] .btn-teal:hover,
+.btn-teal.disabled:focus,
+.btn-teal[disabled]:focus,
+fieldset[disabled] .btn-teal:focus,
+.btn-teal.disabled.focus,
+.btn-teal[disabled].focus,
+fieldset[disabled] .btn-teal.focus,
+.btn-teal.disabled:active,
+.btn-teal[disabled]:active,
+fieldset[disabled] .btn-teal:active,
+.btn-teal.disabled.active,
+.btn-teal[disabled].active,
+fieldset[disabled] .btn-teal.active {
+  background-color: #008080;
+  border-color: #00e0e0;
+}
+.btn-teal .badge {
+  color: #008080;
+  background-color: #fff;
+}
+
+
 .fade {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
@@ -5913,6 +5961,12 @@ button.close {
 
 .modal-heading {
   font-size: 24px;
+}
+
+.modal-buttons {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 50px;
 }
 
 .tooltip {

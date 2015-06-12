@@ -7,6 +7,7 @@
 .btn-default,
 .btn-primary,
 .btn-success,
+.btn-teal,
 .btn-info,
 .btn-warning,
 .btn-danger {
@@ -17,6 +18,7 @@
 .btn-default:active,
 .btn-primary:active,
 .btn-success:active,
+.btn-teal:active,
 .btn-info:active,
 .btn-warning:active,
 .btn-danger:active,
@@ -53,6 +55,7 @@
   border-color: #dbdbdb;
   border-color: #ccc;
 }
+
 
 
 .btn-bar {
@@ -228,6 +231,34 @@
   background-color: #c12e2a;
   background-image: none;
 }
+
+.btn-teal {
+  background-image: -webkit-linear-gradient(top, #00a0a0 0%, #008080 100%);
+  background-image:      -o-linear-gradient(top, #00a0a0 0%, #008080 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#00a0a0), to(#008080));
+  background-image:         linear-gradient(to bottom, #00a0a0 0%, #008080 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff00a0a0', endColorstr='#ff008080', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: #008080;
+}
+.btn-teal:hover,
+.btn-teal:focus {
+  background-color: #00c0c0;
+  background-position: 0 0px;
+}
+.btn-teal:active,
+.btn-teal.active {
+  background-color: #006060;
+  border-color: #3e8f3e;
+}
+.btn-teal.disabled,
+.btn-teal:disabled,
+.btn-teal[disabled] {
+  background-color: #006060;
+  background-image: none;
+}
+
 .thumbnail,
 .img-thumbnail {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .075);

@@ -278,12 +278,25 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.clear = function() {
             $scope.mytime = null;
         };    
-    
         
         //Combining Date & Time fields
-        $scope.combineDateTime = function(dateFromModal,timeFromModal) {
-            dateFromModal.setHours($scope.timeFromModal.getHours());
-            dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+        $scope.combineDateTimes = function(dateFromModal,
+                                           timeFromModal,
+                                           earliestDateFromModal,
+                                           earliestTimeFromModal,
+                                           latestDateFromModal,
+                                           latestTimeFromModal) {
+            if (dateFromModal)
+            {
+                dateFromModal.setHours($scope.timeFromModal.getHours());
+                dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+            } else if (earliestDateFromModal) {
+                earliestDateFromModal.setHours($scope.earliestTimeFromModal.getHours());
+                earliestDateFromModal.setMinutes($scope.earliestTimeFromModal.getMinutes()); 
+                latestDateFromModal.setHours($scope.latestTimeFromModal.getHours());
+                latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
+            }
+            
         };
         
     }

@@ -23,7 +23,11 @@ var ProjectSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+    archived: {
+        type: Boolean,
+        default: false
+    }
 });
 
 mongoose.model('Project', ProjectSchema);

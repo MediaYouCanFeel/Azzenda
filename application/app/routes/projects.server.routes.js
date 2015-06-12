@@ -10,9 +10,12 @@ module.exports = function(app) {
 		.post(users.requiresLogin, projects.create);
 
 	app.route('/projects/:projectId')
-		.get(projects.read)
+		.get(users.requiresLogin, projects.read)
 		.put(users.requiresLogin, projects.hasAuthorization, projects.update)
 		.delete(users.requiresLogin, projects.hasAuthorization, projects.delete);
+    
+    app.route('/projects/archive/list')
+        .get(users.requiresLogin, projects.listArchived);
 
 	// Finish by binding the Project middleware
 	app.param('projectId', projects.projectByID);

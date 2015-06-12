@@ -76,22 +76,6 @@ exports.delete = function(req, res) {
 
 /**
  * List of Events
- 
-exports.list = function(req, res) {
-	Event.find().sort('-created').populate('user', 'displayName').exec(function(err, events) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(events);
-		}
-	});
-};
-*/
-
-/**
- * List of Events
  */
 exports.list = function(req, res) {
     var roles = ['admin'];
@@ -102,9 +86,6 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                //Event.distinct('type').exec(function(err, types) {
-                    //res.jsonp({'events': events, 'types': types});
-                //});
                 res.jsonp(events);
             }
         });
@@ -115,15 +96,15 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-                //Event.distinct('type').exec(function(err, types) {
-                    //res.jsonp({'events': events, 'types': types});
-                //});
                 res.jsonp(events);
             }
         });
     }
 };
 
+/**
+ * Get list of event types
+ */
 exports.getTypes = function(req, res) {
     Event.distinct('type').exec(function(err, types) {
         res.jsonp(types);

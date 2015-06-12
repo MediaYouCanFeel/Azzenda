@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var project = new Project(req.body);
 	project.user = req.user;
-
 	project.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -70,10 +69,25 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of Projects
+ * List of unarchived Projects
  */
 exports.list = function(req, res) { 
-	Project.find().sort('-created').populate('user', 'displayName').exec(function(err, projects) {
+	Project.find({archived: false}).sort('-created').populate('user', 'displayName').exec(function(err, projects) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(projects);
+		}
+	});
+};
+
+/**
+ * List of archived Projects
+ */
+exports.listArchived = function(req, res) {
+    Project.find({archived: true}).sort('-created').populate('user', 'displayName').exec(function(err, projects) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

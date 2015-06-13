@@ -153,7 +153,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.findProjects = function() {
             var response = Projects.query();
             console.log(response);
-            $scope.projects = response.projects;
+            $scope.projects = response;
             console.log($scope.projects);
         }
 
@@ -161,7 +161,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		$scope.find = function() {
             var response = Events.query();
             console.log(response);
-            $scope.events = response.events;
+            $scope.events = response;
             console.log($scope.events);
 		};
 

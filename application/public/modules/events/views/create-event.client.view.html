@@ -15,22 +15,13 @@
                         </div>
 
                         <!-- Project -->
-                        
-                        <!-- <div class="form-group">
-                            <label class="control-label" for="project">Project</label>
-                            <select class="form-control" data-ng-model="name" id="project">
-                                <option data-ng-repeat="project in projects">{{project.name}}</option>
-                            </select>
-					    </div> --> 
-                        
-                        
                         <div class="form-group">
                             <label class="control-label" for="project">Project</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="project" id="project" class="form-control" placeholder="Project" required>
-                            </div>
-                        </div>
-
+                            <select class="form-control" data-ng-model="project" id="project">
+                                <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                            </select>
+					    </div> 
+                        
                         <!-- Type -->
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label>

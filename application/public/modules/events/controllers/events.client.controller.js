@@ -97,7 +97,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                     loc: this.location
                 },
                 type: this.type,
-                //project: this.project
+                project: this.project,
                 scheduleParameters: ['']
 			});
             

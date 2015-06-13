@@ -159,9 +159,20 @@
                      </div>
                     <!-- PAGE 2 -->
                     
-                    <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                    <div class="col-md-6 modal-col" ng-show="createPage == 2" ng-init="findUsers()">
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         <!-- Required Guests -->
+                         <div class="form-group">
+                            <label class="control-label" for="users">Required Guests</label>
+                            <select class="form-control" data-ng-model="guests" id="users">
+                                <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                            </select>
+					    </div> 
+                        
+                        
+                        
+                        
+                        
                         <div class="form-group">
                             <label class="control-label" for="name">Required Guests:</label>
                             <div class="controls">

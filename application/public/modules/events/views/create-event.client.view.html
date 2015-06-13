@@ -16,14 +16,15 @@
 
                         <!-- Project -->
                         
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="control-label" for="project">Project</label>
                             <select class="form-control" data-ng-model="name" id="project">
                                 <option data-ng-repeat="project in projects">{{project.name}}</option>
                             </select>
-					    </div> 
+					    </div> --> 
                         
-                        <!--<div class="form-group">
+                        
+                        <div class="form-group">
                             <label class="control-label" for="project">Project</label>
                             <div class="controls">
                                 <input type="text" data-ng-model="project" id="project" class="form-control" placeholder="Project" required>
@@ -89,7 +90,7 @@
                                 <!-- Time -->
                                 <div class="form-group timepicker">
                                     <label class="control-label text-center" for="name">Time</label>
-                                    <div class="controls">
+                                    <div class="controls" ng-init="timepickerClear()">
                                        <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                                     </div>
                                 </div>

@@ -261,7 +261,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
     
         //TIMEPICKER OPTIONS
         $scope.mytime = new Date();
-
+        $scope.timeFromModal = new Date();
+        
         $scope.hstep = 1;
         $scope.mstep = 1;
 
@@ -286,7 +287,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $log.log('Time changed to: ' + $scope.mytime);
         };
 
-        $scope.clear = function() {
+        $scope.timepickerClear = function() {
             $scope.mytime = null;
         };    
         
@@ -308,7 +309,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
             }
             
-        };
+        };    
         
     }
 ]);

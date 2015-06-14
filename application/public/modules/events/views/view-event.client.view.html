@@ -1,7 +1,17 @@
-<section data-ng-controller="EventsController" data-ng-init="findOne()">
-	<div class="page-header">
+<section data-ng-controller="EventsController" data-ng-init="findOne()" class="well">
+	<div class="top-well">
+        <a ng-href="/#!/events" class="btn btn-teal">
+            <i class="fa fa-arrow-left"></i> &nbsp; All Events
+        </a>
+    </div>
+    <div>
 		<h1 data-ng-bind="event.name"></h1>
 	</div>
+    
+    <div ng-init="getTime()">
+        <!-- <div data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></div> -->
+        <div data-ng-bind="event.timeForEvent"></div>
+    </div>
     
     Project:
     <div data-ng-bind="event.project"></div>
@@ -9,17 +19,17 @@
     Type:
     <div data-ng-bind="event.type"></div>
     <br>
-    Location:
-    <div data-ng-bind="event.location"></div>
+    Location.loc:
+    <div data-ng-bind="event.location.loc"></div>
     <br>
     Description:
     <div data-ng-bind="event.description"></div>
     
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == event.user._id))">
-		<a class="btn btn-primary" href="/#!/events/{{event._id}}/edit">
+		<a class="btn btn-teal" href="/#!/events/{{event._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
+		<a class="btn btn-teal" data-ng-click="remove();">
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>

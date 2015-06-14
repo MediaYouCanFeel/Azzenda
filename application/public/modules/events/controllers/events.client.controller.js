@@ -1,8 +1,8 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Events, Projects, $modal, $log) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, $modal, $log) {
 		$scope.authentication = Authentication;
         
         $scope.events = Events.query();
@@ -97,7 +97,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                     loc: this.location
                 },
                 type: this.type,
-                //project: this.project
+                project: this.project,
                 scheduleParameters: ['']
 			});
             
@@ -153,15 +153,23 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.findProjects = function() {
             var response = Projects.query();
             console.log(response);
-            $scope.projects = response.projects;
+            $scope.projects = response;
             console.log($scope.projects);
         }
-
+        
+        //Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            console.log(response);
+            $scope.users = response;
+            console.log($scope.users);
+        }
+        
 		// Find a list of Events
 		$scope.find = function() {
             var response = Events.query();
             console.log(response);
-            $scope.events = response.events;
+            $scope.events = response;
             console.log($scope.events);
 		};
 
@@ -261,7 +269,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
     
         //TIMEPICKER OPTIONS
         $scope.mytime = new Date();
-
+        $scope.timeFromModal = new Date();
+        
         $scope.hstep = 1;
         $scope.mstep = 1;
 
@@ -286,7 +295,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $log.log('Time changed to: ' + $scope.mytime);
         };
 
-        $scope.clear = function() {
+        $scope.timepickerClear = function() {
             $scope.mytime = null;
         };    
         
@@ -308,7 +317,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
             }
             
-        };
-        
+        };    
+    
+        //Gets Date (MM/DD/YYYY, etc.) and Time
+        $scope.getTime = function() { 
+            $scope.timeForEvent = this.name; //this.requestedDateTimeRange.dateTimes[0].start;
+        }
     }
 ]);

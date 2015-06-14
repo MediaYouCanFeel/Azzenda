@@ -1,35 +1,59 @@
-<section data-ng-controller="EventsController" data-ng-init="findOne()" class="well">
-	<div class="top-well">
-        <a ng-href="/#!/events" class="btn btn-teal">
-            <i class="fa fa-arrow-left"></i> &nbsp; All Events
-        </a>
+<section data-ng-controller="EventsController" data-ng-init="findOne()" class="well">   
+    <div class="row top-well">
+        <div class="col-md-8">
+            <a ng-href="/#!/events" class="btn btn-blue">
+                <i class="fa fa-arrow-left"></i> &nbsp; All Events
+            </a>
+        </div>
+        <div class="col-md-4">
+            <strong class="pull-right" data-ng-bind="event.project"></strong>        
+        </div>
     </div>
-    <div>
-		<h1 data-ng-bind="event.name"></h1>
-	</div>
-    
-    <div ng-init="getTime()">
-        <!-- <div data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></div> -->
-        <div data-ng-bind="event.timeForEvent"></div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8">
+            <div class="pull-right" data-ng-bind="event.type"></div>
+        </div>
     </div>
     
-    Project:
-    <div data-ng-bind="event.project"></div>
-    <br>
-    Type:
-    <div data-ng-bind="event.type"></div>
-    <br>
-    Location.loc:
-    <div data-ng-bind="event.location.loc"></div>
-    <br>
-    Description:
-    <div data-ng-bind="event.description"></div>
+    <div class="row">
+        <div class="col-md-8">
+            <span class="event-name" data-ng-bind="event.name"></span>
+        </div>            
+    </div>
+    
+    <div class="row">
+        <!-- Basic info info -->
+        <div class="col-md-8">
+            <div class="top-bottom-padding">
+                <button class="btn btn-teal"><i class="fa fa-check fa-2x"></i></button>
+                <button class="btn btn-teal"><i class="fa fa-times fa-2x"></i></button>
+                <p> You haven't responded yet. </p>
+                <!-- <p> You're going! </p> 
+                <p> You can't make it. </p> -->
+            </div>
+            <div class="top-bottom-padding">
+                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></span>
+            </div>
+            <div class="top-bottom-padding">    
+                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
+            </div>
+            <div class="top-bottom-padding">
+                <span data-ng-bind="event.description"></span>
+            </div>
+        </div>
+        
+        <!-- Guest list info -->
+        <div class="col-md-4">
+        <p>Insert guest list here</p>
+        </div>
+    </div>
+    
     
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == event.user._id))">
-		<a class="btn btn-teal" href="/#!/events/{{event._id}}/edit">
+		<a class="btn btn-orange" href="/#!/events/{{event._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
-		<a class="btn btn-teal" data-ng-click="remove();">
+		<a class="btn btn-orange" data-ng-click="remove();">
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>

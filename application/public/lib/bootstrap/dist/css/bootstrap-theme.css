@@ -8,6 +8,9 @@
 .btn-primary,
 .btn-success,
 .btn-teal,
+.btn-blue,
+.btn-yellow,
+.btn-orange,
 .btn-info,
 .btn-warning,
 .btn-danger {
@@ -19,6 +22,9 @@
 .btn-primary:active,
 .btn-success:active,
 .btn-teal:active,
+.btn-blue:active,
+.btn-yellow:active,
+.btn-orange:active,
 .btn-info:active,
 .btn-warning:active,
 .btn-danger:active,
@@ -256,6 +262,87 @@
 .btn-teal:disabled,
 .btn-teal[disabled] {
   background-color: #006060;
+  background-image: none;
+}
+
+.btn-blue {
+  background-image: -webkit-linear-gradient(top, #254CA8 0%, #0F368F 100%);
+  background-image:      -o-linear-gradient(top, #254CA8 0%, #0F368F 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#254CA8), to(#0F368F));
+  background-image:         linear-gradient(to bottom, #254CA8 0%, #0F368F 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff254CA8', endColorstr='#ff0F368F', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: #254CA8;
+}
+.btn-blue:hover,
+.btn-blue:focus {
+  background-color: #254CA8;
+  background-position: 0 0px;
+}
+.btn-blue:active,
+.btn-blue.active {
+  background-color: #0A2A74;
+  border-color: #3e8f3e;
+}
+.btn-blue.disabled,
+.btn-blue:disabled,
+.btn-blue[disabled] {
+  background-color: #0A2A74;
+  background-image: none;
+}
+
+.btn-yellow {
+  background-image: -webkit-linear-gradient(top, #FBB220 0%, #D58E00 100%);
+  background-image:      -o-linear-gradient(top, #FBB220 0%, #D58E00 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#FBB220), to(#D58E00));
+  background-image:         linear-gradient(to bottom, #FBB220 0%, #D58E00 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffFBB220', endColorstr='#ffD58E00', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: #FBB220;
+}
+.btn-yellow:hover,
+.btn-yellow:focus {
+  background-color: #FBB220;
+  background-position: 0 0px;
+}
+.btn-yellow:active,
+.btn-yellow.active {
+  background-color: #AE4F00;
+  border-color: #3e8f3e;
+}
+.btn-yellow.disabled,
+.btn-yellow:disabled,
+.btn-yellow[disabled] {
+  background-color: #AE4F00;
+  background-image: none;
+}
+
+.btn-orange {
+  background-image: -webkit-linear-gradient(top, #FB8320 0%, #D56100 100%);
+  background-image:      -o-linear-gradient(top, #FB8320 0%, #D56100 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#FB8320), to(#D56100));
+  background-image:         linear-gradient(to bottom, #FB8320 0%, #D56100 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffFB8320', endColorstr='#ffD56100', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: #FB8320;
+}
+.btn-orange:hover,
+.btn-orange:focus {
+  background-color: #FB8320;
+  background-position: 0 0px;
+}
+.btn-orange:active,
+.btn-orange.active {
+  background-color: #AE4F00;
+  border-color: #3e8f3e;
+}
+.btn-orange.disabled,
+.btn-orange:disabled,
+.btn-orange[disabled] {
+  background-color: #AE4F00;
   background-image: none;
 }
 

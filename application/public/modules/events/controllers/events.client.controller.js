@@ -318,6 +318,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             }
             
         };    
-        
+    
+        //Gets Date (MM/DD/YYYY, etc.) and Time
+        $scope.getTime = function() { 
+            $scope.timeForEvent = this.name; //this.requestedDateTimeRange.dateTimes[0].start;
+        }
     }
 ]);

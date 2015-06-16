@@ -6,7 +6,17 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		$scope.authentication = Authentication;
         
         $scope.events = Events.query();
-        console.log($scope.events);
+        //console.log($scope.events);
+        
+        $scope.initModal = function() {
+            var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
+            console.log(input);
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                $scope.place = autocomplete.getPlace();
+                console.log($scope.place);
+            });
+        };
         
         //Open Modal window for creating events
         $scope.createModal = function (size) {
@@ -15,7 +25,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
+                  console.log("In Modal Controller");
                   $scope.eventTypes = Events.getTypes();
+                  
+                  
+                  
+                      //console.log("initializing google place stuff");
+                      //"https://maps.googleapis.com/maps/api/js?v=3&library=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0";
+                      
                   
                   $scope.ok = function () {
                       //$scope.selected.event
@@ -33,6 +50,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 }
               }
             });
+            
+            //modalInstance.opened.then($scope.initModal);
             
             modalInstance.result.then(function (selectedEvent) {
               $scope.selected = selectedEvent;
@@ -155,7 +174,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             console.log(response);
             $scope.projects = response.projects;
             console.log($scope.projects);
-        }
+        };
 
 		// Find a list of Events
 		$scope.find = function() {

@@ -1,4 +1,5 @@
-<section data-ng-controller="EventsController">
+<section data-ng-controller="EventsController" data-ng-init="initModal()">
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&library=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0"></script>-->
     <div class="col-md-12 well">
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>

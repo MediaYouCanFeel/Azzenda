@@ -16,21 +16,13 @@
                         </div>
 
                         <!-- Project -->
-                        
                         <div class="form-group">
                             <label class="control-label" for="project">Project</label>
-                            <select class="form-control" data-ng-model="name" id="project">
-                                <option data-ng-repeat="project in projects">{{project.name}}</option>
+                            <select class="form-control" data-ng-model="project" id="project">
+                                <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
                             </select>
 					    </div> 
                         
-                        <!--<div class="form-group">
-                            <label class="control-label" for="project">Project</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="project" id="project" class="form-control" placeholder="Project" required>
-                            </div>
-                        </div>
-
                         <!-- Type -->
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label>
@@ -78,7 +70,7 @@
                                             <p class="input-group">
                                               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                               <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                                               </span>
                                             </p>
                                     </div>
@@ -90,7 +82,7 @@
                                 <!-- Time -->
                                 <div class="form-group timepicker">
                                     <label class="control-label text-center" for="name">Time</label>
-                                    <div class="controls">
+                                    <div class="controls" ng-init="timepickerClear()">
                                        <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
                                     </div>
                                 </div>
@@ -112,7 +104,7 @@
                                                     <p class="input-group">
                                                       <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="earliestDateFromModal" is-open="datepickers.earliest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                                       <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default" ng-click="openWhich($event,'earliest')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        <button type="button" class="btn btn-teal" ng-click="openWhich($event,'earliest')"><i class="glyphicon glyphicon-calendar"></i></button>
                                                       </span>
                                                     </p>
                                             </div>
@@ -127,7 +119,7 @@
                                                     <p class="input-group">
                                                       <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="latestDateFromModal" is-open="datepickers.latest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                                       <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default" ng-click="openWhich($event,'latest')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        <button type="button" class="btn btn-teal" ng-click="openWhich($event,'latest')"><i class="glyphicon glyphicon-calendar"></i></button>
                                                       </span>
                                                     </p>
                                             </div>
@@ -168,13 +160,24 @@
                      </div>
                     <!-- PAGE 2 -->
                     
-                    <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                    <div class="col-md-6 modal-col" ng-show="createPage == 2" ng-init="findUsers()">
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         <!-- Required Guests -->
+                         <div class="form-group">
+                            <label class="control-label" for="users">Required Guests</label>
+                            <select class="form-control" data-ng-model="guests" id="users">
+                                <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                            </select>
+					    </div> 
+                        
+                        
+                        
+                        
+                        
                         <div class="form-group">
                             <label class="control-label" for="name">Required Guests:</label>
                             <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="John Barton" required>
+                                <input type="text" data-ng-model="guests" id="name" class="form-control" placeholder="John Barton" required>
                             </div>
                         </div>
                     </div>
@@ -223,23 +226,23 @@
                             <script type="javascript">
                             
                             </script>
-                            <div ng-click="createPage = 2; combineDateTimes(dateFromModal, timeFromModal, earliestDateFromModal, earliestTimeFromModal, latestDateFromModal, latestTimeFromModal);" class="btn btn-teal"> Invites > </div>
+                            <div ng-click="createPage = 2; combineDateTimes(dateFromModal, timeFromModal, earliestDateFromModal, earliestTimeFromModal, latestDateFromModal, latestTimeFromModal);" class="btn btn-blue"> Invites &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
                         <div class="form-group pull-left" ng-show="createPage == 2">
-                            <div ng-click="createPage = 1" class="btn btn-teal"> < Info </div>
+                            <div ng-click="createPage = 1" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Info </div>
                         </div>
                             
                         <div class="form-group pull-right" ng-show="createPage == 2">
-                            <div ng-click="createPage = 3" class="btn btn-teal"> Review > </div>
+                            <div ng-click="createPage = 3" class="btn btn-blue"> Review &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
                         <div class="form-group pull-left" ng-show="createPage == 3">
-                            <div ng-click="createPage = 2" class="btn btn-teal"> < Invites </div>
+                            <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
                         </div>    
                             
                         <div class="form-group pull-right" ng-show="createPage == 3">
-                            <input type="submit" class="btn btn-teal">
+                            <input type="submit" class="btn btn-yellow">
                         </div>
                         <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">
                             <strong data-ng-bind="error"></strong>

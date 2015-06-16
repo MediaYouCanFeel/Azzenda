@@ -1127,13 +1127,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #337ab7;
+  color: #254DA8;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #23527c;
-  text-decoration: underline;
+  color: #051E59;
 }
 a:focus {
   outline: thin dotted;
@@ -3487,6 +3486,145 @@ fieldset[disabled] .btn-teal.active {
 }
 
 
+.btn-blue {
+  color: #fff;
+  background-color: #0F368F;
+  border-color: #254CA8;
+}
+.btn-blue:hover,
+.btn-blue:focus,
+.btn-blue.focus,
+.btn-blue:active,
+.btn-blue.active,
+.open > .dropdown-toggle.btn-blue {
+  color: #fff;
+  background-color: #0F368F;
+  border-color: #254CA8;
+}
+.btn-blue:active,
+.btn-blue.active,
+.open > .dropdown-toggle.btn-teal {
+  background-image: none;
+}
+.btn-blue.disabled,
+.btn-blue[disabled],
+fieldset[disabled] .btn-blue,
+.btn-blue.disabled:hover,
+.btn-blue[disabled]:hover,
+fieldset[disabled] .btn-blue:hover,
+.btn-blue.disabled:focus,
+.btn-blue[disabled]:focus,
+fieldset[disabled] .btn-blue:focus,
+.btn-blue.disabled.focus,
+.btn-blue[disabled].focus,
+fieldset[disabled] .btn-blue.focus,
+.btn-blue.disabled:active,
+.btn-blue[disabled]:active,
+fieldset[disabled] .btn-blue:active,
+.btn-blue.disabled.active,
+.btn-blue[disabled].active,
+fieldset[disabled] .btn-blue.active {
+  background-color: #0F368F;
+  border-color: #254CA8;
+}
+.btn-blue .badge {
+  color: #0F368F;
+  background-color: #fff;
+}
+
+.btn-yellow {
+  color: #fff;
+  background-color: #D58E00;
+  border-color: #FBB220;
+}
+.btn-yellow:hover,
+.btn-yellow:focus,
+.btn-yellow.focus,
+.btn-yellow:active,
+.btn-yellow.active,
+.open > .dropdown-toggle.btn-yellow {
+  color: #fff;
+  background-color: #D58E00;
+  border-color: #FBB220;
+}
+.btn-yellow:active,
+.btn-yellow.active,
+.open > .dropdown-toggle.btn-yellow {
+  background-image: none;
+}
+.btn-yellow.disabled,
+.btn-yellow[disabled],
+fieldset[disabled] .btn-yellow,
+.btn-yellow.disabled:hover,
+.btn-yellow[disabled]:hover,
+fieldset[disabled] .btn-yellow:hover,
+.btn-yellow.disabled:focus,
+.btn-yellow[disabled]:focus,
+fieldset[disabled] .btn-yellow:focus,
+.btn-yellow.disabled.focus,
+.btn-yellow[disabled].focus,
+fieldset[disabled] .btn-yellow.focus,
+.btn-yellow.disabled:active,
+.btn-yellow[disabled]:active,
+fieldset[disabled] .btn-yellow:active,
+.btn-yellow.disabled.active,
+.btn-yellow[disabled].active,
+fieldset[disabled] .btn-yellow.active {
+  background-color: #D58E00;
+  border-color: #FBB220;
+}
+.btn-yellow .badge {
+  color: #D58E00;
+  background-color: #fff;
+}
+
+.btn-orange {
+  color: #fff;
+  background-color: #D56100;
+  border-color: #FB8320;
+}
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange.focus,
+.btn-orange:active,
+.btn-orange.active,
+.open > .dropdown-toggle.btn-orange {
+  color: #fff;
+  background-color: #D56100;
+  border-color: #FB8320;
+}
+.btn-orange:active,
+.btn-orange.active,
+.open > .dropdown-toggle.btn-orange {
+  background-image: none;
+}
+.btn-orange.disabled,
+.btn-orange[disabled],
+fieldset[disabled] .btn-orange,
+.btn-orange.disabled:hover,
+.btn-orange[disabled]:hover,
+fieldset[disabled] .btn-orange:hover,
+.btn-orange.disabled:focus,
+.btn-orange[disabled]:focus,
+fieldset[disabled] .btn-orange:focus,
+.btn-orange.disabled.focus,
+.btn-orange[disabled].focus,
+fieldset[disabled] .btn-orange.focus,
+.btn-orange.disabled:active,
+.btn-orange[disabled]:active,
+fieldset[disabled] .btn-orange:active,
+.btn-orange.disabled.active,
+.btn-orange[disabled].active,
+fieldset[disabled] .btn-orange.active {
+  background-color: #D56100;
+  border-color: #FB8320;
+}
+.btn-orange .badge {
+  color: #D56100;
+  background-color: #fff;
+}
+
+
 .fade {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
@@ -5254,8 +5392,8 @@ a.thumbnail.active {
   display: block;
   padding: 10px 15px;
   margin-bottom: -1px;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-image:none;
+  border: 2px solid #fff;
 }
 .list-group-item:first-child {
   border-top-left-radius: 4px;
@@ -6756,6 +6894,48 @@ button.close {
 
 .vertical-align-center-icons {
   padding-top: 40px;
+}
+
+.top-bottom-padding {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.left-right-padding {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.event-name {
+  font-size: 45px;
+}
+
+.event-rsvp-btns {
+  padding-left: 15px;
+}
+
+.event-info {
+  font-size: 20px;
+}
+
+.dash-links {
+  color: #000000;
+}
+
+.teal {
+  color: #008080;
+}
+
+.blue {
+  color: #0F368F;
+}
+
+.yellow {
+  color: #D58E00;
+}
+
+.orange {
+  color: #D56100;
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

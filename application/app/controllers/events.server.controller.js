@@ -80,7 +80,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
     var roles = ['admin'];
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().sort('-created').populate('user', 'displayName').exec(function(err, events) {
+        Event.find().sort('-created').populate('user', 'displayName').populate('project', 'name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -90,7 +90,7 @@ exports.list = function(req, res) {
             }
         });
     } else {
-        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('user', 'displayName').exec(function(err, events) {
+        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('user', 'displayName').populate('project', 'name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)

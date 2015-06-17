@@ -101,7 +101,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 description: this.description,
 				requestedDateTimeRange: {
                     dateTimes: [{
-                        start: new Date(),
+                        start: this.dateFromModal,
                         //if left empty, endDate will either be calculated using length
                         //if fixed, or endDate will be assumed to be midnight on startDate
                         end: new Date(),

@@ -241,7 +241,7 @@
                             <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
                         </div>    
                             
-                        <div class="form-group pull-right" ng-show="createPage == 3">
+                        <div class="form-group pull-right" ng-click="ok()" ng-show="createPage == 3">
                             <input type="submit" class="btn btn-yellow">
                         </div>
                         <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">

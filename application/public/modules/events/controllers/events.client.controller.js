@@ -247,7 +247,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.dateOptions = {
             formatYear: 'yy',
-            startingDay: 1,
+            startingDay: 0,
             showWeeks: false
          };
 

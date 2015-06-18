@@ -95,6 +95,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
 		// Create new Event
 		$scope.create = function() {
+            //Check for date mode
+            var dateTimeMode = "not set";
+            
+            if (this.fixedDate == true) {
+                dateTimeMode = "fixed";
+            } else {
+                dateTimeMode = "range";
+            }
+            
 			// Create new Event object
 			var event = new Events ({
                 name: this.name,
@@ -107,7 +116,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                         end: new Date(),
                         //type: dateTime,date,time
                         //scheduler interpretation: fixed,range,exception
-                        parameters: ['dateTime','fixed']
+                        parameters: ['dateTime', dateTimeMode]
                     }],
                     //miliseconds
                     length: 1000000

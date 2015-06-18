@@ -193,7 +193,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             console.log($scope.users);
         };
         
-		// Find a list of Events
+        //Find a list of Event Types
+        $scope.findEventTypes = function() {
+            var response = Events.getTypes();
+            console.log(response);
+            $scope.eventTypes = response;
+            console.log($scope.eventTypes);
+        }
+        
+		//Find a list of Events
 		$scope.find = function() {
             var response = Events.query();
             console.log(response);

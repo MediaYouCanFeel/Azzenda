@@ -71,7 +71,7 @@ var UserSchema = new Schema({
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'admin']
+			enum: ['user', 'admin', 'team director', 'public relations director', 'treasurer', 'vice president', 'president']
 		}],
 		default: ['user']
 	},
@@ -82,6 +82,15 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+    groups: {
+        type: [{
+            group: String,
+            details: [{
+                type: String
+            }]
+        }],
+        default: [{group: 'member'}]
+    },
 	/* For reset password */
 	resetPasswordToken: {
 		type: String

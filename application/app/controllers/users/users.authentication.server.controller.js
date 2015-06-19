@@ -24,7 +24,7 @@ exports.signup = function(req, res) {
         if(err) {
          //do something   
         } else {
-            if(!users.length) {
+            if(users.length) {
                 user.roles.push('admin');
             }
             

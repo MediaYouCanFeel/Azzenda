@@ -4,7 +4,7 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row" ng-init="createPage=1; findProjects();">
+                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes();">
                     <div class="col-md-5 modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
@@ -26,6 +26,12 @@
                         <!-- Type -->
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label>
+                            <select class="form-control" data-ng-model="type" id="type">
+                                <option ng-repeat="type in eventTypes" data-ng-value="type">{{type}}</option>
+                            </select>
+					    </div> 
+                        
+                        <div class="form-group">
                             <div class="controls">
                                 <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
                             </div>

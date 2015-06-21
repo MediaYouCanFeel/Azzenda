@@ -1,9 +1,12 @@
 <section data-ng-controller="RostersController">
-    <div class="page-header" data-ng-init="findUsers()">
-        <h1>Rosters</h1>
+    <div class="top-well well" data-ng-init="findUsers()">
+        <h1>Roster</h1>
+    </div>
+    <div>
+        <a class="btn btn-blue" ng-href="/#!/create-user" style="font-size: 30px;">Create User</a>
     </div>
     List of users:
-    <div class="list-group">
+    <div class="list-group well">
         <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
 			<!-- Last, First -->
             <div class="h4">

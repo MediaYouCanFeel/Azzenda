@@ -1,16 +1,17 @@
-<section data-ng-controller="UsersController" data-ng-init="find()">
-    <div class="page-header">
+<section data-ng-controller="RostersController">
+    <div class="page-header" data-ng-init="findUsers()">
         <h1>Rosters</h1>
     </div>
+    List of users:
     <div class="list-group">
         <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="user.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="user.name"></h4>
+			<!-- Last, First -->
+            <div class="h4">
+                <span data-ng-bind="user.lastName"></span>, <span data-ng-bind="user.firstName"></span>
+            </div>
+            
+            <!-- Email -->
+            <div data-ng-bind="user.email"></div>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!users.$resolved || users.length">

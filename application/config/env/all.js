@@ -15,8 +15,10 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
+                'public/lib/select2-4.0.0/dist/css/select2.css'
 			],
 			js: [
+                'public/lib/jquery/dist/jquery.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
@@ -26,6 +28,7 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+                'public/lib/select2-4.0.0/dist/js/select2.js',
                 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0'
 			]
 		},

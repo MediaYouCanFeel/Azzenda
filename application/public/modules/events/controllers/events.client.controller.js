@@ -8,6 +8,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.events = Events.query();
         //console.log($scope.events);
         
+        //dropdown init
+        angular.element('select').select2({ width: '100%' });
+        
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
             console.log(input);

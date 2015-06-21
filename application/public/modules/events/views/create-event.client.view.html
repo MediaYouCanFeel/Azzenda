@@ -18,12 +18,14 @@
                         <!-- Project -->
                         <div class="form-group">
                             <label class="control-label" for="project">Project</label>
-                            <select class="form-control" data-ng-model="project" id="project">
-                                <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
-                            </select>
+                            <div class="fullWidth">
+                                <select class="form-control fullWidth js-example-basic-single" data-ng-model="project" id="project">
+                                    <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                                </select>
+                            </div>
 					    </div> 
                         
-                        <!-- Type -->
+                        <!-- Type -->                        
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label>
                             <select class="form-control" data-ng-model="type" id="type">

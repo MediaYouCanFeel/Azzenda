@@ -5,7 +5,8 @@ describe('angularjs sign-up', function() {
     var email = element(by.model('credentials.email'));
     var username = element(by.model('credentials.username'));
     var password = element(by.model('credentials.password'));
-    var signUpButton = element(by.id('sign-up-button'));
+    var roles = element(by.model('credentials.roles'));
+    var signUpButton = element(by.id('sign-up-button'));    
     
     beforeEach(function() {
         browser.get('http://localhost:3333/#!/signup');
@@ -21,6 +22,9 @@ describe('angularjs sign-up', function() {
         email.sendKeys('heisenberg@graymatter.com');
         username.sendKeys('Heisenberg');
         password.sendKeys('password');
+        roles.sendKeys('adm');
+        roles.sendKeys(protractor.Key.ENTER);
+        
         
         signUpButton.click();
         browser.waitForAngular();

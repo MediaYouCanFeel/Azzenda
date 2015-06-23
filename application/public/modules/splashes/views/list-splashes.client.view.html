@@ -9,30 +9,22 @@
 		</p>
 	</div>
     <div class="col-md-7">
-        <div class="col-md-12 row well">
+        <div class="col-md-12 row well" data-ng-init="findEvents()">
             <h2>
                 <strong>
                     <a ng-href="/#!/events">Events</a>
                 </strong>
             </h2>
             <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Writing Meeting #2</h3>
+				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+					<div id="info">
+                        <h3 data-ng-bind="event.name"></h3>
+                        <i data-ng-bind="event.project.name"></i>
                     </div>
-                    <i>Fall 2015 Web Series</i>
-                    <p>Wednedsay, May 13, 2015 - 8:00 PM</p>
-                    <p>Google+ Hangout</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Meeting #2</h3>
-                    </div>
-                    <i>Top-Tier Executive Board</i>
-                    <p>Tuesday, May 12, 2015 - 8:00 PM</p>
-                    <p>Google+ Hangout</p>
-                </div>
-            </div>
+                    <p data-ng-bind="event.date"></p>
+                    <p data-ng-bind="event.location.loc"></p>
+				</a>   
+			</div>
         </div>
         <div class="col-md-12 row well">
             <h2>

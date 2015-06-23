@@ -1,8 +1,8 @@
 'use strict';
 
 // Splashes controller
-angular.module('splashes').controller('SplashesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Splashes',
-	function($scope, $stateParams, $location, Authentication, Splashes) {
+angular.module('splashes').controller('SplashesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Splashes', 'Events',
+	function($scope, $stateParams, $location, Authentication, Splashes, Events) {
 		$scope.authentication = Authentication;
 
 		// Create new Splash
@@ -62,5 +62,10 @@ angular.module('splashes').controller('SplashesController', ['$scope', '$statePa
 				splashId: $stateParams.splashId
 			});
 		};
+
+        // Find a list of Events
+        $scope.findEvents = function() {
+            $scope.events = Events.query();
+        };
 	}
 ]);

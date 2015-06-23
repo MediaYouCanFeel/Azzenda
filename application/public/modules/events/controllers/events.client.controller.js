@@ -362,5 +362,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.getTime = function() { 
             $scope.timeForEvent = this.name; //this.requestedDateTimeRange.dateTimes[0].start;
         };
+        
+        $scope.getReadableDate = function() {
+            console.log("EVENT: " + $scope.event._id);
+            angular.forEach(event, function(value, key) {
+                console.log(key + ': ' + value);
+            });
+            //$scope.dateTime = uglyDateTime;
+            //console.log($scope.dateTime);
+        }
     }
 ]);

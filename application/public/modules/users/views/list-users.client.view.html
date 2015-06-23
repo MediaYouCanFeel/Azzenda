@@ -7,7 +7,7 @@
     </div>
     List of users:
     <div class="list-group well">
-        <a data-ng-repeat="user in users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+        <a data-ng-repeat="user in users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
 			<!-- Last, First -->
             <div class="h4">
                 <span data-ng-bind="user.lastName"></span>, <span data-ng-bind="user.firstName"></span>

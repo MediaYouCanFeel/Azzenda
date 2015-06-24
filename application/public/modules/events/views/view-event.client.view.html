@@ -1,7 +1,7 @@
 <section data-ng-controller="EventsController" data-ng-init="findOne()" class="well">   
     <div class="row top-well">
         <div class="col-md-8">
-            <a ng-href="/#!/events" class="btn btn-blue">
+            <a ng-href="/#!/events" class="btn btn-blue" style="margin-bottom: -20px;">
                 <i class="fa fa-arrow-left"></i> &nbsp; All Events
             </a>
         </div>
@@ -32,11 +32,9 @@
                 <p> You can't make it. </p> -->
             </div>
             <div class="top-bottom-padding" data-ng-init="getReadableDate()">
-                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></span>
-                <span class="left-right-padding event-info" data-ng-bind="event.scheduledDateTimeRange.start"></span>
-                
+                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></span>                
             </div>
-            <span class="left-right-padding event-info" data-ng-bind="readableDate"></span>
+            
             <div class="top-bottom-padding">    
                 <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
             </div>
@@ -46,8 +44,8 @@
         </div>
         
         <!-- Guest list info -->
-        <div class="col-md-4">
-        <p>Insert guest list here</p>
+        <div class="col-md-4" class="text-center">
+        <p>Guest List</p>
         </div>
     </div>
     

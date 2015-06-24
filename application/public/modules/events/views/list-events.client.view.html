@@ -1,5 +1,10 @@
 <section data-ng-controller="EventsController" data-ng-init="find()">
-        <div class="h1 top-well well">Events</div>
+        <div class="top-well well">
+            <h1>Events</h1>
+            <span class="pull-right">
+                <strong class="btn btn-yellow create-button" ng-click="createModal('lg')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Event</strong>
+            </span>
+        </div>
     <div class="col-md-7">
         <div class="col-md-12 row well">
             <h2>
@@ -22,11 +27,6 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="row well">
-            <h2>
-                <strong class="btn btn-yellow" ng-click="createModal('lg')" style="font-size: 30px;">Create Event</strong>
-            </h2>
-        </div>
         <div class="row well">
             <h2>
                 <strong class="blue">Past Events</strong>

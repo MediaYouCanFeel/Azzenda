@@ -1,7 +1,11 @@
 <section data-ng-controller="ProjectsController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Projects</h1>
+    <div class="top-well well">
+            <h1>Projects</h1>
+            <span class="pull-right">
+                <a class="btn btn-yellow create-button" ng-href="/#!/projects/create" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</a>
+            </span>
     </div>
+    
     <div class="list-group">
         <a data-ng-repeat="project in projects" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
 			<small class="list-group-item-text">

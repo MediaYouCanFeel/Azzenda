@@ -1,8 +1,8 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, $modal, $log) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
 		$scope.authentication = Authentication;
         
         $scope.events = Events.query();
@@ -187,6 +187,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.projects = response;
             console.log($scope.projects);
         };
+        
+        //Find a list of Groups
+        $scope.findGroups = function() {
+          $scope.groups = Groups.query();
+        }
         
         //Find a list of Users
         $scope.findUsers = function() {

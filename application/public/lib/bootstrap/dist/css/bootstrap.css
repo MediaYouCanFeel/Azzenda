@@ -6942,4 +6942,9 @@ button.close {
   width: 100%;
 }
 
+.group-numbers {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 /*# sourceMappingURL=bootstrap.css.map */

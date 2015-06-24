@@ -184,17 +184,33 @@
                         <div class="text-center modal-heading"><u>Additional Guests</u></div>
                         
                         <!-- Additional Guests -->
-                        <div class="form-group">
-                            <label class="control-label" for="name">I need:</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="2" required>
+                        <label class="control-label">I need:</label>
+                        <div class="row">
+                            <div class="col-md-1">    
+                                <div class="form-group">
+                                    <div class="controls">
+                                        <input type="text" data-ng-model="number" id="number" class="form-control" placeholder="2" required>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="control-label" for="name"></label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Directors" required>
+
+                            <div class="col-md-10">
+                                <div class="form-group" data-ng-init="findGroups()">
+                                    <div class="controls">
+                                        <select class="form-control js-example-basic-single" data-ng-model="group" id="group">
+                                            <option ng-repeat="group in groups" data-ng-value="group._id">{{group.name}}</option>
+                                        </select>
+                                        <!-- <input type="text" data-ng-model="group" id="group" class="form-control" placeholder="Directors" required> -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <div class="controls">
+                                        <div class="btn btn-teal"><i class="fa fa-plus"></i></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

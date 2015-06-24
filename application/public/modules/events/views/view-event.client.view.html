@@ -33,6 +33,8 @@
             </div>
             <div class="top-bottom-padding" data-ng-init="getReadableDate()">
                 <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="(event.requestedDateTimeRange.dateTimes[0].start)"></span>
+                <span class="left-right-padding event-info" data-ng-bind="event.scheduledDateTimeRange.start"></span>
+                
             </div>
             <span class="left-right-padding event-info" data-ng-bind="readableDate"></span>
             <div class="top-bottom-padding">    

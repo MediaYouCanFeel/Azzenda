@@ -24,8 +24,8 @@ exports.signup = function(req, res) {
         if(err) {
          //do something   
         } else {
-            if(users.length) {
-                user.roles.push('admin');
+            if(!users.length) {
+                user.roles = ['admin'];
             }
             
             // Add missing user fields

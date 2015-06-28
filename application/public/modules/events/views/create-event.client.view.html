@@ -27,7 +27,7 @@
                         
                         <!-- Type -->                        
                         <div class="form-group">
-                            <label class="control-label" for="type">Type</label>
+                            <label class="control-label" for="type">Type</label> 
                             <select class="form-control" data-ng-model="type" id="type">
                                 <option ng-repeat="type in eventTypes" data-ng-value="type">{{type}}</option>
                             </select>
@@ -186,7 +186,7 @@
                         <!-- Additional Guests -->
                         <label class="control-label">I need:</label>
                         <div class="row">
-                            <div class="col-md-1">    
+                            <div class="col-md-2">    
                                 <div class="form-group">
                                     <div class="controls">
                                         <input type="text" data-ng-model="number" id="number" class="form-control" placeholder="2" required>
@@ -194,7 +194,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-10">
+                            <div class="col-md-9">
                                 <div class="form-group" data-ng-init="findGroups()">
                                     <div class="controls">
                                         <select class="form-control js-example-basic-single" data-ng-model="group" id="group">

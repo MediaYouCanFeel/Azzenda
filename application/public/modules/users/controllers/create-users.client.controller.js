@@ -3,7 +3,13 @@
 angular.module('users').controller('CreateUsersController', ['$scope', '$http', '$location', 'Users', 'Authentication',
 	function($scope, $http, $location, Users, Authentication) {
 		$scope.authentication = Authentication;
-
+        
+        //dropdown init
+        angular.element('select').select2({ width: '100%' });
+        
+        $scope.findRoles = function() {
+            $scope.roles = ['user','admin'];
+        };
 
 
 		$scope.createuser = function() {

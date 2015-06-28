@@ -41,7 +41,7 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
-	email: {
+	username: {
 		type: String,
 		trim: true,
 		default: '',
@@ -145,6 +145,10 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 			callback(null);
 		}
 	});
+};
+
+UserSchema.methods.email = function() {
+    return _this.username;
 };
 
 mongoose.model('User', UserSchema);

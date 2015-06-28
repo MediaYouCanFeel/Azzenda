@@ -33,9 +33,5 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.error = response.message;
 			});
 		};
-        
-        $scope.findRoles = function() {
-            $scope.roles = ['user','admin'];
-        };
 	}
 ]);

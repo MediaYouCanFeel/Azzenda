@@ -132,7 +132,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 scheduleParameters: ['']
 			});
             
-            //$scope.ok();
+            
             
 			// Redirect after save
 			event.$save(function(response) {
@@ -140,6 +140,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 				// Clear form fields
 				$scope.name = '';
+                
+                $scope.ok();
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

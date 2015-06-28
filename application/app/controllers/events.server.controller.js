@@ -20,6 +20,9 @@ exports.create = function(req, res) {
             
         }
     }
+    
+    event.scheduledDateTimeRange.start = event.requestedDateTimeRange.dateTimes[0].start;
+    
 	event.save(function(err) {
 		if (err) {
 			return res.status(400).send({

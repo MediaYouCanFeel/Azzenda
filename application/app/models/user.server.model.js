@@ -49,6 +49,10 @@ var UserSchema = new Schema({
 		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
 		match: [/.+\@.+\..+/, 'Please fill a valid email address']
 	},
+    email: {
+        type: String,
+        trim: true,
+    },
 	password: {
 		type: String,
 		default: '',
@@ -145,10 +149,6 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 			callback(null);
 		}
 	});
-};
-
-UserSchema.methods.email = function() {
-    return _this.username;
 };
 
 mongoose.model('User', UserSchema);

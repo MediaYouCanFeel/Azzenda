@@ -9,7 +9,7 @@
 		</p>
 	</div>
     <div class="col-md-7">
-        <div class="col-md-12 row well" data-ng-init="findEvents()">
+        <div class="col-md-12 row well" data-ng-controller="EventsController" data-ng-init="find()">
             <h2>
                 <strong>
                     <a ng-href="/#!/events">Events</a>
@@ -21,6 +21,11 @@
                         <h3 data-ng-bind="event.name"></h3>
                         <i data-ng-bind="event.project.name"></i>
                     </div>
+                    
+                    <!-- Initializing date formatter -->
+                    <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
+                
+                    <p data-ng-bind="printDate"></p>
                     <p data-ng-bind="event.date"></p>
                     <p data-ng-bind="event.location.loc"></p>
 				</a>   

@@ -368,8 +368,33 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //moment
         $scope.readableDate = function(dateTime) {
-            $scope.printDate = moment(dateTime).format('dddd, MMMM Do [at] h:mm A');
-        
+            
+            //Default
+            $scope.printDateDate = moment(dateTime).format('dddd, MMMM Do');
+            
+            //If the event is happening today
+            if (moment(dateTime).subtract(1, 'days') < moment()) {
+                $scope.printDateDate = '';
+                
+            } else if (moment(dateTime).subtract(7, 'days') < moment()) {
+                //If the event is less than 7 days away
+                $scope.printDateDate = moment(dateTime).format('dddd [at] ');   
+            } else {
+                //More than a week away
+                $scope.printDateDate = moment(dateTime).format('MM/DD/YY [at] ');
+            }
+           
+            $scope.printDateTime = moment(dateTime).format('h:mm A');
+            
+            $scope.printDate = $scope.printDateDate + $scope.printDateTime;
         }
+        
+        
+        $scope.readableDateFull = function(dateTime) {
+            
+            //Default
+            $scope.printDate = moment(dateTime).format('dddd, MMMM Do [at] h:mm A');
+        }
+
     }
 ]);

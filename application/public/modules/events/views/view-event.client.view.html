@@ -31,11 +31,15 @@
                 <!-- <p> You're going! </p> 
                 <p> You can't make it. </p> -->
             </div>
-            <div class="top-bottom-padding" data-ng-init="getReadableDate()">
-                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="(event.scheduledDateTimeRange.start)"></span>                
+            <div class="top-bottom-padding">
+                
+                <!-- Initializing date formatter -->
+                <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
+                
+                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="printDate"></span>
             </div>
             
-            <div class="top-bottom-padding">    
+            <div class="top-bottom-padding">
                 <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
             </div>
             <div class="top-bottom-padding">

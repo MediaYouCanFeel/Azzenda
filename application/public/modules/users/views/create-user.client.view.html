@@ -3,45 +3,47 @@
     <br>
     <br>
     <br>
-    <br>
-    <div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-		<form name="userForm" data-ng-submit="createuser()" class="signin form-horizontal" novalidate autocomplete="off">
-			<fieldset>
-				<div class="form-group">
-					<label for="firstName">First Name</label>
-					<input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="First Name">
-				</div>
-				<div class="form-group">
-					<label for="lastName">Last Name</label>
-					<input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Last Name">
-				</div>
-				<div class="form-group">
-					<label for="email">Email</label>
-					<input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.email" placeholder="Email">
-				</div>
-				
-				
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
-				</div>
-				
-                <div class="form-group" data-ng-init="findRoles();">
-					<label for="role">Role</label>
-                    <select data-ng-model="credentials.roles">
-                        <option ng-repeat="role in roles" data-ng-value="role">{{role}}</option>
-                    </select>
-				</div>
-                
-				<div class="text-center form-group">
-					<button id="create-user-button" type="submit" class="btn btn-large btn-primary">Create</button>
-				</div>
-				<div data-ng-show="error" class="text-center text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-			</fieldset>
-		</form>
-	</div>
+    <div class="col-md-12 well">
+        <div class="col-md-offset-5 col-md-2">
+        <h1 class="text-center">Create User</h1>
+            <form name="userForm" data-ng-submit="createuser()" class="signin form-horizontal" novalidate autocomplete="off">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" required id="firstName" name="firstName" class="form-control" data-ng-model="credentials.firstName" placeholder="First Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" data-ng-model="credentials.lastName" placeholder="Last Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" data-ng-model="credentials.username" placeholder="Email">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
+                    </div>
+
+                    <div class="form-group" data-ng-init="findRoles();">
+                        <label for="role">Role</label>
+                        <select data-ng-model="credentials.roles">
+                            <option ng-repeat="role in roles" data-ng-value="role">{{role}}</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center form-group">
+                        <button id="create-user-button" type="submit" class="btn btn-large btn-primary">Create</button>
+                    </div>
+                    <div data-ng-show="error" class="text-center text-danger">
+                        <strong data-ng-bind="error"></strong>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </section>
 
 

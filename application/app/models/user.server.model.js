@@ -41,17 +41,13 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
-	username: {
-		type: String,
-		trim: true,
-		default: '',
-        unique: 'This email is already in use',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
-	},
-    email: {
+    username: {
         type: String,
+        unique: 'This email is already in use',
+        required: 'Please enter an email',
+        //validate: [validateLocalStrategyProperty, 'Please enter your email'],
         trim: true,
+		match: [/.+\@.+\..+/, 'Please enter a valid email address']
     },
 	password: {
 		type: String,
@@ -82,6 +78,7 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
     groups: {
+        //Make this reference group schema
         type: [{
             group: String,
             details: [{
@@ -150,5 +147,9 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 		}
 	});
 };
+
+UserSchema.virtual('email').get(function() {
+    return this.username;
+});
 
 mongoose.model('User', UserSchema);

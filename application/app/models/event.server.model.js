@@ -28,7 +28,7 @@ var EventSchema = new Schema({
         type: String,
         default: '',
         required: 'Please enter a description of the event',
-        trim: true,
+        trim: true
     },
     project: {
         type: Schema.ObjectId,

@@ -1,11 +1,47 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects',
-	function($scope, $stateParams, $location, Authentication, Projects) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Projects, $modal, $log) {
 		$scope.authentication = Authentication;
 
         //Projects.listArchived();
+        
+        //Open Modal window for creating events
+        $scope.createModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/projects/views/create-project.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
         
 		// Create new Project
 		$scope.create = function() {
@@ -17,7 +53,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 			// Redirect after save
 			project.$save(function(response) {
 				$location.path('projects/' + response._id);
-
+                
+                $scope.ok();
+                
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {

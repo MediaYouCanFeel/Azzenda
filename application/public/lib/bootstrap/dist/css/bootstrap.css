@@ -6101,11 +6101,18 @@ button.close {
   font-size: 24px;
 }
 
-.modal-buttons {
+.modal-buttons-events {
   padding-left: 50px;
   padding-right: 50px;
-  padding-top: 50px;
+  padding-top: 10px;
 }
+
+.modal-buttons {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
 
 .tooltip {
   position: absolute;
@@ -6949,6 +6956,12 @@ button.close {
 
 .create-button {
   margin-top: -75px;
+}
+
+.examples {
+  font-style: italic;
+  font-size: 11px;
+  padding-top: 2px;
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

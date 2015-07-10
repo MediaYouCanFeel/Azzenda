@@ -26,6 +26,10 @@ exports.signup = function(req, res) {
         } else {
             if(!users.length) {
                 user.roles = ['admin'];
+            } else {
+                return res.status(400).send({
+                        message: "Error: admin already exists"
+                });
             }
             
             // Add missing user fields

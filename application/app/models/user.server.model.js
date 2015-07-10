@@ -45,7 +45,6 @@ var UserSchema = new Schema({
         type: String,
         unique: 'This email is already in use',
         required: 'Please enter an email',
-        //validate: [validateLocalStrategyProperty, 'Please enter your email'],
         trim: true,
 		match: [/.+\@.+\..+/, 'Please enter a valid email address']
     },

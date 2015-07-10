@@ -18,7 +18,7 @@ exports.signup = function(req, res) {
 
     // Init Variables
 	var user = new User(req.body);
-	var message = null;
+    //var creator = req.user;
     
     User.find({roles: 'admin'}).exec(function(err,users) {
         if(err) {
@@ -31,13 +31,16 @@ exports.signup = function(req, res) {
             // Add missing user fields
             user.provider = 'local';
             user.displayName = user.firstName + ' ' + user.lastName;
-            user.email = user.username;
+            user.username = user.email;
 
             // Then save the user 
             user.save(function(err) {
                 if (err) {
+                    var msg = errorHandler.getErrorMessage(err);
+                    msg = msg.replace(/username/g, "email");
+                    msg = msg.replace(/Username/g, "Email");
                     return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
+                        message: msg
                     });
                 } else {
                     // Remove sensitive data before login

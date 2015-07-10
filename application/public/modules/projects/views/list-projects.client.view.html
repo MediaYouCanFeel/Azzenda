@@ -2,7 +2,7 @@
     <div class="top-well well">
             <h1>Projects</h1>
             <span class="pull-right">
-                <a class="btn btn-yellow create-button" ng-href="/#!/projects/create" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</a>
+                <a class="btn btn-yellow create-button" ng-click="createModal('lg')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</a>
             </span>
     </div>
     
@@ -18,6 +18,6 @@
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!projects.$resolved || projects.length">
-    	No Projects yet, why don't you <a href="/#!/projects/create">create one</a>?
+    	No Projects yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
     </div>
 </section>

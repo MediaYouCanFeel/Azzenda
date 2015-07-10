@@ -1,10 +1,46 @@
 'use strict';
 
 // Groups controller
-angular.module('groups').controller('GroupsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Groups',
-	function($scope, $stateParams, $location, Authentication, Groups) {
+angular.module('groups').controller('GroupsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Groups', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Groups, $modal, $log) {
 		$scope.authentication = Authentication;
+        
+        //Open Modal window for creating events
+        $scope.createModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/groups/views/create-group.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                                    
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
 
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        
 		// Create new Group
 		$scope.create = function() {
 			// Create new Group object
@@ -16,6 +52,8 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 			group.$save(function(response) {
 				$location.path('groups/' + response._id);
 
+                $scope.ok();
+                
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {

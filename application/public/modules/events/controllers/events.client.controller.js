@@ -225,10 +225,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             console.log($scope.eventTypes);
         };
         
-        $scope.createEventType = function() {
+        $scope.createEventType = function(type) {
             Events.addType({
-                name: 'testType'
+                name: type
             });
+            $scope.ok();
         };
         
 		//Find a list of Events

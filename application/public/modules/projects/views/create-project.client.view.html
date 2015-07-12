@@ -3,6 +3,7 @@
         <h1 class="text-center"><u>Create Project</u></h1>
         <form class="form-horizontal" novalidate>
             <fieldset>
+                <!-- Name -->
                 <div class="form-group">
                     <label class="control-label" for="name">Name</label>
                     <div class="controls">
@@ -12,6 +13,26 @@
                         Examples: "Cheesy Crust", "Square Pizzas"
                     </div>
                 </div>
+                
+                <!-- Project Type -->
+                <div class="form-group">
+                    <label class="control-label" for="type">Type</label>
+                    <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="type">
+                                <option ng-repeat="type in projectTypes" data-ng-value="type">{{type}}</option>
+                    </select>
+                    <div class="examples">
+                        Examples: "New Ingredients", "New Crust Filling"
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="control-label" for="description">Description</label>
+                    <div class="controls">
+                        <textarea data-ng-model="description" id="description" class="form-control" placeholder="You know what? Let's play it safe. Let's get another pie, ham, pineapple." rows="5" required></textarea>
+                    </div>
+                </div>
+                
                 <div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>

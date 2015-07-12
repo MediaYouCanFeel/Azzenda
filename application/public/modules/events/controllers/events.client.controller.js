@@ -35,13 +35,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               controller: function ($scope, $modalInstance, items) {
                   console.log('In Modal Controller');
                   $scope.eventTypes = Events.getTypes();
-                  
-                  
-                  
-                      //console.log("initializing google place stuff");
-                      //"https://maps.googleapis.com/maps/api/js?v=3&library=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0";
-                      
-                  
+                                  
                   $scope.ok = function () {
                       //$scope.selected.event
                     modalInstance.close();
@@ -204,7 +198,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //Find a list of Groups
         $scope.findGroups = function() {
-          $scope.groups = Groups.query();
+            //For getting list of all needed group numbers
+            $scope.groupValues = [];
+            $scope.groups = Groups.query();
+        }
+        
+        $scope.findGroup = function(groupId) {
+            return Groups.get({
+				groupId: groupId
+			});
         }
         
         //Find a list of Users

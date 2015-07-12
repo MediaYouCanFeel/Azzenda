@@ -209,7 +209,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             console.log(response);
             $scope.eventTypes = response;
             console.log($scope.eventTypes);
-        }
+        };
+        
+        $scope.addEventType = function() {
+            Events.addType({
+                body: {
+                    name: 'testType'
+                }
+            });
+        };
         
 		//Find a list of Events
 		$scope.find = function() {
@@ -225,11 +233,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			$scope.event = Events.get({
 				eventId: $stateParams.eventId
 			});
-		};
-        
-        $scope.getTypes = function() {
-            $scope.eventTypes = Events.getTypes();
-        };
+		};  
 	        
         // DATEPICKER CONFIG
         $scope.datepickers = {

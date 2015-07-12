@@ -10,13 +10,18 @@ module.exports = function(app) {
 		.post(users.requiresLogin, events.create);
 
 	app.route('/events/:eventId')
-		.get(events.read)
+		.get(users.requiresLogin, events.read)
 		.put(users.requiresLogin, events.hasAuthorization, events.update)
 		.delete(users.requiresLogin, events.hasAuthorization, events.delete);
     
-    app.route('/events/create/getTypes')
-        .get(events.getTypes);
+    app.route('/events/create/types')
+        .get(users.requiresLogin, events.getTypes)
+        .post(users.requiresLogin, events.addType);
+        
+    app.route('events/create/types/:eventTypeId')
+        .put(users.requiresLogin, events.updateType);
 
 	// Finish by binding the Event middleware
 	app.param('eventId', events.eventByID);
+    app.param('eventTypeId', events.eventTypeByID);
 };

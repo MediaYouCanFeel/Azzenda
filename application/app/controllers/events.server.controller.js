@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Event = mongoose.model('Event'),
+    EventType = mongoose.model('EventType'),
 	_ = require('lodash');
 
 /**
@@ -109,23 +110,72 @@ exports.list = function(req, res) {
  * Get list of event types
  */
 exports.getTypes = function(req, res) {
-    Event.distinct('type').exec(function(err, types) {
+    EventType.find().exec(function(err, types) {
         res.jsonp(types);
     });
 };
 
+/**
+ * Save a new event type
+ */
+exports.addType = function(req, res) {
+    var eventType = new EventType(req.body);
+	eventType.user = req.user;
+
+	eventType.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.json(eventType);
+		}
+	});
+};
+
+/**
+ * Archive an event type
+ */
+exports.updateType = function(req, res) {
+	var eventType = req.eventType;
+
+	eventType = _.extend(eventType, req.body);
+
+	eventType.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.json(eventType);
+		}
+	});
+};
 
 /**
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('user', 'displayName').populate('project', 'name').exec(function(err, event) {
+	Event.findById(id).populate('user', 'displayName').populate('project', 'name').populate('type','name').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;
 		next();
 	});
 };
+
+/**
+ * Event Type middleware
+ */
+exports.eventTypeByID = function(req, res, next, id) { 
+	EventType.findById(id).populate('user', 'displayName').exec(function(err, eventType) {
+		if (err) return next(err);
+		if (! eventType) return next(new Error('Failed to load EventType ' + id));
+		req.eventType = eventType;
+		next();
+	});
+};
+
 
 /**
  * Event authorization middleware

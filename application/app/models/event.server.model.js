@@ -66,9 +66,9 @@ var EventSchema = new Schema({
         isGooglePlaceCode: Boolean
     },
     type: {
-        type: String,
-        required: 'Please select an existing type or create a new one',
-        trim: true
+        type: Schema.ObjectId,
+        ref: 'EventType',
+        required: 'Please select an existing type or create a new one'
     },
     guests: [{
         user: {

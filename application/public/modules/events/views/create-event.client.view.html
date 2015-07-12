@@ -261,16 +261,26 @@
                             <div ng-click="createPage = 3" class="btn btn-blue"> Review &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
-                        <div class="form-group pull-left" ng-show="createPage == 3">
-                            <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
-                        </div>    
-                            
-                        <div class="form-group pull-right" ng-show="createPage == 3">
-                            <input type="submit" class="btn btn-yellow" value="Send Invitations">
+                        
+                        
+                        
+                        <div class="row">
+                            <div class="form-group pull-left" ng-show="createPage == 3">
+                                <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
+                            </div>    
+                            <div class="form-group pull-right" ng-show="createPage == 3">
+                                <input type="submit" class="btn btn-yellow" value="Send Invitations">
+                            </div> 
                         </div>
-                        <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">
-                            <strong data-ng-bind="error"></strong>
-                        </div>     
+                        
+                        <div class="row">
+                            <div class="text-center">
+                                <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">
+                                    <strong data-ng-bind="error"></strong>
+                                </div>  
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 

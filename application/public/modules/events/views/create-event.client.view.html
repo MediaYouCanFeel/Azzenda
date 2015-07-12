@@ -31,20 +31,15 @@
                         <!-- Type -->                        
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label> 
-                            <select class="form-control" data-ng-model="type" id="type">
+                            <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="type">
                                 <option ng-repeat="type in eventTypes" data-ng-value="type">{{type}}</option>
                             </select>
-					    </div> 
-                        
-                        <div class="form-group">
-                            <div class="controls">
-                                <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
-                            </div>
-                            <div class="examples">
+					        <div class="examples">
                                 Examples: "Eating", "Baking"
                             </div>
-                        </div>
-
+                        </div> 
+                        
+                        
                         <!-- Location -->
                         <div class="form-group">
                             <label class="control-label" for="location">Location</label>

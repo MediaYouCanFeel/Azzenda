@@ -3,13 +3,25 @@
 // Events controller
 angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
 	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
-		$scope.authentication = Authentication;
+        
+        $scope.authentication = Authentication;
         
         $scope.events = Events.query();
         //console.log($scope.events);
         
+        $scope.eventTypes = Events.getTypes();
+        
         //dropdown init
-        angular.element('select').select2({ width: '100%' });
+        angular.element('select').select2({ 
+            width: '100%',
+            tags: true
+        });
+        
+        var typeSelector = document.getElementById('select2_type');
+        
+        angular.element(typeSelector).select2({
+            width: '100%'
+        });
         
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
@@ -63,14 +75,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
         };
 
-        //Open Modal window for picking Date/Time
-        $scope.createDateTimeModal = function (size) {
+        $scope.createTypeModal = function (size) {
             
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
-              templateUrl: 'modules/events/views/calendar-modal-event.client.view.html',
+              templateUrl: 'modules/events/views/create-event-type.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-
+                  console.log('In Modal Controller');
+                  $scope.eventTypes = Events.getTypes();                      
+                  
                   $scope.ok = function () {
                       //$scope.selected.event
                     modalInstance.close();
@@ -88,13 +101,19 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               }
             });
             
+            //modalInstance.opened.then($scope.initModal);
+            
             modalInstance.result.then(function (selectedEvent) {
               $scope.selected = selectedEvent;
             }, function () {
               $log.info('Modal dismissed at: ' + new Date());
             });
         };
+
+        //Create Event Type
+        $scope.createEventType = function() {
         
+        };
         
 		// Create new Event
 		$scope.create = function() {

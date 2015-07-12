@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label class="control-label" for="project">Project</label>
                             <div class="fullWidth">
-                                <select class="form-control fullWidth js-example-basic-single" data-ng-model="project" id="project">
+                                <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="project" id="project">
                                     <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
                                 </select>
                             </div>
@@ -31,20 +31,15 @@
                         <!-- Type -->                        
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label> 
-                            <select class="form-control" data-ng-model="type" id="type">
+                            <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="type">
                                 <option ng-repeat="type in eventTypes" data-ng-value="type">{{type}}</option>
                             </select>
-					    </div> 
-                        
-                        <div class="form-group">
-                            <div class="controls">
-                                <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
-                            </div>
-                            <div class="examples">
+					        <div class="examples">
                                 Examples: "Eating", "Baking"
                             </div>
-                        </div>
-
+                        </div> 
+                        
+                        
                         <!-- Location -->
                         <div class="form-group">
                             <label class="control-label" for="location">Location</label>
@@ -175,8 +170,8 @@
                         </div>
                     </div>
                      </div>
-                    <!-- PAGE 2 -->
                     
+                    <!-- PAGE 2 -->
                     <div class="col-md-6 modal-col" ng-show="createPage == 2" ng-init="findUsers()">
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         
@@ -193,32 +188,23 @@
                         <div class="text-center modal-heading"><u>Additional Guests</u></div>
                         
                         <!-- Additional Guests -->
-                        <label class="control-label">I need:</label>
                         <div class="row">
-                            <div class="col-md-2">    
-                                <div class="form-group">
-                                    <div class="controls">
-                                        <input type="text" data-ng-model="number" id="number" class="form-control" placeholder="2" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-9">
-                                <div class="form-group" data-ng-init="findGroups()">
-                                    <div class="controls">
-                                        <select class="form-control js-example-basic-single" data-ng-model="group" id="group">
-                                            <option ng-repeat="group in groups" data-ng-value="group._id">{{group.name}}</option>
-                                        </select>
-                                        <!-- <input type="text" data-ng-model="group" id="group" class="form-control" placeholder="Directors" required> -->
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <div class="controls">
-                                        <div class="btn btn-teal"><i class="fa fa-plus"></i></div>
-                                    </div>
+                            <div class="form-group" data-ng-init="findGroups()">
+                                <div class="controls">
+                                    <label class="control-label">I need:</label>
+                                    <select class="form-control js-example-basic-single" multiple="multiple" data-ng-model="groupsNeeded" id="group">
+                                        <option ng-repeat="group in groups" data-ng-value="group._id">{{group.name}}</option>
+                                    </select>
+                                    
+                                    <!-- Number Selectors -->
+                                    <div ng-repeat="groupNeeded in groupsNeeded">
+                                        <div class="row" data-ng-init="thisGroup = findGroup(groupNeeded)">
+                                            <div class="col-md-2">
+                                                <input class="form-control" type="text" ng-model="groupValues['field_' + $index]" />
+                                            </div>
+                                            {{thisGroup.name}}
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
@@ -241,7 +227,13 @@
                         <div>Earliest DateTime: {{earliestDateFromModal}} </div>
                         <div>Latest DateTime: {{latestDateFromModal}} </div>
                     </div>
+                </div>
                     
+                <div class="col-md-6 modal-col" ng-show="createPage == 3">
+                    <div>Groups Needed:</div>
+                    <div ng-repeat="groupNeeded in groupsNeeded" data-ng-init="thisGroup = findGroup(groupNeeded)">
+                        {{groupValues['field_' + $index]}} {{thisGroup.name}}
+                    </div>
                 </div>
                     
                 <div class="row">
@@ -261,16 +253,26 @@
                             <div ng-click="createPage = 3" class="btn btn-blue"> Review &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
-                        <div class="form-group pull-left" ng-show="createPage == 3">
-                            <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
-                        </div>    
-                            
-                        <div class="form-group pull-right" ng-show="createPage == 3">
-                            <input type="submit" class="btn btn-yellow" value="Send Invitations">
+                        
+                        
+                        
+                        <div class="row">
+                            <div class="form-group pull-left" ng-show="createPage == 3">
+                                <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
+                            </div>    
+                            <div class="form-group pull-right" ng-show="createPage == 3">
+                                <input type="submit" class="btn btn-yellow" value="Send Invitations">
+                            </div> 
                         </div>
-                        <div data-ng-show="error" class="text-danger" ng-show="createPage == 3">
-                            <strong data-ng-bind="error"></strong>
-                        </div>     
+                        
+                        <div class="row">
+                            <div class="text-center">
+                                <div data-ng-show="error" class="text-danger">
+                                    <strong data-ng-bind="error"></strong>
+                                </div>  
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 

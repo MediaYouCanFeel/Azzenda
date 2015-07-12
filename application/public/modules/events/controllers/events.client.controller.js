@@ -3,13 +3,18 @@
 // Events controller
 angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
 	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
-		$scope.authentication = Authentication;
+        
+        $scope.authentication = Authentication;
         
         $scope.events = Events.query();
         //console.log($scope.events);
         
+        $scope.eventTypes = Events.getTypes();
+        
         //dropdown init
-        angular.element('select').select2({ width: '100%' });
+        angular.element('select').select2({ 
+            width: '100%'
+        });
         
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
@@ -30,12 +35,41 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               controller: function ($scope, $modalInstance, items) {
                   console.log('In Modal Controller');
                   $scope.eventTypes = Events.getTypes();
-                  
-                  
-                  
-                      //console.log("initializing google place stuff");
-                      //"https://maps.googleapis.com/maps/api/js?v=3&library=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0";
-                      
+                                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.createTypeModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/events/views/create-event-type.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  $scope.eventTypes = Events.getTypes();                      
                   
                   $scope.ok = function () {
                       //$scope.selected.event
@@ -63,38 +97,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
         };
 
-        //Open Modal window for picking Date/Time
-        $scope.createDateTimeModal = function (size) {
-            
-            var modalInstance = $modal.open({
-              animation: $scope.animationsEnabled,
-              templateUrl: 'modules/events/views/calendar-modal-event.client.view.html',
-              controller: function ($scope, $modalInstance, items) {
-
-                  $scope.ok = function () {
-                      //$scope.selected.event
-                    modalInstance.close();
-                  };
-
-                  $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                  };
-              },
-              size: size,
-              resolve: {
-                items: function () {
-                  //return $scope.events;
-                }
-              }
-            });
-            
-            modalInstance.result.then(function (selectedEvent) {
-              $scope.selected = selectedEvent;
-            }, function () {
-              $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
+        //Create Event Type
+        $scope.createEventType = function() {
         
+        };
         
 		// Create new Event
 		$scope.create = function() {
@@ -192,7 +198,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //Find a list of Groups
         $scope.findGroups = function() {
-          $scope.groups = Groups.query();
+            //For getting list of all needed group numbers
+            $scope.groupValues = [];
+            $scope.groups = Groups.query();
+        }
+        
+        $scope.findGroup = function(groupId) {
+            return Groups.get({
+				groupId: groupId
+			});
         }
         
         //Find a list of Users

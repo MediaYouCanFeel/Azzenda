@@ -1,15 +1,14 @@
-<section data-ng-controller="GroupsController">
-    <div class="col-md-12 modal-col well">
-        <h1><u>New Group</u></h1>
+<section data-ng-controller="EventsController">
+	<div class="col-md-12 modal-col well">
+        <h1><u>New Event Type</u></h1>
         <form class="form-horizontal" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" data-ng-model="type" id="type" class="form-control" placeholder="Type" required>
                     </div>
                     <div class="examples">
-                        Examples: "Delivery People", "Cooks"
+                        Examples: "Eating", "Baking"
                     </div>
                 </div>
 				<div data-ng-show="error" class="text-danger">
@@ -18,12 +17,12 @@
                <div class="row modal-buttons">
                     <div class="col-md-6">
                         <div class="form-group pull-left">
-                            <button type="button" ng-click="ok()" class="btn btn-teal" value="">Cancel</button>
+                            <button ng-click="ok()" class="btn btn-teal"> Cancel</button>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input type="submit" ng-click="create()" class="btn btn-yellow" value="Create Group">
+                            <input type="submit" ng-click="createEventType()" class="btn btn-yellow" value="Create Event Type">
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,7 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-                'public/lib/select2-4.0.0/dist/js/select2.js',
+                'public/lib/select2-4.0.0/dist/js/select2.full.js',
                 'public/lib/jquery-ui/jquery-ui.js',
                 'public/lib/moment/moment.js',
                 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0'

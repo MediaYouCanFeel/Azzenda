@@ -36,7 +36,6 @@ exports.requiresLogin = function(req, res, next) {
 
 /**
  * User authorizations routing middleware
- */
 exports.hasAuthorization = function(roles) {
 	var _this = this;
 
@@ -52,3 +51,4 @@ exports.hasAuthorization = function(roles) {
 		});
 	};
 };
+*/

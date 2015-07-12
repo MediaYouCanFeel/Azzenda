@@ -10,49 +10,29 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 exports.createUser = function(req, res) {
-	// For security measurement we remove the roles from the req.body object
-	delete req.body.roles;
-
     // Init Variables
 	var user = new User(req.body);
     //var creator = req.user;
-    
-    User.find({roles: 'admin'}).exec(function(err,users) {
-        if(err) {
-         //do something   
-        } else {
-            if(!users.length) {
-                user.roles = ['admin'];
-            }
             
-            // Add missing user fields
-            user.provider = 'local';
-            user.displayName = user.firstName + ' ' + user.lastName;
-            user.username = user.email;
+    // Add missing user fields
+    user.provider = 'local';
+    user.displayName = user.firstName + ' ' + user.lastName;
+    user.username = user.email;
 
-            // Then save the user 
-            user.save(function(err) {
-                if (err) {
-                    var msg = errorHandler.getErrorMessage(err);
-                    msg = msg.replace(/username/g, "email");
-                    msg = msg.replace(/Username/g, "Email");
-                    return res.status(400).send({
-                        message: msg
-                    });
-                } else {
-                    // Remove sensitive data before login
-                    user.password = undefined;
-                    user.salt = undefined;
-
-                    /*req.login(user, function(err) {
-                        if (err) {
-                            res.status(400).send(err);
-                        } else {
-                            res.json(user);
-                        }
-                    });*/
-                }
+    // Then save the user 
+    user.save(function(err) {
+        if (err) {
+            var msg = errorHandler.getErrorMessage(err);
+            msg = msg.replace(/username/g, "email");
+            msg = msg.replace(/Username/g, "Email");
+            return res.status(400).send({
+                message: msg
             });
+        } else {
+            // Remove sensitive data before login
+            user.password = undefined;
+            user.salt = undefined;
+            res.json(user);
         }
     });
 };

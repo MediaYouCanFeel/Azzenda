@@ -11,7 +11,6 @@ angular.module('users').controller('CreateUsersController', ['$scope', '$http', 
             $scope.roles = ['user','admin'];
         };
 
-
 		$scope.createuser = function() {
 			$http.post('/users', $scope.credentials).success(function(response) {
                 

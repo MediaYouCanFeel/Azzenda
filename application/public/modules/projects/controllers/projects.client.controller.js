@@ -7,6 +7,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 
         //Projects.listArchived();
         
+		//dropdown init
+        angular.element('select').select2({ 
+            width: '100%'
+        });
+		
         //Open Modal window for creating events
         $scope.createModal = function (size) {
             
@@ -47,7 +52,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Project object
 			var project = new Projects ({
-				name: this.name
+				name: this.name,
+				type: this.type,
+				description: this.description
 			});
 
 			// Redirect after save

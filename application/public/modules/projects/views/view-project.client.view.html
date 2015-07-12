@@ -2,6 +2,12 @@
 	<div class="page-header">
 		<h1 data-ng-bind="project.name"></h1>
 	</div>
+	
+	Type: {{project.type}}
+	<br>
+	Description: {{project.description}}
+	<br>
+	
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == project.user._id))">
 		<a class="btn btn-primary" href="/#!/projects/{{project._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>

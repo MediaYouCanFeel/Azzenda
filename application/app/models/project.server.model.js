@@ -24,6 +24,22 @@ var ProjectSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+    description: {
+        type: String,
+        default: '',
+        required: 'Please enter a description of the project',
+        trim: true
+    },
+    type: {
+        type: String,
+        required: 'Please select an existing type or create a new one',
+        trim: true
+    },
+    status: {
+        type: String,
+        trim: true,
+        enum: ['Not Started', 'In Progress', 'Completed']
+    },
     archived: {
         type: Boolean,
         default: false

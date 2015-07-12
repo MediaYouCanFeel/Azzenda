@@ -13,13 +13,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //dropdown init
         angular.element('select').select2({ 
-            width: '100%',
-            tags: true
-        });
-        
-        var typeSelector = document.getElementById('select2_type');
-        
-        angular.element(typeSelector).select2({
             width: '100%'
         });
         

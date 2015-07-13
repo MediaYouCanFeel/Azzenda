@@ -1,10 +1,14 @@
 'use strict';
 
 // Groups controller
-angular.module('groups').controller('GroupsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Groups', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Groups, $modal, $log) {
+angular.module('groups').controller('GroupsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Groups', 'Users', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Groups, Users, $modal, $log) {
 		$scope.authentication = Authentication;
         
+		angular.element('select').select2({ 
+            width: '100%'
+        });
+		
         //Open Modal window for creating events
         $scope.createModal = function (size) {
             
@@ -100,5 +104,13 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 				groupId: $stateParams.groupId
 			});
 		};
+		
+		//Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            console.log(response);
+            $scope.users = response;
+            console.log($scope.users);
+        };
 	}
 ]);

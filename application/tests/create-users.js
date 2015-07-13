@@ -2,10 +2,8 @@ describe('angularjs sign-up', function() {
   
     var firstName = element(by.model('credentials.firstName'));
     var lastName = element(by.model('credentials.lastName'));
-    var email = element(by.model('credentials.email'));
-    var username = element(by.model('credentials.username'));
+    var email = element(by.model('credentials.username'));
     var password = element(by.model('credentials.password'));
-    var roles = element(by.model('credentials.roles'));
     var signUpButton = element(by.id('sign-up-button'));    
     
     beforeEach(function() {
@@ -20,11 +18,8 @@ describe('angularjs sign-up', function() {
         firstName.sendKeys('Walter');
         lastName.sendKeys('White');
         email.sendKeys('heisenberg@graymatter.com');
-        username.sendKeys('Heisenberg');
+        //username.sendKeys('Heisenberg');
         password.sendKeys('password');
-        roles.sendKeys('adm');
-        roles.sendKeys(protractor.Key.ENTER);
-        
         
         signUpButton.click();
         browser.waitForAngular();

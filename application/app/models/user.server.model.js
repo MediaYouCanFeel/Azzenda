@@ -40,14 +40,12 @@ var UserSchema = new Schema({
     prefix: {
         type: String,
         trim: true,
-        default: '',
-        validate: [validateLocalStrategyProperty, 'Please fill in your prefix']
+        default: ''
     },
     suffix: {
         type: String,
         trim: true,
-        default: '',
-        validate: [validateLocalStrategyProperty, 'Please fill in your suffix']
+        default: ''
     },
 	displayName: {
 		type: String,
@@ -88,16 +86,12 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-    groups: {
+    groups: [{
         //Make this reference group schema
-        type: [{
-            group: String,
-            details: [{
-                type: String
-            }]
-        }],
-        default: [{group: 'member'}]
-    },
+        type: Schema.ObjectId,
+        ref: 'Group'
+        //default: [{group: 'member'}]
+    }],
 	/* For reset password */
 	resetPasswordToken: {
 		type: String

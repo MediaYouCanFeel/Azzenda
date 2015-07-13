@@ -13,7 +13,7 @@ var GroupSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Group name',
+		required: 'Please enter Group name',
 		trim: true
 	},
 	created: {
@@ -23,7 +23,10 @@ var GroupSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+    permissions: [{
+        type: String
+    }]
 });
 
 mongoose.model('Group', GroupSchema);

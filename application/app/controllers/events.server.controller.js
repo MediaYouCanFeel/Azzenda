@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Event = mongoose.model('Event'),
     EventType = mongoose.model('EventType'),
+    MongoPromise = require('mongoose').Types.Promise,
 	_ = require('lodash');
 
 /**
@@ -26,32 +27,24 @@ exports.create = function(req, res) {
     
     event.scheduledDateTimeRange.start = event.requestedDateTimeRange.dateTimes[0].start;
     
-    EventType.findOne({name: evType}).exec(function(err, evntType) {
-        if(evntType) {
-            var evenType = new EventType({
-                name: evType,
-                user: req.user
+    EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
+        if(err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
             });
+        } else {
+            event.type = evntType;
 
-            evenType.save(function(err, eType) {
-                if (err) {
+            event.save(function(err) {
+                if(err) {
                     return res.status(400).send({
                         message: errorHandler.getErrorMessage(err)
-                    });
+                    });   
                 } else {
-                    
+                    return res.jsonp(event);
                 }
             });
         }
-        event.save(function(err) {
-            if (err) {
-                return res.status(400).send({
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp(event);
-            }
-        });
     });
 };
 
@@ -140,8 +133,7 @@ exports.getTypes = function(req, res) {
  */
 exports.addType = function(req, res) {
     var eventType = new EventType(req.body);
-	eventType.user = req.user;
-
+	
 	eventType.save(function(err) {
 		if (err) {
 			return res.status(400).send({

@@ -16,17 +16,13 @@ var EventTypeSchema = new Schema({
 	},
 	name: {
 		type: String,
-		default: '',
+        unique: 'test error message',
 		trim: true
 	},
     archived: {
         type: Boolean,
         default: false
-    },
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	}
+    }
 });
 
 mongoose.model('EventType', EventTypeSchema);

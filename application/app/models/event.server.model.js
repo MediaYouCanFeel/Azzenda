@@ -67,8 +67,7 @@ var EventSchema = new Schema({
     },
     type: {
         type: Schema.ObjectId,
-        ref: 'EventType',
-        required: 'Please select an existing type or create a new one'
+        ref: 'EventType'
     },
     guests: [{
         user: {

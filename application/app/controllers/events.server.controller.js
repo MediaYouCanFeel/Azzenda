@@ -18,11 +18,11 @@ exports.create = function(req, res) {
 	var event = new Event(req.body);
 	event.user = req.user;
     //event.guests = {"user": req.user,"status": 'Attending'};
-    for(var dt in event.requestedDateTimeRange.dateTime) {
-        for(var param in dt.parameters) {
+    //for(var dt in event.requestedDateTimeRange.dateTime) {
+        //for(var param in dt.parameters) {
             
-        }
-    }
+        //}
+    //}
     
     event.scheduledDateTimeRange.start = event.requestedDateTimeRange.dateTimes[0].start;
     

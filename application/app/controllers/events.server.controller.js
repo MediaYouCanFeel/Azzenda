@@ -13,6 +13,8 @@ var mongoose = require('mongoose'),
  * Create an Event
  */
 exports.create = function(req, res) {
+    var evType = req.body.type;
+    delete req.body.type;
 	var event = new Event(req.body);
 	event.user = req.user;
     //event.guests = {"user": req.user,"status": 'Attending'};
@@ -24,15 +26,33 @@ exports.create = function(req, res) {
     
     event.scheduledDateTimeRange.start = event.requestedDateTimeRange.dateTimes[0].start;
     
-	event.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(event);
-		}
-	});
+    EventType.findOne({name: evType}).exec(function(err, evntType) {
+        if(evntType) {
+            var evenType = new EventType({
+                name: evType,
+                user: req.user
+            });
+
+            evenType.save(function(err, eType) {
+                if (err) {
+                    return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    
+                }
+            });
+        }
+        event.save(function(err) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(event);
+            }
+        });
+    });
 };
 
 /**

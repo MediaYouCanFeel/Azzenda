@@ -17,6 +17,7 @@ exports.signup = function(req, res) {
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
 
+    req.body.username = req.body.email;
     // Init Variables
 	var user = new User(req.body);
     //var creator = req.user;
@@ -36,7 +37,7 @@ exports.signup = function(req, res) {
             // Add missing user fields
             user.provider = 'local';
             user.displayName = user.firstName + ' ' + user.lastName;
-            user.username = user.email;
+            //user.username = user.email;
             
             var group = new Group({
                 name: 'admin',

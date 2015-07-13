@@ -10,6 +10,8 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 exports.createUser = function(req, res) {
+    //req.body.username = req.body.email;
+    
     // Init Variables
 	var user = new User(req.body);
     //var creator = req.user;
@@ -17,7 +19,7 @@ exports.createUser = function(req, res) {
     // Add missing user fields
     user.provider = 'local';
     user.displayName = user.firstName + ' ' + user.lastName;
-    user.username = user.email;
+    //user.username = user.email;
 
     // Then save the user 
     user.save(function(err) {

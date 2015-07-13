@@ -12,6 +12,15 @@
                         Examples: "Delivery People", "Cooks"
                     </div>
                 </div>
+                
+                <!-- Add to Group -->
+                <div class="form-group">
+                   <label class="control-label" for="members">Members</label>
+                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="members" id="members" data-ng-init="findUsers()">
+                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                   </select>
+				</div> 
+                
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>
@@ -23,7 +32,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input type="submit" ng-click="create()" class="btn btn-yellow" value="Create Group">
+                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Group">
                         </div>
                     </div>
                 </div>

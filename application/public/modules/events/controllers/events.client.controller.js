@@ -332,15 +332,20 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
     
         //TIMEPICKER OPTIONS
         $scope.mytime = new Date();
-        $scope.timeFromModal = new Date();
         
-        $scope.hstep = 1;
-        $scope.mstep = 1;
-
+        $scope.timeFromModal = new Date();
+        $scope.timeFromModal.setMinutes(0);
+        $scope.oldTimeFromModal = $scope.timeFromModal;
+        
+        $scope.firstCall = new Date();
+        
         $scope.options = {
             hstep: [1, 2, 3],
             mstep: [1, 5, 10, 15, 25, 30]
         };
+        
+        $scope.hstep = 1;
+        $scope.mstep = 1;
 
         $scope.ismeridian = true;
         $scope.toggleMode = function() {
@@ -351,15 +356,21 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             var d = new Date();
             d.setHours( 14 );
             d.setMinutes( 0 );
-            $scope.mytime = d;
+            $scope.timeFromModal = d;
         };
 
         $scope.changed = function () {
-            $log.log('Time changed to: ' + $scope.mytime);
+        	if ((new Date() - $scope.firstCall) <= 40) {
+        		$scope.timeFromModal = $scope.oldTimeFromModal;
+        	} else {
+        		$scope.oldTimeFromModal = $scope.timeFromModal;
+        		$scope.firstCall = new Date();
+                $log.log('Time changed to: ' + $scope.timeFromModal);
+        	}
         };
 
         $scope.timepickerClear = function() {
-            $scope.mytime = null;
+            $scope.timeFromModal = null;
         };    
         
         //Combining Date & Time fields

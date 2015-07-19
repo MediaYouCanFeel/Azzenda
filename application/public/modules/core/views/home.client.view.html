@@ -9,8 +9,10 @@
     </div>
     <div class="text-center" style="padding-top:20px;" data-ng-if="showSignUp()">
         <span>
-            <a href="/#!/signup" class="btn btn-teal"> Sign-up </a>
-            or
+        	<span data-ng-if="!userExists()">
+	            <a href="/#!/signup" class="btn btn-teal"> Sign-up </a>
+   		         or
+            </span>
             <a href="/#!/signin" class="btn btn-default"> Sign-in </a>
         </span>
     </div>

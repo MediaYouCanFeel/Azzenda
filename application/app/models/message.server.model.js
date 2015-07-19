@@ -10,17 +10,17 @@ var mongoose = require('mongoose'),
  * Message Schema
  */
 var MessageSchema = new Schema({
-	name: {
+	content: {
 		type: String,
 		default: '',
-		required: 'Please fill Message name',
+		required: 'Please fill Message content',
 		trim: true
 	},
-	created: {
+	sent: {
 		type: Date,
 		default: Date.now
 	},
-	user: {
+	from: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	}

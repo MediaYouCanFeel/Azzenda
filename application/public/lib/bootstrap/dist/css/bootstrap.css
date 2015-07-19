@@ -6964,4 +6964,59 @@ button.close {
   padding-top: 2px;
 }
 
+.message-well {
+  margin-bottom: 25px;
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;  
+}
+
+.message-img-outer {
+  margin-right:20px;
+}
+
+.message-img {
+  margin-top: 5px;
+  border: 1px solid #FFC551;
+  border-radius: 4px;
+}
+
+.new-message {
+  margin-top: 0px;
+  margin-bottom: 10px;	
+}
+
+.old-message {
+  margin-top: 5px;
+  padding: 5px;
+  height: 80px;
+  background-color: #FFFFFF;
+  max-height: 80px;
+  overflow: auto;
+  border: 1px solid #FFC551;
+  border-radius: 4px;
+/*  overflow:hidden;
+  text-overflow:ellipsis; */
+}
+
+.message-header-outer {
+  
+  margin-left: -10px;
+  margin-right: -10px;
+  background-color: #008080;
+}
+
+.message-header-inner {
+  height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;	
+}
+
+.message-header-buttons {
+  margin-top: -5px;
+}
+
 /*# sourceMappingURL=bootstrap.css.map */

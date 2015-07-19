@@ -9,7 +9,7 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Message object
 			var message = new Messages ({
-				name: this.name
+				content: this.content
 			});
 
 			// Redirect after save
@@ -17,7 +17,7 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 				$location.path('messages/' + response._id);
 
 				// Clear form fields
-				$scope.name = '';
+				$scope.content = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

@@ -1,8 +1,65 @@
 <section data-ng-controller="MessagesController" data-ng-init="find()">
     <div class="well top-well">
         <h1>Messages</h1>
+        <span class="pull-right">
+	        <strong class="btn btn-yellow create-button" ng-click="createModal('lg')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Conversation</strong>
+       </span>
     </div>
-    <div class="list-group">
+    
+    <div data-ng-repeat="message in messages">
+    	<div class="col-md-4 ">
+    		<div class="well message-well message-crop">
+    			<!-- Name + Header -->
+    			<div class="row">
+    				<div class="message-header-outer">
+	    				<div class="col-md-12">
+	                    	<div class="btn-teal message-header-inner">
+	                    		<span>
+	                    			<div class="col-md-6">Walter White</div>
+	                    			<div class="col-md-6 message-header-buttons">
+		                    			<div class="btn btn-orange fa fa-times pull-right"></div>
+	                    				<div class="btn btn-orange fa fa-expand pull-right"></div>
+	                    				
+	                    			</div>
+	                    		</span>
+	                    	</div>
+	                    </div>
+                    </div>
+    			</div>
+    			
+    			<!-- Pic + old messages -->
+    			<div class="row">
+    				<!-- Pic -->
+    				<div class="col-md-3">
+		    			<img class="message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="80" width="80">     				
+    				</div>
+    				
+    				<!-- Old messages -->
+    				<div class="col-md-9 ">
+    						<p class="old-message" data-ng-bind="message.content">This is an old message from Walter. He is the one who knocks. He also likes to talk a lot and make really really long messages.</p>    					
+    				</div>
+    			</div>
+    			
+    			<!-- New Message -->
+    			<div class="row">
+    				<div class="col-md-12 controls new-message">
+                    	<textarea class="form-control" placeholder="Your message here." rows="1" required></textarea>
+                    </div>		
+    			</div>
+    			
+    			<!-- Send button -->
+    			<div class="row">
+    				<div class="col-md-12">
+	    				<div class="col-md-3 col-md-offset-9 btn btn-blue">
+	    					<div>Send</div>
+	    				</div>
+    				</div>	
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!--  <div class="list-group">
         <a data-ng-repeat="message in messages" data-ng-href="#!/messages/{{message._id}}" class="list-group-item">
 			<small class="list-group-item-text">
 				Posted on
@@ -12,7 +69,7 @@
 			</small>
 			<h4 class="list-group-item-heading" data-ng-bind="message.name"></h4>
         </a>
-    </div>
+    </div> -->
     <div class="alert alert-warning text-center" data-ng-hide="!messages.$resolved || messages.length">
     	No Messages yet, why don't you <a href="/#!/messages/create">create one</a>?
     </div>

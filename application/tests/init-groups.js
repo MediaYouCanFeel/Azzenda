@@ -1,6 +1,7 @@
 describe('angularjs group creation', function() {
   
     var groupName = element(by.model('name'));
+    var groupMembers = element(by.model('members'));
     var createButton = element(by.id('create-group-button'));    
     var newButton = element(by.id('new-group-button'));
     
@@ -11,6 +12,7 @@ describe('angularjs group creation', function() {
     it('should allow the creation of White Family Members', function() {
         newButton.click();
         groupName.sendKeys('White Family Members');
+        
         createButton.click();
        
         browser.waitForAngular();

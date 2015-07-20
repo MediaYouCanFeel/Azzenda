@@ -23,6 +23,14 @@ var MessageSchema = new Schema({
 	from: {
 		type: Schema.ObjectId,
 		ref: 'User'
+	},
+	picturePath: {
+		type: String,
+		default: ''
+	},
+	recipient: {
+		type: String,
+		default: ''
 	}
 });
 

@@ -9,7 +9,9 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Message object
 			var message = new Messages ({
-				content: this.content
+				content: this.content,
+				recipient: this.recipient,
+				picturePath: this.picturePath
 			});
 
 			// Redirect after save

@@ -7001,7 +7001,6 @@ button.close {
 }
 
 .message-header-outer {
-  
   margin-left: -10px;
   margin-right: -10px;
   background-color: #008080;
@@ -7023,6 +7022,12 @@ button.close {
 
 .sign-in-button {
   margin-top: 10px;
+}
+
+.header-teal {
+    background-image: linear-gradient(to bottom, #00a0a0 0%, #008080 100%);
+    background-repeat: repeat-x;
+    border-color: #008080;
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

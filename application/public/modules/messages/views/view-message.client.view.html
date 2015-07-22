@@ -1,21 +1,54 @@
 <section data-ng-controller="MessagesController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="message.name"></h1>
+	<div class="well top-well">
+		<h1 data-ng-bind="message.content"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == message.user._id))">
-		<a class="btn btn-primary" href="/#!/messages/{{message._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
+
+	<div class="col-md-12 well">
+		<!-- Header -->
+		<div class="row conversation-header">
+			Walter White
+		</div>
+		<!-- Messages -->
+		<div class="row messages-area">
+			<!-- Other Message -->
+			<div class="row">
+				<div class="col-md-8">
+					<img class="message-img other-message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="80" width="80">
+					<p class="other-message-text">I mean, what kind of example do we want to set here, right? I mean, can't we at least just sit down and eat a piece of pizza together? Just hash things out like adults?</p>
+				</div>
+			</div>
+			
+			<!-- Your Message -->
+			<div class="row">
+				<div class="col-md-8 col-md-offset-4">
+					<div class="">
+						<span>
+							<p class="your-message-text">We have discussed everything we need to discuss. I thought I made myself very clear. </p>
+						</span>
+						<img class="your-message-img message-img" src="/lib/pictures/Skyler.jpg" alt="Skyler" height="80" width="80">		
+					</div>
+				</div>
+			</div>
+			
+			<!-- Other Message -->
+			<div class="row">
+				<div class="col-md-8">
+					<img class="message-img other-message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="80" width="80">
+					<p class="other-message-text bottom-other-text">I got dipping sticks.</p>
+				</div>
+			</div>
+			
+			
+		</div>
+		
+		<!-- Reply -->
+		<div class="row">
+			<div class="col-md-12 controls new-message-convo">
+   	           	<textarea class="form-control" placeholder="Your message here." rows="1" required></textarea>
+               </div>	
+		</div>
+		
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="message.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="message.user.displayName"></span>
-		</em>
-	</small>
+
+
 </section>

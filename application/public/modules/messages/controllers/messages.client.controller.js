@@ -1,10 +1,55 @@
 'use strict';
 
 // Messages controller
-angular.module('messages').controller('MessagesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Messages',
-	function($scope, $stateParams, $location, Authentication, Messages) {
+angular.module('messages').controller('MessagesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Messages', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Messages, $modal, $log) {
 		$scope.authentication = Authentication;
 
+		//Open Modal window for reading conversations
+        $scope.conversationModal = function (messageId) {
+            
+        	console.log("Message ID: " + messageID);
+        	
+        	$scope.message = Messages.get({ 
+				messageId: messageId
+			});
+        	
+        	
+        	
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/messages/views/create-message.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  $scope.eventTypes = Events.getTypes();
+                                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: 'lg',
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+		
+		
 		// Create new Message
 		$scope.create = function() {
 			// Create new Message object

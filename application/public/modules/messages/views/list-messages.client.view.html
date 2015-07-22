@@ -2,7 +2,7 @@
     <div class="well top-well">
         <h1>Messages</h1>
         <span class="pull-right">
-	        <strong class="btn btn-yellow create-button" ng-click="createModal('lg')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Conversation</strong>
+	        <a class="btn btn-yellow create-button" ng-href="/#!/messages/create" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Conversation</a>
        </span>
     </div>
     
@@ -17,9 +17,12 @@
 	                    		<span>
 	                    			<div class="col-md-7" style="color: #FFFFFF">{{message.recipient}}</div>
 	                    			<div class="col-md-5">
-	                    				<div class="row message-header-buttons">
+	                    				<div class="row message-header-buttons">	                    					
+	                    					<!-- Close -->
 			                    			<div class="btn btn-orange fa fa-times pull-right"></div>
-		                    				<div class="btn btn-orange fa fa-expand pull-right"></div>
+		                    				
+		                    				<!-- Expand -->
+		                    				<a href="/#!/messages/{{message._id}}" class="btn btn-orange fa fa-expand pull-right"></a>
 	                    				</div>
 	                    			</div>
 	                    		</span>

@@ -1,8 +1,8 @@
 'use strict';
 
 // Messages controller
-angular.module('messages').controller('MessagesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Messages', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Messages, $modal, $log) {
+angular.module('messages').controller('MessagesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Messages', 'Users', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Messages, Users, $modal, $log) {
 		$scope.authentication = Authentication;
 
 		//Open Modal window for reading conversations
@@ -51,14 +51,24 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
             });
         };
 		
-		
 		// Create new Message
 		$scope.create = function() {
+			console.log($scope.usrs);
+			var userss = [];
+			var usr;
+			for(usr in $scope.usrs) {
+				console.log(usr);
+				userss.push({recipientType: 'User', recipient: usr._id});
+			}
+			
 			// Create new Message object
 			var message = new Messages ({
-				content: this.content,
-				recipient: this.recipient,
-				picturePath: this.picturePath
+				name: this.name,
+				message: {
+					content: this.content
+				},
+				recipients: userss
+				//picturePath: this.picturePath
 			});
 
 			// Redirect after save

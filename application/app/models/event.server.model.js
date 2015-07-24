@@ -96,6 +96,7 @@ var EventSchema = new Schema({
 
 EventSchema.methods.getUsersForMessage = function() {
 	var usrs = [];
+	var guest;
 	for(guest in this.guests) {
 		usrs.push(guest.user);
 	}

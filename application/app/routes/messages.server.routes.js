@@ -10,9 +10,9 @@ module.exports = function(app) {
 		.post(users.requiresLogin, messages.create);
 
 	app.route('/messages/:messageId')
-		.get(messages.read)
-		.put(users.requiresLogin, messages.hasAuthorization, messages.update)
-		.delete(users.requiresLogin, messages.hasAuthorization, messages.delete);
+		.get(users.requiresLogin,messages.read)
+		.put(users.requiresLogin, messages.update)
+		.delete(users.requiresLogin, messages.delete);
 
 	// Finish by binding the Message middleware
 	app.param('messageId', messages.messageByID);

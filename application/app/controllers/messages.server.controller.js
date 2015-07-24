@@ -28,10 +28,10 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			var getAllUsersPromise = Promise(function(resolve,reject) {
+			var getAllUsersPromise = new Promise(function(resolve,reject) {
 				resolve([]);
 			});
-			
+			var recip;
 			for(recip in recips) {
 				getAllUsersPromise = getAllUsersPromise.then(function(usrs) {
 					if(recip.recipientType == "User") {
@@ -149,9 +149,9 @@ exports.addMessage = function(req, res) {
  * Message middleware
  */
 exports.messageByID = function(req, res, next, id) { 
-	MessageThread.findById(id).exec(function(err, message) {
+	MessageThread.findById(id).exec(function(err, messageThread) {
 		if (err) return next(err);
-		if (! message) return next(new Error('Failed to load Message Thread ' + id));
+		if (! messageThread) return next(new Error('Failed to load Message Thread ' + id));
 		req.messageThread = messageThread;
 		next();
 	});

@@ -21,8 +21,8 @@
 	                    					<!-- Close -->
 			                    			<div class="btn btn-orange fa fa-times pull-right"></div>
 		                    				
-		                    				<!-- Expand -->
-		                    				<a href="/#!/messages/{{message._id}}" class="btn btn-orange fa fa-expand pull-right"></a>
+		                    				<!-- Expand href="/#!/messages/{{message._id}}" -->
+		                    				<a ng-click="createModal(message._id)" class="btn btn-orange fa fa-expand pull-right"></a>
 	                    				</div>
 	                    			</div>
 	                    		</span>
@@ -35,12 +35,12 @@
     			<div class="row">
     				<!-- Pic -->
     				<div class="col-md-3">
-		    			<img class="message-img" src={{message.picturePath}} alt="Walter" height="80" width="80">     				
+		    			<img class="message-img" src="{{message.picturePath}}" alt="Walter" height="80" width="80">     				
     				</div>
     				
     				<!-- Old messages -->
     				<div class="col-md-9 ">
-    						<p class="old-message" data-ng-bind="message.content">This is an old message from Walter. He is the one who knocks. He also likes to talk a lot and make really really long messages.</p>    					
+    						<p class="old-message" data-ng-bind="message.content"></p>					
     				</div>
     			</div>
     			

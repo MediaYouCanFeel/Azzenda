@@ -6,22 +6,23 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 		$scope.authentication = Authentication;
 
 		//Open Modal window for reading conversations
-        $scope.conversationModal = function (messageId) {
+		$scope.createModal = function (messageId) {
             
-        	console.log("Message ID: " + messageID);
-        	
-        	$scope.message = Messages.get({ 
-				messageId: messageId
-			});
-        	
-        	
-        	
+//			$scope.message = Messages.get({ 
+//				messageId: '55ac6a6f82315db44227fbca'
+//			});
+//			
+//			var message = $scope.message;
+//			
+//			console.log(message);
+			
+			$stateParams.messageId = messageId;
+			
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
-              templateUrl: 'modules/messages/views/create-message.client.view.html',
+              templateUrl: 'modules/messages/views/view-message.client.view.html',
               controller: function ($scope, $modalInstance, items) {
                   console.log('In Modal Controller');
-                  $scope.eventTypes = Events.getTypes();
                                   
                   $scope.ok = function () {
                       //$scope.selected.event
@@ -32,6 +33,7 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
                     $modalInstance.dismiss('cancel');
                   };
               },
+              scope: $scope,
               size: 'lg',
               resolve: {
                 items: function () {
@@ -42,8 +44,8 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
             
             //modalInstance.opened.then($scope.initModal);
             
-            modalInstance.result.then(function (selectedEvent) {
-              $scope.selected = selectedEvent;
+            modalInstance.result.then(function () {
+              
             }, function () {
               $log.info('Modal dismissed at: ' + new Date());
             });

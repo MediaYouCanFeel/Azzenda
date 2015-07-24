@@ -7046,39 +7046,37 @@ button.close {
   margin-right: -10px;
 }
 
-.other-message-text {
-  background-color: #4565B0;
-  color: #FFFFFF;
-  border-style: solid;
-  border-color: #051F59;
-  padding: 5px;
-  margin-left: 100px;
-  margin-top: -80px;
+.message-img {
+	
 }
 
-.bottom-other-text {
-	margin-bottom: 80px;
+.message-name {
+  margin-left: 50px;
+  margin-top: -40px;
+  font-weight: bold;
 }
 
-.your-message-text {
-  background-color: #FFC551;
-  color: #000000;
-  border-style: solid;
-  border-color: #845800;
-  padding: 5px;
-  margin-top: 7px;
-  margin-right: 10px;
+.message-text {
+  margin-top: -10px;
+  margin-left: 50px;
 }
 
-.other-message-img {
-  margin-left: 10px;
+.message-item {
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-.your-message-img {
-  margin-right: 10px;
+.message-time {
+  font-weight: normal;
 }
 
 .new-message-convo {
+  margin-top: 10px;
+}
+
+.send-button {
+  width: 100px;
   margin-top: 10px;
 }
 

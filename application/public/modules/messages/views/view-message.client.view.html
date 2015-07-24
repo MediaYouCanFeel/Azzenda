@@ -1,43 +1,59 @@
 <section data-ng-controller="MessagesController" data-ng-init="findOne()">
-	<div class="well top-well">
-		<h1 data-ng-bind="message.content"></h1>
-	</div>
-
 	<div class="col-md-12 well">
 		<!-- Header -->
 		<div class="row conversation-header">
-			Walter White
+			{{message.recipient}}
 		</div>
 		<!-- Messages -->
-		<div class="row messages-area">
-			<!-- Other Message -->
-			<div class="row">
-				<div class="col-md-8">
-					<img class="message-img other-message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="80" width="80">
-					<p class="other-message-text">I mean, what kind of example do we want to set here, right? I mean, can't we at least just sit down and eat a piece of pizza together? Just hash things out like adults?</p>
-				</div>
+		<div class="row list-group">
+			<!-- <div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="40" width="40">
+				<p class="message-name"> Walter White</p>
+				<p class="message-text">I mean, what kind of example do we want to set here, right? I mean, can't we at least just sit down and eat a piece of pizza together? Just hash things out like adults?</p>
+				
 			</div>
 			
-			<!-- Your Message -->
-			<div class="row">
-				<div class="col-md-8 col-md-offset-4">
-					<div class="">
-						<span>
-							<p class="your-message-text">We have discussed everything we need to discuss. I thought I made myself very clear. </p>
-						</span>
-						<img class="your-message-img message-img" src="/lib/pictures/Skyler.jpg" alt="Skyler" height="80" width="80">		
-					</div>
-				</div>
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Skyler.jpg" alt="Skyler" height="40" width="40">
+				<p class="message-name"> Skyler White (You) </p>
+				<p class="message-text">We have discussed everything we need to discuss. I thought I made myself very clear. </p>
 			</div>
 			
-			<!-- Other Message -->
-			<div class="row">
-				<div class="col-md-8">
-					<img class="message-img other-message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="80" width="80">
-					<p class="other-message-text bottom-other-text">I got dipping sticks.</p>
-				</div>
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="40" width="40">
+				<p class="message-name"> Walter White </p>
+				<p class="message-text">I got dipping sticks.</p>
+			</div> -->			
+			
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Hank.jpg" alt="Hank" height="40" width="40">
+				<p class="message-name"> Hank Schrader (You) </p>
+				<p class="message-text">It says, "To W.W., my star, my perfect silence." W.W., I mean, who do you figure that is?</p>
 			</div>
 			
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Hank.jpg" alt="Hank" height="40" width="40">
+				<p class="message-name"> Hank Schrader (You) </p>
+				<p class="message-text">Woodrow Wilson? </p>
+			</div>
+			
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Hank.jpg" alt="Hank" height="40" width="40">
+				<p class="message-name"> Hank Schrader (You) </p>
+				<p class="message-text">Willy Wonka? </p>
+			</div>
+			
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Hank.jpg" alt="Hank" height="40" width="40">
+				<p class="message-name"> Hank Schrader (You) </p>
+				<p class="message-text"> Walter White? </p>
+			</div>
+			
+			<div class="list-group-item message-item">
+				<img class="message-img" src="/lib/pictures/Walter.jpg" alt="Walter" height="40" width="40">
+				<p class="message-name"> Walter White </p>
+				<p class="message-text">You got me.</p>
+			</div>
 			
 		</div>
 		
@@ -46,6 +62,15 @@
 			<div class="col-md-12 controls new-message-convo">
    	           	<textarea class="form-control" placeholder="Your message here." rows="1" required></textarea>
                </div>	
+		</div>
+		
+		<!-- Send button -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-3 col-md-offset-9 btn btn-blue pull-right send-button">
+					<div>Send</div>
+				</div>
+			</div>	
 		</div>
 		
 	</div>

@@ -24,9 +24,21 @@ var GroupSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+	users: [{
+		type: Schema.ObjectId,
+		ref: 'User'
+	}],
+    messageThreads: [{
+    	type: Schema.ObjectId,
+    	ref: 'MessageThread'
+    }],
     permissions: [{
         type: String
     }]
 });
+
+GroupSchema.methods.getUsersForMessage = function() {
+	return this.users;
+};
 
 mongoose.model('Group', GroupSchema);

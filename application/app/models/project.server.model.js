@@ -40,10 +40,22 @@ var ProjectSchema = new Schema({
         trim: true,
         enum: ['Not Started', 'In Progress', 'Completed']
     },
+    users: [{
+    	type: Schema.ObjectId,
+    	ref: 'User'
+    }],
+    messageThreads: [{
+    	type: Schema.ObjectId,
+    	ref: 'MessageThread'
+    }],
     archived: {
         type: Boolean,
         default: false
     }
 });
+
+ProjectSchema.methods.getUsersForMessage = function() {
+	return this.users;
+};
 
 mongoose.model('Project', ProjectSchema);

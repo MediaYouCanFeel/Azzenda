@@ -9,29 +9,39 @@ var mongoose = require('mongoose'),
 /**
  * Message Schema
  */
-var MessageSchema = new Schema({
-	content: {
+var MessageThreadSchema = new Schema({
+	name: {
 		type: String,
-		default: '',
-		required: 'Please fill Message content',
 		trim: true
 	},
-	sent: {
-		type: Date,
-		default: Date.now
-	},
-	from: {
+	messages: [{
+		content: {
+			type: String,
+			default: '',
+			required: 'Please fill Message content',
+			trim: true
+		},
+		sent: {
+			type: Date,
+			default: Date.now
+		},
+		from: {
+			type: Schema.ObjectId,
+			ref: 'User'
+		}
+	}],
+	recipients: [{
 		type: Schema.ObjectId,
 		ref: 'User'
-	},
-	picturePath: {
-		type: String,
-		default: ''
-	},
-	recipient: {
-		type: String,
-		default: ''
+	}],
+	archived: {
+		type: Boolean,
+		default: false
 	}
 });
 
-mongoose.model('Message', MessageSchema);
+MessageThreadSchema.virtual('lastUpdate').get(function() {
+	return this.messages[this.messages.length-1].sent;
+});
+
+mongoose.model('MessageThread', MessageThreadSchema);

@@ -23,7 +23,19 @@ var TaskSchema = new Schema({
 	user: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+	users: [{
+		type: Schema.ObjectId,
+		ref: 'User'
+	}],
+    messageThreads: [{
+    	type: Schema.ObjectId,
+    	ref: 'MessageThread'
+    }]
 });
+
+TaskSchema.methods.getUsersForMessage = function() {
+	return this.users;
+};
 
 mongoose.model('Task', TaskSchema);

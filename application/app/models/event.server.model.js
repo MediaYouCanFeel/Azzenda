@@ -87,7 +87,19 @@ var EventSchema = new Schema({
     },
     scheduleParameters: [{
         type: String
+    }],
+    messageThreads: [{
+    	type: Schema.ObjectId,
+    	ref: 'MessageThread'
     }]
 });
+
+EventSchema.methods.getUsersForMessage = function() {
+	var usrs = [];
+	for(guest in this.guests) {
+		usrs.push(guest.user);
+	}
+	return usrs;
+};
 
 mongoose.model('Event', EventSchema);

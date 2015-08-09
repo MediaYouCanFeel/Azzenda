@@ -12,6 +12,7 @@ module.exports = function(app) {
 	app.route('/messages/:messageId')
 		.get(users.requiresLogin,messages.read)
 		.put(users.requiresLogin, messages.update)
+		.post(users.requiresLogin, messages.addMessage)
 		.delete(users.requiresLogin, messages.delete);
 
 	// Finish by binding the Message middleware

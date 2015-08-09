@@ -129,7 +129,7 @@ exports.list = function(req, res) {
 };
 
 exports.addMessage = function(req, res) {
-	var message = req.body;
+	var message = {content: req.message};
 	message.from = req.user;
 	var messageThread = req.messageThread;
 	messageThread.messages.append(message);

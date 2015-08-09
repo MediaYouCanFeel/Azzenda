@@ -7,6 +7,9 @@ angular.module('messages').factory('Messages', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			addMessage: {
+				method: 'POST'
 			}
 		});
 	}

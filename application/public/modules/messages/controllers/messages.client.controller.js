@@ -114,6 +114,13 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 				$scope.error = errorResponse.data.message;
 			});
 		};
+		
+		$scope.addMessage = function() {
+			Messages.addMessage({
+				messageId: $stateParams.messageId,
+				message: "Your message here",
+			});
+		}
 
 		// Find a list of Messages
 		$scope.find = function() {

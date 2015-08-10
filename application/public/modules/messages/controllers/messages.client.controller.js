@@ -5,6 +5,11 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 	function($scope, $stateParams, $location, Authentication, Messages, Users, $modal, $log) {
 		$scope.authentication = Authentication;
 
+		//dropdown init
+        angular.element('select').select2({ 
+            width: '100%'
+        });
+		
 		//Open Modal window for reading conversations
 		$scope.createModal = function (messageId) {
             
@@ -121,5 +126,13 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 				messageId: $stateParams.messageId
 			});
 		};
+		
+		//Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            console.log(response);
+            $scope.users = response;
+            console.log($scope.users);
+        };
 	}
 ]);

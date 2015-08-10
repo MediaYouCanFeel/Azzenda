@@ -1,18 +1,20 @@
 <section data-ng-controller="MessagesController">
-    <div class="page-header">
-        <h1>New Message</h1>
+    <div class="well top-well">
+        <h1>New Conversation</h1>
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
                 <div class="form-group">
+                    <label class="control-label" for="recipients" data-ng-init="findUsers();">Recipients</label>
+                    <div class="controls">
+                        <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="guests" id="users">
+                        	<option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                         </select>
+                    </div>
                     <label class="control-label" for="content">Content</label>
                     <div class="controls">
                         <input type="text" data-ng-model="content" id="content" class="form-control" placeholder="Content" required>
-                    </div>
-                    <label class="control-label" for="name">Conversation Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Pool Party" required>
                     </div>
                     <label class="control-label" for="picturePath">Picture Path</label>
                     <div class="controls">

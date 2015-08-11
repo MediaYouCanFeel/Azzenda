@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="control-label" for="recipients" data-ng-init="findUsers();">Recipients</label>
                     <div class="controls">
-                        <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="guests" id="users">
+                        <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="recipients" id="users">
                         	<option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
                          </select>
                     </div>

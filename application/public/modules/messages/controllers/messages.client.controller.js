@@ -58,12 +58,12 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 		
 		// Create new Message
 		$scope.create = function() {
-			console.log($scope.usrs);
+			var recip = this.recipients;
+			console.log(recip);
 			var userss = [];
-			var usr;
-			for(usr in $scope.usrs) {
-				console.log(usr);
-				userss.push({recipientType: 'User', recipient: usr._id});
+			for(var i = 0; i < recip.length; i++) {
+				console.log(recip[i]);
+				userss.push({recipientType: 'User', recipient: recip[i]});
 			}
 			
 			// Create new Message object

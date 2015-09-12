@@ -5,6 +5,11 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 	function($scope, $stateParams, $location, Authentication, Messages, Users, $modal, $log) {
 		$scope.authentication = Authentication;
 
+		//dropdown init
+        angular.element('select').select2({ 
+            width: '100%'
+        });
+		
 		//Open Modal window for reading conversations
 		$scope.createModal = function (messageId) {
             
@@ -53,12 +58,12 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 		
 		// Create new Message
 		$scope.create = function() {
-			console.log($scope.usrs);
+			var recip = this.recipients;
+			console.log(recip);
 			var userss = [];
-			var usr;
-			for(usr in $scope.usrs) {
-				console.log(usr);
-				userss.push({recipientType: 'User', recipient: usr._id});
+			for(var i = 0; i < recip.length; i++) {
+				console.log(recip[i]);
+				userss.push({recipientType: 'User', recipient: recip[i]});
 			}
 			
 			// Create new Message object
@@ -128,5 +133,13 @@ angular.module('messages').controller('MessagesController', ['$scope', '$statePa
 				messageId: $stateParams.messageId
 			});
 		};
+		
+		//Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            console.log(response);
+            $scope.users = response;
+            console.log($scope.users);
+        };
 	}
 ]);

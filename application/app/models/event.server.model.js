@@ -40,9 +40,6 @@ var EventSchema = new Schema({
         },
         end: {
             type: Date
-        },
-        length: {
-            type: Number
         }
     },
     requestedDateTimeRange: {
@@ -77,30 +74,12 @@ var EventSchema = new Schema({
         status: {
             type: String,
             enum: ['pending', 'attending','declined']
-        },
-        parameters: [{
-            type: String
-        }]
+        }
     }],
     status: {
-        type: String
-    },
-    scheduleParameters: [{
-        type: String
-    }],
-    messageThreads: [{
-    	type: Schema.ObjectId,
-    	ref: 'MessageThread'
-    }]
+        type: String,
+        enum: ['pending','scheduled','canceled','unschedulable']
+    }
 });
-
-EventSchema.methods.getUsersForMessage = function() {
-	var usrs = [];
-	var guest;
-	for(guest in this.guests) {
-		usrs.push(guest.user);
-	}
-	return usrs;
-};
 
 mongoose.model('Event', EventSchema);

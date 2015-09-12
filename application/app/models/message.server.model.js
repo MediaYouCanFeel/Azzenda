@@ -30,11 +30,7 @@ var MessageThreadSchema = new Schema({
 			ref: 'User'
 		}
 	}],
-	recipients: [{
-		type: Schema.ObjectId,
-		ref: 'User'
-	}],
-	archived: {
+	notification: {
 		type: Boolean,
 		default: false
 	}

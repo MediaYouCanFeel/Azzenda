@@ -25,10 +25,6 @@ var validateLocalStrategyPassword = function(password) {
  * User Schema
  */
 var UserSchema = new Schema({
-	profilePic: {
-		data: Buffer,
-		contentType: String
-	},
 	firstName: {
 		type: String,
 		trim: true,
@@ -95,6 +91,10 @@ var UserSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Group'
         //default: [{group: 'member'}]
+    }],
+    messageThreads: [{
+    	type: Schema.ObjectId,
+    	ref: 'MessageThread'
     }],
 	/* For reset password */
 	resetPasswordToken: {

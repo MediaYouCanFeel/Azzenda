@@ -5,7 +5,7 @@
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
                 <div class="row" ng-init="createPage=1; findProjects(); findEventTypes();">
-                    <div class="col-md-5 modal-col" ng-show="createPage == 1">
+                    <div class="modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
                         <div class="form-group">
@@ -61,7 +61,8 @@
 
                     </div>
                 
-                    <div class="col-md-7 modal-col" ng-show="createPage == 1" ng-init="fixedDate=true">
+                	<!-- PAGE 2 -->
+                    <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
                         <!-- Fixed/Range -->
                         <div class="form-group">
@@ -171,8 +172,8 @@
                     </div>
                      </div>
                     
-                    <!-- PAGE 2 -->
-                    <div class="col-md-6 modal-col" ng-show="createPage == 2" ng-init="findUsers()">
+                    <!-- PAGE 3 -->
+                    <div class="col-md-6 modal-col" ng-show="createPage == 3" ng-init="findUsers()">
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         
                         <!-- Required Guests -->
@@ -184,7 +185,7 @@
 					    </div> 
                     </div>
                     
-                    <div class="col-md-6 modal-col" ng-show="createPage == 2">
+                    <div class="col-md-6 modal-col" ng-show="createPage == 3">
                         <div class="text-center modal-heading"><u>Additional Guests</u></div>
                         
                         <!-- Additional Guests -->
@@ -210,8 +211,8 @@
                         </div>
                     </div>
                 
-                <!-- PAGE 3 -->
-                <div class="col-md-6 modal-col" ng-show="createPage == 3">
+                <!-- PAGE 4 -->
+                <div class="col-md-6 modal-col" ng-show="createPage == 4">
                     <div class="text-center modal-heading"><u>Basic Info</u></div>
                     <div>Name: {{name}}</div>
                     <div>Project: {{project}}</div>
@@ -229,7 +230,7 @@
                     </div>
                 </div>
                     
-                <div class="col-md-6 modal-col" ng-show="createPage == 3">
+                <div class="col-md-6 modal-col" ng-show="createPage == 4">
                     <div>Groups Needed:</div>
                     <div ng-repeat="groupNeeded in groupsNeeded" data-ng-init="thisGroup = findGroup(groupNeeded)">
                         {{groupValues['field_' + $index]}} {{thisGroup.name}}
@@ -238,32 +239,44 @@
                     
                 <div class="row">
                     <div class="col-md-12 modal-buttons-events">
+                        
+                        <!-- 1 to 2 -->
                         <div class="form-group pull-right" ng-show="createPage == 1">
                             <script type="javascript">
                             
                             </script>
-                            <div ng-click="createPage = 2; combineDateTimes(dateFromModal, timeFromModal, earliestDateFromModal, earliestTimeFromModal, latestDateFromModal, latestTimeFromModal);" class="btn btn-blue"> Invites &nbsp; <i class="fa fa-arrow-right"></i> </div>
+                            <div ng-click="createPage = 2; combineDateTimes(dateFromModal, timeFromModal, earliestDateFromModal, earliestTimeFromModal, latestDateFromModal, latestTimeFromModal);" class="btn btn-blue"> Time &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
+                        <!-- 2 to 1 -->
                         <div class="form-group pull-left" ng-show="createPage == 2">
                             <div ng-click="createPage = 1" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Info </div>
-                        </div>
-                            
+                        </div>  
+                        
+                        <!-- 2 to 3 -->
                         <div class="form-group pull-right" ng-show="createPage == 2">
-                            <div ng-click="createPage = 3" class="btn btn-blue"> Review &nbsp; <i class="fa fa-arrow-right"></i> </div>
+                            <div ng-click="createPage = 3" class="btn btn-blue"> Invites &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
-                        
-                        
-                        
-                        <div class="row">
-                            <div class="form-group pull-left" ng-show="createPage == 3">
-                                <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
-                            </div>    
-                            <div class="form-group pull-right" ng-show="createPage == 3">
-                                <input type="submit" class="btn btn-yellow" value="Send Invitations">
-                            </div> 
+                        <!-- 3 to 2 -->
+                        <div class="form-group pull-left" ng-show="createPage == 3">
+                            <div ng-click="createPage = 2" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Time </div>
+                        </div> 
+                            
+                        <!-- 3 to 4 -->
+                        <div class="form-group pull-right" ng-show="createPage == 3">
+                            <div ng-click="createPage = 4" class="btn btn-blue"> Review &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
+                           
+                        <!-- 4 to 3 -->
+                        <div class="form-group pull-left" ng-show="createPage == 4">
+                            <div ng-click="createPage = 3" class="btn btn-blue"> <i class="fa fa-arrow-left"></i> &nbsp; Invites </div>
+                        </div>    
+                        
+                        <!-- Submit -->    
+                        <div class="form-group pull-right" ng-show="createPage == 4">
+                            <input type="submit" class="btn btn-yellow" value="Send Invitations">
+                        </div> 
                         
                         <div class="row">
                             <div class="text-center">

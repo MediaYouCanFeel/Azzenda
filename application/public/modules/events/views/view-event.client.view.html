@@ -1,55 +1,72 @@
-<section data-ng-controller="EventsController" data-ng-init="findOne()" class="well">   
+<section data-ng-controller="EventsController" data-ng-init="findOne()">   
     <div class="row top-well">
-        <div class="col-md-8">
+        <div class="col-md-8 event-back">
             <a ng-href="/#!/events" class="btn btn-blue" style="margin-bottom: -20px;">
                 <i class="fa fa-arrow-left"></i> &nbsp; All Events
             </a>
         </div>
-        <div class="col-md-4">
-            <strong class="pull-right" data-ng-bind="event.project.name"></strong>        
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8">
-            <div class="pull-right" data-ng-bind="event.type.name"></div>
-        </div>
     </div>
     
-    <div class="row">
+    <div class="row well">
         <div class="col-md-8">
             <span class="event-name" data-ng-bind="event.name"></span>
+        </div>
+        <div class="col-md-4">
+	        <div class="row">
+	        	<strong class="pull-right event-project" data-ng-bind="event.project.name"></strong>
+	        </div>
+	        <div class="row">
+	        	<div class="pull-right event-type" data-ng-bind="event.type.name"></div>
+	        </div>
         </div>            
     </div>
+    
+    <div class="row well">
+	    <div class="col-md-8 event-host">
+	    	Hosted by  
+	    	<a ng-href="/#!/users/{{event.user._id}}">
+	    		<strong data-ng-bind="event.user.displayName"></strong>
+	    	</a>
+	    </div>
+	    <div class="col-md-4">
+	    	<div class="pull-right">
+			    <button class="btn btn-teal"><i class="fa fa-check fa-2x"></i></button>
+			    <button class="btn btn-teal"><i class="fa fa-times fa-2x"></i></button>
+			</div>
+		<div class="event-rsvp pull-right">
+		    <p> You haven't responded yet. </p>
+		    <!-- <p> You're going! </p> 
+		    <p> You can't make it. </p> -->
+		</div>    
+	    </div>
+	</div>
     
     <div class="row">
         <!-- Basic info info -->
         <div class="col-md-8">
-            <div class="top-bottom-padding">
-                <button class="btn btn-teal"><i class="fa fa-check fa-2x"></i></button>
-                <button class="btn btn-teal"><i class="fa fa-times fa-2x"></i></button>
-                <p> You haven't responded yet. </p>
-                <!-- <p> You're going! </p> 
-                <p> You can't make it. </p> -->
-            </div>
-            <div class="top-bottom-padding">
-                
-                <!-- Initializing date formatter -->
-                <span>{{readableDateFull(event.scheduledDateTimeRange.start)}}</span>
-                
-                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="printDate"></span>
-            </div>
-            
-            <div class="top-bottom-padding">
-                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
-            </div>
-            <div class="top-bottom-padding">
-                <span data-ng-bind="event.description"></span>
+        	<div class="row well">
+	            <div class="top-bottom-padding">
+	                
+	                <!-- Initializing date formatter -->
+	                <span>{{readableDateFull(event.scheduledDateTimeRange.start)}}</span>
+	                
+	                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="printDate"></span>
+	            </div>
+	            
+	            <div class="top-bottom-padding">
+	                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
+	            </div>
+	            <div class="top-bottom-padding">
+	                <span data-ng-bind="event.description"></span>
+	            </div>
             </div>
         </div>
         
         <!-- Guest list info -->
         <div class="col-md-4" class="text-center">
-        <p>Guest List</p>
+        	<div class="row well">
+		        <div class="guest-list-header">Guest List</div>
+		    </div>
         </div>
     </div>
     

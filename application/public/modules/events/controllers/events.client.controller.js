@@ -146,8 +146,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 				// Clear form fields
 				$scope.name = '';
-                
-                $scope.ok();
+				
+				$scope.ok();
+				
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});

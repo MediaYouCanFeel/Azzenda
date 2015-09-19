@@ -16,8 +16,10 @@
 				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 					<div id="info">
                         <h3 data-ng-bind="event.name"></h3>
-                        <i data-ng-bind="event.project.name"></i>
+                        <hr>
                     </div>
+                    
+                    <i data-ng-bind="event.project.name"></i>
                     
                     <!-- Initializing date formatter -->
                     <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>

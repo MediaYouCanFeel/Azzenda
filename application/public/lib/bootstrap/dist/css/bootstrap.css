@@ -1174,8 +1174,8 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
   border: 0;
   border-top: 1px solid #eee;
 }
@@ -6913,37 +6913,7 @@ button.close {
   padding-right: 10px;
 }
 
-.event-name {
-  margin-top: 10px;
-  font-size: 45px;
-}
 
-.event-proj-type {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-.event-rsvp {
-  font-size: 15px;
-  margin-top: 10px;
-  margin-right: 10px;
-}
-
-.event-rsvp-btns {
-  padding-left: 15px;
-}
-
-.event-info {
-  font-size: 20px;
-}
-
-.guest-list-header {
-  font-size: 24px;
-}
-
-.guest-well {
-  margin-left: 0px;
-}
 
 .dash-links {
   color: #000000;
@@ -7098,18 +7068,6 @@ button.close {
 .send-button {
   width: 100px;
   margin-top: 10px;
-}
-
-.event-back {
-  margin-bottom: 30px;
-}
-
-.detail-well {
-  padding-right: -5px;
-}
-
-.guest-well {
-  padding-left: -5px;
 }
 
 /*# sourceMappingURL=bootstrap.css.map */

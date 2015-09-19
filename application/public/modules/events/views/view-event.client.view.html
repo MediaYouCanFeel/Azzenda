@@ -5,40 +5,55 @@
                 <i class="fa fa-arrow-left"></i> &nbsp; All Events
             </a>
         </div>
+        <div class="pull-right">
+        	<strong class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Event</strong>
+        </div>
+        
     </div>
     
+    <!-- Top well (event name/RSVP) -->
     <div class="row well">
-        <div class="col-md-8">
-            <span class="event-name" data-ng-bind="event.name"></span>
+        <div class="col-md-8 event-name">
+            <span class="" data-ng-bind="event.name"></span>
         </div>
         <div class="col-md-4">
-	        <div class="row">
-	        	<strong class="pull-right event-project" data-ng-bind="event.project.name"></strong>
-	        </div>
-	        <div class="row">
-	        	<div class="pull-right event-type" data-ng-bind="event.type.name"></div>
-	        </div>
-        </div>            
+	    	<div class="pull-right">
+	    		<div class="row">
+	    			<div class="pull-right">
+					    <button class="btn btn-teal"><i class="fa fa-check fa-2x"></i></button>
+					    <button class="btn btn-teal"><i class="fa fa-times fa-2x"></i></button>
+				    </div>
+			    </div>
+			    <div class="row">
+				    <div class="event-rsvp">
+				    <p> You haven't responded yet. </p>
+				    <!-- <p> You're going! </p> 
+				    <p> You can't make it. </p> -->
+			</div>
+			    </div>
+			</div>    
+	    </div>        
     </div>
     
-    <div class="row well">
-	    <div class="col-md-8 event-host">
-	    	Hosted by  
-	    	<a ng-href="/#!/users/{{event.user._id}}">
-	    		<strong data-ng-bind="event.user.displayName"></strong>
-	    	</a>
-	    </div>
-	    <div class="col-md-4">
-	    	<div class="pull-right">
-			    <button class="btn btn-teal"><i class="fa fa-check fa-2x"></i></button>
-			    <button class="btn btn-teal"><i class="fa fa-times fa-2x"></i></button>
-			</div>
-		<div class="event-rsvp pull-right">
-		    <p> You haven't responded yet. </p>
-		    <!-- <p> You're going! </p> 
-		    <p> You can't make it. </p> -->
-		</div>    
-	    </div>
+    <!-- 2nd well (Host/Info) -->
+    <div class="row well event-proj-type">
+	    <div class="row">
+		    <div class="col-md-8">
+		    	Hosted by  
+		    	<a ng-href="/#!/users/{{event.user._id}}">
+		    		<strong data-ng-bind="event.user.displayName"></strong>
+		    	</a>
+		    </div>
+		    <div class="col-md-4">
+		    	<div class="pull-right">
+			    	<a ng-href="/#!/projects/{{event.project._id}}">
+			        	<strong data-ng-bind="event.project.name"> </strong>
+			        </a>
+		        	<i class="fa fa-ellipsis-v"></i>
+		        	<span data-ng-bind="event.type.name"></span>
+	        	</div>
+	        </div>  
+        </div>  
 	</div>
     
     <div class="row">
@@ -64,7 +79,7 @@
         
         <!-- Guest list info -->
         <div class="col-md-4" class="text-center">
-        	<div class="row well">
+        	<div class="row well guest-well">
 		        <div class="guest-list-header">Guest List</div>
 		    </div>
         </div>

@@ -6914,26 +6914,19 @@ button.close {
 }
 
 .event-name {
+  margin-top: 10px;
   font-size: 45px;
 }
 
-.event-project {
-  font-size: 20px;
-}
-
-.event-type {
+.event-proj-type {
   font-size: 18px;
+  margin-top: 10px;
 }
 
 .event-rsvp {
   font-size: 15px;
   margin-top: 10px;
   margin-right: 10px;
-}
-
-.event-host {
-  font-size: 15px;
-  margin-top: 10px;
 }
 
 .event-rsvp-btns {
@@ -6946,6 +6939,10 @@ button.close {
 
 .guest-list-header {
   font-size: 24px;
+}
+
+.guest-well {
+  margin-left: 0px;
 }
 
 .dash-links {

@@ -403,7 +403,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             
             //If the event is happening today
             if (moment(dateTime).subtract(1, 'days') < moment()) {
-                $scope.printDateDate = '';
+                $scope.printDateDate = 'Today at ';
                 
             } else if (moment(dateTime).subtract(7, 'days') < moment()) {
                 //If the event is less than 7 days away

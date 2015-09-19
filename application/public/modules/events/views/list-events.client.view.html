@@ -14,19 +14,28 @@
             
 			<div class="list-group">
 				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
-					<div id="info">
-                        <h3 data-ng-bind="event.name"></h3>
+					<div class="event-rep-name">
+                        <span data-ng-bind="event.name"></span>
                         <hr>
                     </div>
                     
-                    <i data-ng-bind="event.project.name"></i>
-                    
-                    <!-- Initializing date formatter -->
+                     <!-- Initializing date formatter -->
                     <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
+                    <div class="event-rep-date" data-ng-bind="printDate"></div>
+                    
+                    <div data-ng-bind="event.location.loc"></div>
+                    
+                   	<div class="row">
+			    	<div class="pull-right">
+			    	<strong data-ng-bind="event.project.name"> </strong>
+			        
+			        <i class="fa fa-ellipsis-v"></i>
+		        	<span data-ng-bind="event.type"></span>
+	        		</div>
+	        		</div>
+                   
                 
-                    <p data-ng-bind="printDate"></p>
-                    <p data-ng-bind="event.date"></p>
-                    <p data-ng-bind="event.location.loc"></p>
+                    
 				</a>   
 			</div>
             

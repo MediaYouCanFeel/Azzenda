@@ -41,3 +41,11 @@
 .guest-well {
   padding-left: -5px;
 }
+
+.event-rep-name {
+  font-size: 26px;
+}
+
+.event-rep-date {
+  font-size: 18px;
+}

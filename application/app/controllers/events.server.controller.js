@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Event = mongoose.model('Event'),
     EventType = mongoose.model('EventType'),
+    Location = mongoose.model('Location'),
     MongoPromise = require('mongoose').Types.Promise,
 	_ = require('lodash');
 
@@ -16,33 +17,63 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
     var evType = req.body.type;
     delete req.body.type;
+    var evLoc = req.body.location;
+    delete req.body.location;
 	var event = new Event(req.body);
-	event.user = req.user;
-    //event.guests = {"user": req.user,"status": 'Attending'};
-    //for(var dt in event.requestedDateTimeRange.dateTime) {
-        //for(var param in dt.parameters) {
-            
-        //}
-    //}
-    
-    event.scheduledDateTimeRange.start = event.requestedDateTimeRange.dateTimes[0].start;
-    
-    EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
+	event.owner = req.user;
+	event.execute(event.filters[0]);
+	//event.filters[0].markModified('params');
+	
+	EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
         if(err) {
+        	console.log('Event Type Error');
+        	var errMsg = errorHandler.getErrorMessage(err);
+        	if(errMsg == '') {
+        		errMsg = err.message;
+        		if(errMsg == '') {
+        			errMsg = err;
+        		}
+        	}
             return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
+                message: errMsg
             });
         } else {
             event.type = evntType;
-
-            event.save(function(err) {
-                if(err) {
+            
+            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
+            	if(err) {
+            		console.log('Location Error');
+            		var errMsg = errorHandler.getErrorMessage(err);
+                	if(errMsg == '') {
+                		errMsg = err.message;
+                		if(errMsg == '') {
+                			errMsg = err;
+                		}
+                	}
                     return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
-                    });   
-                } else {
-                    return res.jsonp(event);
-                }
+                        message: errMsg
+                    });
+            	} else {
+	            	event.location = locat;
+	            	
+		            event.save(function(err) {
+		                if(err) {
+		                	console.log('Event save error');
+		                	var errMsg = errorHandler.getErrorMessage(err);
+		                	if(errMsg == '') {
+		                		errMsg = err.message;
+		                		if(errMsg == '') {
+		                			errMsg = err;
+		                		}
+		                	}
+		                    return res.status(400).send({
+		                        message: errMsg
+		                    });
+		                } else {
+		                    return res.jsonp(event);
+		                }
+		            });
+            	}
             });
         }
     });
@@ -97,7 +128,7 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
     var roles = ['admin'];
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().sort('-created').populate('user', 'displayName').populate('project', 'name').exec(function(err, events) {
+        Event.find().sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -107,7 +138,7 @@ exports.list = function(req, res) {
             }
         });
     } else {
-        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('user', 'displayName').populate('project', 'name').exec(function(err, events) {
+        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -168,7 +199,7 @@ exports.updateType = function(req, res) {
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('user', 'displayName').populate('project', 'name').populate('type','name').exec(function(err, event) {
+	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').populate('type','name').populate('location','name').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;
@@ -180,7 +211,7 @@ exports.eventByID = function(req, res, next, id) {
  * Event Type middleware
  */
 exports.eventTypeByID = function(req, res, next, id) { 
-	EventType.findById(id).populate('user', 'displayName').exec(function(err, eventType) {
+	EventType.findById(id).populate('owner', 'displayName').exec(function(err, eventType) {
 		if (err) return next(err);
 		if (! eventType) return next(new Error('Failed to load EventType ' + id));
 		req.eventType = eventType;
@@ -193,7 +224,7 @@ exports.eventTypeByID = function(req, res, next, id) {
  * Event authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.event.user.id !== req.user.id) {
+	if (req.event.owner.id !== req.user.id) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();

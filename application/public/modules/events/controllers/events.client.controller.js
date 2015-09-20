@@ -114,28 +114,22 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             }
             
 			// Create new Event object
+            console.log(this.type);
 			var event = new Events ({
                 name: this.name,
-                description: this.description,
-				requestedDateTimeRange: {
-                    dateTimes: [{
-                        start: this.dateFromModal,
-                        //if left empty, endDate will either be calculated using length
-                        //if fixed, or endDate will be assumed to be midnight on startDate
-                        end: new Date(),
-                        //type: dateTime,date,time
-                        //scheduler interpretation: fixed,range,exception
-                        parameters: ['dateTime', dateTimeMode]
-                    }],
-                    //miliseconds
-                    length: 1000000
-                },
-                location:{
-                    loc: this.location
-                },
+                desc: this.description,
+                //this needs to be in milliseconds
+                length: 3600000,
+                location: this.location,
                 type: this.type,
-                project: this.project,
-                scheduleParameters: ['']
+                proj: this.project,
+                filters: [{
+                	type: 'FIXED',
+                	params: {
+                		//This needs to be in milliseconds
+                		start: Date.now()
+                	}
+                }]
 			});
             
             

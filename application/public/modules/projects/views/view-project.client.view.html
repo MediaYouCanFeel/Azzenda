@@ -1,12 +1,31 @@
 <section data-ng-controller="ProjectsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="project.name"></h1>
-	</div>
-	
-	Type: {{project.type}}
-	<br>
-	Description: {{project.description}}
-	<br>
+	<div class="row top-well">
+        <div class="col-md-8 event-back">
+            <a ng-href="/#!/projects" class="btn btn-blue" style="margin-bottom: -20px;">
+                <i class="fa fa-arrow-left"></i> &nbsp; All Projects
+            </a>
+        </div>
+        <div class="pull-right">
+        	<strong class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</strong>
+        </div>
+        
+    </div>
+    
+    <!-- Top well (event name/RSVP) -->
+    <div class="row well">
+        <div class="col-md-8 project-name">
+            <span data-ng-bind="project.name"></span>
+        </div> 
+        <div class="col-md-4">
+        	<div class="pull-right project-type">
+        		<span data-ng-bind="project.type"></span>
+        	</div>
+        </div>  
+    </div>
+    
+    <div class="row well">
+    	<span data-ng-bind="project.description"></span>
+    </div>
 	
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == project.user._id))">
 		<a class="btn btn-primary" href="/#!/projects/{{project._id}}/edit">

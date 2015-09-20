@@ -5391,9 +5391,10 @@ a.thumbnail.active {
   position: relative;
   display: block;
   padding: 10px 15px;
-  margin-bottom: -1px;
+  margin-bottom: 5px;
   background-image:none;
-  border: 2px solid #fff;
+  border: 2px solid #e3e3e3;
+  background-color: #fafafa;
 }
 .list-group-item:first-child {
   border-top-left-radius: 4px;

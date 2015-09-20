@@ -40,8 +40,8 @@
 	    <div class="row">
 		    <div class="col-md-8">
 		    	Hosted by  
-		    	<a ng-href="/#!/users/{{event.user._id}}">
-		    		<strong data-ng-bind="event.user.displayName"></strong>
+		    	<a ng-href="/#!/users/{{event.owner._id}}">
+		    		<strong data-ng-bind="event.owner.displayName"></strong>
 		    	</a>
 		    </div>
 		    <div class="col-md-4">
@@ -63,7 +63,7 @@
 	            <div class="top-bottom-padding">
 	                
 	                <!-- Initializing date formatter -->
-	                <span>{{readableDateFull(event.scheduledDateTimeRange.start)}}</span>
+	                <span>{{readableDateFull(event.sched.start)}}</span>
 	                
 	                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="printDate"></span>
 	            </div>
@@ -71,7 +71,7 @@
 	            <hr>
 	            
 	            <div class="top-bottom-padding">
-	                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.loc"></span>
+	                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.name"></span>
 	            </div>
 	            
 	            <hr>

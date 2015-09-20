@@ -4,7 +4,10 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+	map = {
+			FIXED: require('../../app/controllers/eventFilters/FixedDate')
+	};
 
 /**
  * Event Schema
@@ -20,21 +23,25 @@ var EventSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	user: {
+	owner: {
 		type: Schema.ObjectId,
 		ref: 'User'
     },
-    description: {
+    desc: {
         type: String,
         default: '',
         required: 'Please enter a description of the event',
         trim: true
     },
-    project: {
+    proj: {
         type: Schema.ObjectId,
         ref: 'Project'
     },
-    scheduledDateTimeRange: {
+    length: {
+    	type: Number,
+    	required: 'Please provide an Event length'
+    },
+    sched: {
         start: {
             type: Date
         },
@@ -42,25 +49,9 @@ var EventSchema = new Schema({
             type: Date
         }
     },
-    requestedDateTimeRange: {
-        dateTimes: [{
-            start: Date,
-            end: Date,
-            parameters: [{
-                type: String
-            }]
-        }],
-        length: {
-            type: Number
-        }
-    },
     location: {
-        loc: {
-            type: String,
-            required: 'Please enter a location',
-            trim: true
-        },
-        isGooglePlaceCode: Boolean
+        type: Schema.ObjectId,
+        ref: 'Location'
     },
     type: {
         type: Schema.ObjectId,
@@ -73,13 +64,34 @@ var EventSchema = new Schema({
         },
         status: {
             type: String,
-            enum: ['pending', 'attending','declined']
-        }
+            enum: ['invited','going','not going']
+        }/*,
+        group: {
+        	type: Schema.ObjectId,
+        	ref: 'Group',
+    	}*/	
     }],
     status: {
         type: String,
         enum: ['pending','scheduled','canceled','unschedulable']
-    }
+    },
+    filters: [{
+    	type: {
+    		type: String,
+    		enum: Object.keys(map),
+    		required: 'Invalid Event Filter type' 
+    	},
+    	params: {}
+    }]/*,
+    dateStack: [
+        dat: {
+        	type: Date
+        }
+    ]*/
 });
+
+EventSchema.methods.execute = function (filter) {
+    return map[filter.type].execute.call(this, filter);
+};
 
 mongoose.model('Event', EventSchema);

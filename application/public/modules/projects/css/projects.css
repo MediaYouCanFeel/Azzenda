@@ -1,0 +1,18 @@
+.project-name {
+  margin-top: 10px;
+  font-size: 45px;
+}
+
+.project-type {
+  margin-top: 15px;
+  font-size: 30px;
+}
+
+.project-rep-name {
+  font-size: 26px;
+}
+
+.project-rep-type {
+  font-size: 18px;
+  margin-top: 4px;
+}

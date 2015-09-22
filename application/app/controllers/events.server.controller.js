@@ -125,10 +125,11 @@ exports.delete = function(req, res) {
 /**
  * List of Events
  */
-exports.list = function(req, res) {
+exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
+    var currDate = Date.now();
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({sched: {start: {$gt: currDate}}}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -138,7 +139,36 @@ exports.list = function(req, res) {
             }
         });
     } else {
-        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$and: [{$or: [{user: req.user._id},{'guests.user': req.user._id}]},{sched: {start: {$gt: currDate}}}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(events);
+            }
+        });
+    }
+};
+
+/**
+ * List of Events
+ */
+exports.listPast = function(req, res) {
+	var roles = ['admin'];
+    var currDate = Date.now();
+    if(_.intersection(req.user.roles,roles).length) {
+        Event.find({sched: {start: {$lt: currDate}}}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.jsonp(events);
+            }
+        });
+    } else {
+        Event.find({$and: [{$or: [{user: req.user._id},{'guests.user': req.user._id}]},{sched: {start: {$lt: currDate}}}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -156,6 +186,15 @@ exports.list = function(req, res) {
 exports.getTypes = function(req, res) {
     EventType.find().exec(function(err, types) {
         res.jsonp(types);
+    });
+};
+
+/**
+ * Get list of event locations
+ */
+exports.getLocations = function(req, res) {
+    Location.find().exec(function(err, locs) {
+        res.jsonp(locs);
     });
 };
 

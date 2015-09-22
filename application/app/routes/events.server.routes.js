@@ -6,8 +6,11 @@ module.exports = function(app) {
 
 	// Events Routes
 	app.route('/events')
-		.get(users.requiresLogin, events.list)
+		.get(users.requiresLogin, events.listUpcoming)
 		.post(users.requiresLogin, events.create);
+	
+	app.route('/events/past/events')
+		.get(users.requiresLogin, events.listPast);
 
 	app.route('/events/:eventId')
 		.get(users.requiresLogin, events.read)
@@ -17,6 +20,9 @@ module.exports = function(app) {
     app.route('/events/create/types')
         .get(users.requiresLogin, events.getTypes)
         .post(users.requiresLogin, events.addType);
+    
+    app.route('/events/create/locations')
+    	.get(users.requiresLogin, events.getLocations);
         
     app.route('events/create/types/:eventTypeId')
         .put(users.requiresLogin, events.updateType);

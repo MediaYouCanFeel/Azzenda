@@ -13,7 +13,7 @@
             </h2>
             
 			<div class="list-group">
-				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+				<a ng-repeat="event in events | orderBy: '-sched.start'" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <hr>

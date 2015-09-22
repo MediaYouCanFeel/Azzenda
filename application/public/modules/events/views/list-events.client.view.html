@@ -13,24 +13,25 @@
             </h2>
             
 			<div class="list-group">
-				<a ng-repeat="event in events | orderBy: '-sched.start'" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+				<a ng-repeat="event in events | orderBy: 'sched.start'" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
+                        <span data-ng-bind="event.sched.start.toString()"></span>
                         <hr>
                     </div>
                     
                      <!-- Initializing date formatter -->
-                    <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
+                    <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                     
-                    <div data-ng-bind="event.location.loc"></div>
+                    <div data-ng-bind="event.location.name"></div>
                     
                    	<div class="row">
 			    	<div class="pull-right event-rep-proj">
-				    	<strong data-ng-bind="event.project.name"> </strong>
+				    	<strong data-ng-bind="event.proj.name"> </strong>
 				        
 				        <i class="fa fa-ellipsis-v"></i>
-			        	<span data-ng-bind="event.type"></span>
+			        	<span data-ng-bind="event.type.name"></span>
 	        		</div>
 	        		</div>
                    

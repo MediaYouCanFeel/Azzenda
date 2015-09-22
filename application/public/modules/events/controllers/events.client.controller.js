@@ -37,7 +37,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                   $scope.eventTypes = Events.getTypes();
                                   
                   $scope.ok = function () {
-                      //$scope.selected.event
                     modalInstance.close();
                   };
 
@@ -47,13 +46,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               },
               size: size,
               resolve: {
-                items: function () {
-                  //return $scope.events;
-                }
+                items: function () {}
               }
             });
-            
-            //modalInstance.opened.then($scope.initModal);
             
             modalInstance.result.then(function (selectedEvent) {
               $scope.selected = selectedEvent;
@@ -119,7 +114,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 desc: this.description,
                 //this needs to be in milliseconds
-                length: 3600000,
+                length: parseInt(3600000),
                 location: this.location,
                 type: this.type,
                 proj: this.project,
@@ -127,7 +122,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 	type: 'FIXED',
                 	params: {
                 		//This needs to be in milliseconds
-                		start: Date.now()
+                		start: parseInt($scope.sendDate)
                 	}
                 }]
 			});
@@ -215,9 +210,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         //Find a list of Event Types
         $scope.findEventTypes = function() {
             var response = Events.getTypes();
-            console.log(response);
             $scope.eventTypes = response;
-            console.log($scope.eventTypes);
+        };
+        
+        //Find a list of Event Locations
+        $scope.findEventLocs = function() {
+            //var response = Events.getLocs();
+            var response = [{name: "Fletcher"}, {name: "Reitz Union"}];
+        	$scope.eventLocs = response;
         };
         
         $scope.createEventType = function(type) {
@@ -230,9 +230,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		//Find a list of Events
 		$scope.find = function() {
             var response = Events.query();
-            console.log(response);
             $scope.events = response;
-            console.log($scope.events);
+            
 		};
 
 		// Find existing Event
@@ -368,23 +367,26 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.timeFromModal = null;
         };    
         
+        $scope.sendDate = moment();
+        
         //Combining Date & Time fields
         $scope.combineDateTimes = function(dateFromModal,
-                                           timeFromModal,
-                                           earliestDateFromModal,
-                                           earliestTimeFromModal,
-                                           latestDateFromModal,
-                                           latestTimeFromModal) {
-            if (dateFromModal)
-            {
+                                           timeFromModal) {
+//                                           earliestDateFromModal,
+//                                           earliestTimeFromModal,
+//                                           latestDateFromModal,
+//                                           latestTimeFromModal) {
+//            if (dateFromModal)
+//            {
                 dateFromModal.setHours($scope.timeFromModal.getHours());
                 dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
-            } else if (earliestDateFromModal) {
-                earliestDateFromModal.setHours($scope.earliestTimeFromModal.getHours());
-                earliestDateFromModal.setMinutes($scope.earliestTimeFromModal.getMinutes()); 
-                latestDateFromModal.setHours($scope.latestTimeFromModal.getHours());
-                latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
-            }
+                $scope.sendDate = moment(dateFromModal).format('x');
+//            } else if (earliestDateFromModal) {
+//                earliestDateFromModal.setHours($scope.earliestTimeFromModal.getHours());
+//                earliestDateFromModal.setMinutes($scope.earliestTimeFromModal.getMinutes()); 
+//                latestDateFromModal.setHours($scope.latestTimeFromModal.getHours());
+//                latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
+//            }
             
         };    
     
@@ -395,10 +397,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             //Default
             $scope.printDateDate = moment(dateTime).format('dddd, MMMM Do');
             
+            var rightNow = moment();
+            
             //If the event is happening today
-            if (moment(dateTime).subtract(1, 'days') < moment()) {
+            if (moment(dateTime).get('date') == moment(rightNow).get('date')) {
                 $scope.printDateDate = 'Today at ';
-                
+            } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
+            	$scope.printDateDate = 'Tomorrow at ';
             } else if (moment(dateTime).subtract(7, 'days') < moment()) {
                 //If the event is less than 7 days away
                 $scope.printDateDate = moment(dateTime).format('dddd [at] ');   

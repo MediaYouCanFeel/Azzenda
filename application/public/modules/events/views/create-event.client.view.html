@@ -4,7 +4,7 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes();">
+                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
                     <div class="modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label> 
                             <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="type">
-                                <option ng-repeat="type in eventTypes" data-ng-value="type">{{type.name}}</option>
+                                <option ng-repeat="type in eventTypes" data-ng-value="type.name">{{type.name}}</option>
                             </select>
 					        <div class="examples">
                                 Examples: "Eating", "Baking"
@@ -43,9 +43,9 @@
                         <!-- Location -->
                         <div class="form-group">
                             <label class="control-label" for="location">Location</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="location" id="location" class="form-control" placeholder="Location" required>
-                            </div>
+                            <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="location">
+                                <option ng-repeat="loc in eventLocs" data-ng-value="loc.name">{{loc.name}}</option>
+                            </select>
                             <div class="examples">
                                 Examples: "Domino's", "Papa John's"
                             </div>
@@ -74,33 +74,32 @@
                         </div>
 
                         <!-- Fixed -->
-                        <div ng-show="fixedDate">
-                            <div class="col-md-6">
-                                <!-- Date -->
-                                <div class="form-group timepicker">
-                                    <label class="control-label text-center" for="name">Date</label>
-                                    <div class="controls">
-                                            <p class="input-group">
-                                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                                              <span class="input-group-btn">
-                                                <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                                              </span>
-                                            </p>
-                                    </div>
-                                </div>
-                            </div>
                         
-
-                            <div class="col-md-6">
-                                <!-- Time -->
-                                <div class="form-group timepicker">
-                                    <label class="control-label text-center" for="name">Time</label>
-                                    <div class="controls" ng-init="timepickerClear()">
-                                       <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-                                    </div>
+                        <div class="col-md-6">
+                            <!-- Date -->
+                            <div class="form-group timepicker">
+                                <label class="control-label text-center" for="name">Date</label>
+                                <div class="controls">
+                                        <p class="input-group">
+                                          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                        </p>
                                 </div>
                             </div>
-                       </div>
+                        </div>
+                    
+
+                        <div class="col-md-6">
+                            <!-- Time -->
+                            <div class="form-group timepicker">
+                                <label class="control-label text-center" for="name">Time</label>
+                                <div class="controls" ng-init="timepickerClear()">
+                                   <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                </div>
+                            </div>
+                        </div>
                         
                         <!-- Range -->
                         <div ng-hide="fixedDate">
@@ -154,8 +153,6 @@
                                         </div>
                                     </div>
                                     </div>
-
-
 
                                     <div class="row">
                                         <!-- Time -->
@@ -245,7 +242,7 @@
                             <script type="javascript">
                             
                             </script>
-                            <div ng-click="createPage = 2; combineDateTimes(dateFromModal, timeFromModal, earliestDateFromModal, earliestTimeFromModal, latestDateFromModal, latestTimeFromModal);" class="btn btn-blue"> Time &nbsp; <i class="fa fa-arrow-right"></i> </div>
+                            <div ng-click="createPage = 2" class="btn btn-blue"> Time &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
                         <!-- 2 to 1 -->
@@ -255,7 +252,7 @@
                         
                         <!-- 2 to 3 -->
                         <div class="form-group pull-right" ng-show="createPage == 2">
-                            <div ng-click="createPage = 3" class="btn btn-blue"> Invites &nbsp; <i class="fa fa-arrow-right"></i> </div>
+                            <div ng-click="createPage = 3;  combineDateTimes(dateFromModal, timeFromModal);" class="btn btn-blue"> Invites &nbsp; <i class="fa fa-arrow-right"></i> </div>
                         </div>
                         
                         <!-- 3 to 2 -->

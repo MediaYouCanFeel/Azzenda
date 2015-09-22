@@ -67,3 +67,5 @@ application/.metadata/.plugins/org.eclipse.rse.core/profiles/PRF.rem_7/node.prop
 application/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
 application/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
 application/.metadata/version.ini
+/nodejs/
+/mongodb/

@@ -6878,10 +6878,6 @@ button.close {
     display: none !important;
   }
 }
-.timepicker {
-  padding-left: 15px;
-  maring: 0px;
-}
 .vertical-text {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -6913,8 +6909,6 @@ button.close {
   padding-left: 10px;
   padding-right: 10px;
 }
-
-
 
 .dash-links {
   color: #000000;

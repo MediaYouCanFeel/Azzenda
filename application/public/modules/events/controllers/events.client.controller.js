@@ -436,5 +436,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.printDate = moment(dateTime).format('dddd, MMMM Do [at] h:mm A');
         }
 
+        //Number picker
+        $scope.input = {num: 2};
+
+        $scope.getNumber = function() {
+            alert('The number is: [' + $scope.input.num + ']');
+        };
+
+        $scope.onChange = function() {
+            console.log('number changed', $scope.input.num);
+        };
+        
     }
 ]);

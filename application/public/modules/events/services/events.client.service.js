@@ -20,6 +20,16 @@ angular.module('events').factory('Events', ['$resource',
                 method: 'PUT',
                 url: 'events/create/types/:eventTypeId',
                 params: {eventTypeId: '@_id'}
+            }, 
+            getLocs: {
+                method: 'GET',
+                url: 'events/create/locations',
+                isArray: true
+            },
+            getPastEvents: {
+            	method: 'GET',
+            	url: 'events/past/events',
+            	isArray: true
             }
 		});
 	}

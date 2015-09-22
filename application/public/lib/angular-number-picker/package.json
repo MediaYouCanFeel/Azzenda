@@ -1,0 +1,56 @@
+{
+  "name": "angular-number-picker",
+  "version": "1.2.2",
+  "main": "./angular-number-picker.js",
+  "description": "A directive used for picking number by using up/down button, instead of typing",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leftstick/angular-number-picker.git"
+  },
+  "keywords": [
+    "angular",
+    "number",
+    "picker"
+  ],
+  "author": {
+    "name": "Howard.Zuo"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leftstick/angular-number-picker/issues"
+  },
+  "homepage": "https://github.com/leftstick/angular-number-picker",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "angular": "^1.4.3",
+    "bootstrap": "^3.3.5"
+  },
+  "gitHead": "b6c601b420dc02ad8e981d046fae2d8d5a3bf420",
+  "_id": "angular-number-picker@1.2.2",
+  "scripts": {},
+  "_shasum": "3f967f5855264cae41b4120a8fa4797d76bcac69",
+  "_from": "angular-number-picker@*",
+  "_npmVersion": "2.14.2",
+  "_nodeVersion": "0.12.7",
+  "_npmUser": {
+    "name": "howard.zuo",
+    "email": "leftstick@qq.com"
+  },
+  "dist": {
+    "shasum": "3f967f5855264cae41b4120a8fa4797d76bcac69",
+    "tarball": "http://registry.npmjs.org/angular-number-picker/-/angular-number-picker-1.2.2.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "howard.zuo",
+      "email": "leftstick@qq.com"
+    }
+  ],
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/angular-number-picker/-/angular-number-picker-1.2.2.tgz"
+}

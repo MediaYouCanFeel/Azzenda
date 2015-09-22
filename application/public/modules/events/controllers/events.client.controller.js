@@ -16,6 +16,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             width: '100%'
         });
         
+        //spinner init
+//        angular.element('spinner').spinner({
+//        	incremental: false
+//        });
+        
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
             console.log(input);

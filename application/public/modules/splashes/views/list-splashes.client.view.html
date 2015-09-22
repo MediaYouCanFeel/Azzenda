@@ -15,19 +15,27 @@
                     <a ng-href="/#!/events">Events</a>
                 </strong>
             </h2>
-            <div class="list-group">
-				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
-					<div id="info">
-                        <h3 data-ng-bind="event.name"></h3>
-                        <i data-ng-bind="event.project.name"></i>
+            <div class="list-group" data-ng-init="findFutureEvents();">
+				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | limitTo: 3" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+					<div class="event-rep-name">
+                        <span data-ng-bind="event.name"></span>
+                        <hr>
                     </div>
                     
-                    <!-- Initializing date formatter -->
-                    <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
-                
-                    <p data-ng-bind="printDate"></p>
-                    <p data-ng-bind="event.date"></p>
-                    <p data-ng-bind="event.location.loc"></p>
+                     <!-- Initializing date formatter -->
+                    <span>{{readableDate(event.sched.start)}}</span>
+                    <div class="event-rep-date" data-ng-bind="printDate"></div>
+                    
+                    <div data-ng-bind="event.location.name"></div>
+                    
+                   	<div class="row">
+			    	<div class="pull-right event-rep-proj">
+				    	<strong data-ng-bind="event.proj.name"> </strong>
+				        
+				        <i class="fa fa-ellipsis-v"></i>
+			        	<span data-ng-bind="event.type.name"></span>
+	        		</div>
+	        		</div>
 				</a>   
 			</div>
         </div>

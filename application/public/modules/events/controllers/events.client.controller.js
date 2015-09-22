@@ -227,11 +227,22 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.ok();
         };
         
-		//Find a list of Events
+		//Find a list of all Events
 		$scope.find = function() {
             var response = Events.query();
             $scope.events = response;
-            
+		};
+		
+		//Find a list of all future Events
+		$scope.findFutureEvents = function() {
+            var response = Events.query();
+            $scope.futureEvents = response;
+		};
+		
+		//Find a list of all past Events
+		$scope.findPastEvents = function() {
+            var response = Events.query();
+            $scope.pastEvents = response;
 		};
 
 		// Find existing Event
@@ -389,8 +400,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 //            }
             
         };    
-    
         
+        $scope.setCurrDate = function() {
+        	$scope.currDate = moment().format();
+        }
         //moment
         $scope.readableDate = function(dateTime) {
             

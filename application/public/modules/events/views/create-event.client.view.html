@@ -4,7 +4,7 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
+                <div class="row" ng-init="createPage=2; findProjects(); findEventTypes(); findEventLocs();">
                     <div class="modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
@@ -64,26 +64,19 @@
                 	<!-- PAGE 2 -->
                     <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
-                        <!-- Fixed/Range -->
-                        <div class="form-group">
-                            <label class="control-label" for="name">Fixed/Range</label>
-                            <div class="controls">
-                                <input type="radio" id="fixed" data-ng-model="fixedDate" ng-value="true"> Fixed
-                                <input type="radio" id="range" data-ng-model="fixedDate" value="false"> Range
-                            </div>
-                        </div>
 
                         <!-- Fixed -->
                         
                         <div class="col-md-6">
                             <!-- Date -->
                             <div class="form-group timepicker">
+                            <i class="glyphicon glyphicon-calendar"></i>
                                 <label class="control-label text-center" for="name">Date</label>
                                 <div class="controls">
                                         <p class="input-group">
                                           <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                           <span class="input-group-btn">
-                                            <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            <button type="button" class="btn btn-teal" ng-click="open($event)"></button>
                                           </span>
                                         </p>
                                 </div>
@@ -102,71 +95,70 @@
                         </div>
                         
                         <!-- Range -->
-                        <div ng-hide="fixedDate">
-                            <div class="row">
-                                <div class="col-md-2 text-center vertical-align-center-icons">
-                                <i class="fa fa-calendar fa-3x"></i>
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="row">
-                                        <!-- Date -->
-                                        <div class="form-group">
-                                            <label class="control-label text-center" for="name">Earliest</label>
-                                            <div class="controls">
-                                                    <p class="input-group">
-                                                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="earliestDateFromModal" is-open="datepickers.earliest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                                                      <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-teal" ng-click="openWhich($event,'earliest')"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                      </span>
-                                                    </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                         <div class="row">
+                             <div class="col-md-2 text-center vertical-align-center-icons">
+                             <i class="fa fa-calendar fa-3x"></i>
+                             </div>
+                             <div class="col-md-10">
+                                 <div class="row">
+                                     <!-- Date -->
+                                     <div class="form-group">
+                                         <label class="control-label text-center" for="name">Earliest</label>
+                                         <div class="controls">
+                                                 <p class="input-group">
+                                                   <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="earliestDateFromModal" is-open="datepickers.earliest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                   <span class="input-group-btn">
+                                                     <button type="button" class="btn btn-teal" ng-click="openWhich($event,'earliest')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                   </span>
+                                                 </p>
+                                         </div>
+                                     </div>
+                                 </div>
 
-                                    <div class="row">
-                                    <!-- Date -->
-                                        <div class="form-group">
-                                            <label class="control-label text-center" for="name">Latest</label>
-                                            <div class="controls">
-                                                    <p class="input-group">
-                                                      <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="latestDateFromModal" is-open="datepickers.latest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                                                      <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-teal" ng-click="openWhich($event,'latest')"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                      </span>
-                                                    </p>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>    
-                            
-                            <div class="row">
-                                <div class="col-md-2 text-center vertical-align-center-icons">
-                                     <i class="fa fa-clock-o fa-3x"></i>
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="row">
-                                    <!-- Time -->
-                                    <div class="form-group timepicker">
-                                        <label class="control-label text-center" for="name">Earliest</label>
-                                        <div class="controls">
-                                           <timepicker ng-model="earliestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-                                        </div>
-                                    </div>
-                                    </div>
+                                 <div class="row">
+                                 <!-- Date -->
+                                     <div class="form-group">
+                                         <label class="control-label text-center" for="name">Latest</label>
+                                         <div class="controls">
+                                                 <p class="input-group">
+                                                   <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="latestDateFromModal" is-open="datepickers.latest" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                   <span class="input-group-btn">
+                                                     <button type="button" class="btn btn-teal" ng-click="openWhich($event,'latest')"></button>
+                                                   </span>
+                                                 </p>
+                                         </div>
+                                     </div>
+                             </div>
+                         </div>    
+                         
+                         <div class="row">
+                             <div class="col-md-2 text-center vertical-align-center-icons">
+                                  <i class="fa fa-clock-o fa-3x"></i>
+                             </div>
+                             <div class="col-md-10">
+                                 <div class="row">
+                                 <!-- Time -->
+                                 <div class="form-group timepicker">
+                                     <label class="control-label text-center" for="name">Earliest</label>
+                                     <div class="controls">
+                                        <timepicker ng-model="earliestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                     </div>
+                                 </div>
+                                 </div>
 
-                                    <div class="row">
-                                        <!-- Time -->
-                                        <div class="form-group timepicker">
-                                            <label class="control-label text-center" for="name">Latest</label>
-                                            <div class="controls">
-                                               <timepicker ng-model="latestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>                        
-                        </div>
-                    </div>
+                                 <div class="row">
+                                     <!-- Time -->
+                                     <div class="form-group timepicker">
+                                         <label class="control-label text-center" for="name">Latest</label>
+                                         <div class="controls">
+                                            <timepicker ng-model="latestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>                        
+                     </div>
+                    
                      </div>
                     
                     <!-- PAGE 3 -->

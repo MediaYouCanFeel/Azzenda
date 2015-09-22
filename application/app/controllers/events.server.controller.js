@@ -127,9 +127,9 @@ exports.delete = function(req, res) {
  */
 exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
-    var currDate = Date.now();
+    var currDate = new Date();
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find({sched: {start: {$gt: currDate}}}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.start').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -139,7 +139,7 @@ exports.listUpcoming = function(req, res) {
             }
         });
     } else {
-        Event.find({$and: [{$or: [{user: req.user._id},{'guests.user': req.user._id}]},{sched: {start: {$gt: currDate}}}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).where('sched.start').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -158,7 +158,7 @@ exports.listPast = function(req, res) {
 	var roles = ['admin'];
     var currDate = Date.now();
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find({sched: {start: {$lt: currDate}}}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.start').lt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -168,7 +168,7 @@ exports.listPast = function(req, res) {
             }
         });
     } else {
-        Event.find({$and: [{$or: [{user: req.user._id},{'guests.user': req.user._id}]},{sched: {start: {$lt: currDate}}}]}).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).where('sched.start').lt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)

@@ -215,8 +215,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //Find a list of Event Locations
         $scope.findEventLocs = function() {
-            //var response = Events.getLocs();
-            var response = [{name: "Fletcher"}, {name: "Reitz Union"}];
+            var response = Events.getLocs();
         	$scope.eventLocs = response;
         };
         
@@ -241,7 +240,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		
 		//Find a list of all past Events
 		$scope.findPastEvents = function() {
-            var response = Events.query();
+            var response = Events.getPastEvents();
             $scope.pastEvents = response;
 		};
 

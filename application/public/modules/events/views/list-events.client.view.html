@@ -1,4 +1,4 @@
-<section data-ng-controller="EventsController" data-ng-init="find()">
+<section data-ng-controller="EventsController" data-ng-init="find(); setCurrDate();">
         <div class="top-well well">
             <h1>Events</h1>
             <span class="pull-right">
@@ -12,11 +12,10 @@
                 <strong class="blue">Upcoming Events</strong>
             </h2>
             
-			<div class="list-group">
-				<a ng-repeat="event in events | orderBy: 'sched.start'" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+			<div class="list-group" data-ng-init="findFutureEvents();">
+				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
-                        <span data-ng-bind="event.sched.start.toString()"></span>
                         <hr>
                     </div>
                     
@@ -34,9 +33,6 @@
 			        	<span data-ng-bind="event.type.name"></span>
 	        		</div>
 	        		</div>
-                   
-                
-                    
 				</a>   
 			</div>
             
@@ -49,23 +45,28 @@
             <h2>
                 <strong class="blue">Past Events</strong>
             </h2>
-             <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Writing Meeting #2</h3>
+             <div class="list-group" data-ng-init="findPastEvents();">
+                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+					<div class="event-rep-name">
+                        <span data-ng-bind="event.name"></span>
+                        <hr>
                     </div>
-                    <i>Fall 2015 Web Series</i>
-                    <p>Wednesday, May 13, 2015 - 8:00 PM</p>
-                    <p>Google+ Hangout</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Meeting #2</h3>
-                    </div>
-                    <i>Top-Tier Executive Board</i>
-                    <p>Tuesday, May 12, 2015 - 8:00 PM</p>
-                    <p>Google+ Hangout</p>
-                </div>
+                    
+                     <!-- Initializing date formatter -->
+                    <span>{{readableDate(event.sched.start)}}</span>
+                    <div class="event-rep-date" data-ng-bind="printDate"></div>
+                    
+                    <div data-ng-bind="event.location.name"></div>
+                    
+                   	<div class="row">
+			    	<div class="pull-right event-rep-proj">
+				    	<strong data-ng-bind="event.proj.name"> </strong>
+				        
+				        <i class="fa fa-ellipsis-v"></i>
+			        	<span data-ng-bind="event.type.name"></span>
+	        		</div>
+	        		</div>
+				</a>   
             </div>
         </div>
     </div>

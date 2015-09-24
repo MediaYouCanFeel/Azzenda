@@ -70,7 +70,7 @@
                         <div class="col-md-6">
                             <!-- Date -->
                             <div class="form-group">
-                            
+                            	<input type="checkbox" ng-model="fixedFilter" name="fixedFilter" value=true>Use Fixed</input>
                                 <label class="control-label text-center" for="name">Date</label>
                                 <div class="controls">
                                         <p class="input-group">
@@ -84,6 +84,7 @@
                         </div>
                         
                         <div class="col-md-6 timepicker">
+                        
                             <!-- Earliest Start Time -->
                             <div class="row">
 	                            <div class="form-group">
@@ -97,6 +98,7 @@
                             <!-- Latest Start Time -->
                             <div class="row">
 	                            <div class="form-group">
+	                            <input type="checkbox" ng-model="trFilter" name="trFilter" value=true>Use TR</input>
 	                                <label class="control-label text-center" for="name">Latest Start Time</label>
 	                                <div class="controls" ng-init="timepickerClear()">
 	                                   <timepicker ng-model="latestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
@@ -107,14 +109,31 @@
                             <!-- Duration -->
                             <div class="row">
 	                            <div class="form-group">
-	                                <label class="control-label text-center" for="name">Duration</label>
+	                                <label class="control-label text-center" for="duration">Duration (Hours)</label>
 	                                <div class="controls">
-	                                   <!-- <spinner value="input.num" min="2" max="10" step="1" change="onChanged()"></spinner> -->
 	                                   <input type="number" ng-model="hourDurationFromModal" placeholder="0"></input>
 	                                </div>
 	                            </div>
                             </div>
                         </div>
+                    
+                    	<!-- Day of Week -->
+                    	<div class="row">
+                    		<div class="form-group">
+                    		
+                    			<label class="control-label text-center" for="dayOfWeek">Day of Week</label>
+                    			<input type="checkbox" ng-model="dowFilter" name="dowFilter" value=true>Use DoW</input>
+                                <div class="controls">
+                                   <input type="checkbox" ng-model="sun" name="dayOfWeek" value=true>Sunday</input>
+                                   <input type="checkbox" ng-model="mon" name="dayOfWeek" value=true>Monday</input>
+                                   <input type="checkbox" ng-model="tue" name="dayOfWeek" value=true>Tuesday</input>
+                                   <input type="checkbox" ng-model="wed" name="dayOfWeek" value=true>Wednesday</input>
+                                   <input type="checkbox" ng-model="thu" name="dayOfWeek" value=true>Thursday</input>
+                                   <input type="checkbox" ng-model="fri" name="dayOfWeek" value=true>Friday</input>
+                                   <input type="checkbox" ng-model="sat" name="dayOfWeek" value=true>Saturday</input>
+                                </div>
+                    		</div>
+                    	</div>
                     
                      </div>
                     

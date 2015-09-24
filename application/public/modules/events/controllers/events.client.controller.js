@@ -24,11 +24,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
             console.log(input);
-            var autocomplete = new google.maps.places.Autocomplete(input);
-            google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                $scope.place = autocomplete.getPlace();
-                console.log($scope.place);
-            });
+//            var autocomplete = new google.maps.places.Autocomplete(input);
+//            google.maps.event.addListener(autocomplete, 'place_changed', function() {
+//                $scope.place = autocomplete.getPlace();
+//                console.log($scope.place);
+//            });
         };
         
         //Open Modal window for creating events
@@ -119,19 +119,91 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 name: this.name,
                 desc: this.description,
                 //this needs to be in milliseconds
-                length: parseInt(3600000),
+                length: parseInt(this.hourDurationFromModal * 3600000),
                 location: this.location,
                 type: this.type,
                 proj: this.project,
-                filters: [{
-                	type: 'FIXED',
-                	params: {
-                		//This needs to be in milliseconds
-                		start: parseInt($scope.sendDate)
-                	}
-                }]
+                
 			});
             
+			//Add event filters
+			event.filters = [];
+			if (this.fixedFilter) {
+				event.filters.push({
+					type: "FIXED",
+					params: {
+						start: parseInt($scope.sendDate)
+					}
+				});
+			};
+			
+			if (this.trFilter) {
+				$scope.setEarlyTime(this.timeFromModal);
+				$scope.setLateTime(this.latestTimeFromModal);
+				event.filters.push({
+					type: "TIMERANGE",
+					params: {
+						start: parseInt($scope.earlyTime),
+						end: parseInt($scope.lateTime)
+					}
+				});
+			};
+			
+			if (this.dowFilter) {
+				var dayArray = [];
+				if (this.sun) {
+					dayArray.push(0);
+				}
+				if (this.mon) {
+					dayArray.push(1);
+				}
+				if (this.tue) {
+					dayArray.push(2);
+				}
+				if (this.wed) {
+					dayArray.push(3);
+				}
+				if (this.thu) {
+					dayArray.push(4);
+				}
+				if (this.fri) {
+					dayArray.push(5);
+				}
+				if (this.sat) {
+					dayArray.push(6);
+				}
+
+				
+				event.filters.push({
+					type: "DAYOFWEEK",
+					params: {
+						days: dayArray
+					}
+				});
+			}
+			
+			console.log(event.filters);
+			
+//			[{
+//            	type: 'FIXED',
+//            	params: {
+//            		//This needs to be in milliseconds
+//            		start: parseInt($scope.sendDate)
+//            	}
+//            }, 
+//            {
+//            	type: 'TIMERANGE',
+//            	params: {
+//            		start: null, //curr date with selected time
+//            		end: null
+//            	}
+//            },
+//            {
+//            	type: 'DAYOFWEEK',
+//            	params: {
+//            		days: [1,2] //Sun=0 ... Sat=6
+//            	}
+//            }];
             
             
 			// Redirect after save
@@ -382,27 +454,28 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.timeFromModal = null;
         };    
         
+        $scope.setEarlyTime = function(earlyTimeFromModal) {
+        	$scope.earlyTime = moment().set('hours', moment(earlyTimeFromModal).get('hours'));
+        	moment($scope.earlyTime).set('minutes', moment(earlyTimeFromModal).get('minutes'));
+        	$scope.earlyTime = moment($scope.earlyTime).format('x');
+        	console.log($scope.earlyTime);
+        }
+        
+        $scope.setLateTime = function(lateTimeFromModal) {
+        	$scope.lateTime = moment().set('hours', moment(lateTimeFromModal).get('hours'));
+        	moment($scope.lateTime).set('minutes', moment(lateTimeFromModal).get('minutes'));
+        	$scope.lateTime = moment($scope.lateTime).format('x');
+        	console.log($scope.lateTime);
+        }
+        
         $scope.sendDate = moment();
         
         //Combining Date & Time fields
         $scope.combineDateTimes = function(dateFromModal,
                                            timeFromModal) {
-//                                           earliestDateFromModal,
-//                                           earliestTimeFromModal,
-//                                           latestDateFromModal,
-//                                           latestTimeFromModal) {
-//            if (dateFromModal)
-//            {
-                dateFromModal.setHours($scope.timeFromModal.getHours());
-                dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
-                $scope.sendDate = moment(dateFromModal).format('x');
-//            } else if (earliestDateFromModal) {
-//                earliestDateFromModal.setHours($scope.earliestTimeFromModal.getHours());
-//                earliestDateFromModal.setMinutes($scope.earliestTimeFromModal.getMinutes()); 
-//                latestDateFromModal.setHours($scope.latestTimeFromModal.getHours());
-//                latestDateFromModal.setMinutes($scope.latestTimeFromModal.getMinutes());
-//            }
-            
+            dateFromModal.setHours($scope.timeFromModal.getHours());
+            dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+            $scope.sendDate = moment(dateFromModal).format('x');      
         };    
         
         $scope.setCurrDate = function() {
@@ -416,27 +489,54 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             
             var rightNow = moment();
             
-            //If the event is happening today
-            if (moment(dateTime).get('date') == moment(rightNow).get('date')) {
-                $scope.printDateDate = 'Today at ';
-            } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
-            	$scope.printDateDate = 'Tomorrow at ';
-            } else if (moment(dateTime).subtract(7, 'days') < moment()) {
-                //If the event is less than 7 days away
-                $scope.printDateDate = moment(dateTime).format('dddd [at] ');   
-            } else {
-                //More than a week away
-                $scope.printDateDate = moment(dateTime).format('MM/DD/YY [at] ');
-            }
+            var alreadyHappened = moment(dateTime) < moment(rightNow);
+            
+            //If the event is happening today           
+        	if(moment(dateTime).add(1, 'days').get('date') == moment(rightNow).get('date') && alreadyHappened) {
+	        	$scope.printDateDate = 'Yesterday at ';
+	        } else if (moment(dateTime).add(7, 'days') > moment(rightNow) && alreadyHappened) {
+	            //If the event is less than 7 days away
+	            $scope.printDateDate = moment(dateTime).format('[Last] dddd [at] ');   
+	        } else if (moment(dateTime).get('date') == moment(rightNow).get('date')) {
+	            $scope.printDateDate = 'Today at ';
+	        } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
+	        	$scope.printDateDate = 'Tomorrow at ';
+	        } else if (moment(dateTime).subtract(7, 'days') < moment(rightNow)) {
+	            //If the event is less than 7 days away
+	            $scope.printDateDate = moment(dateTime).format('dddd [at] ');   
+	        } else {
+	            //More than a week away
+	            $scope.printDateDate = moment(dateTime).format('MM/DD/YY [at] ');
+	        }
            
             $scope.printDateTime = moment(dateTime).format('h:mm A');
             
             $scope.printDate = $scope.printDateDate + $scope.printDateTime;
         }
         
+        $scope.readableEndDate = function(dateTime, duration) {
+        	
+        	var rightNow = moment();
+        	
+        	var endDateTime = moment(dateTime).add(parseInt(duration), 'milliseconds');
+        	var printEndDate;
+        	duration = this.length;
+        	console.log(dateTime);
+        	
+        	console.log(endDateTime.format('dddd, MMMM Do h:mm A'));
+        	
+        	//Check if entirely contained within 1 calendar day
+        	if (moment(dateTime).get('date') == moment(endDateTime).get('date')) {
+        		printEndDate = moment(endDateTime).format('h:mm A');
+        	} else {
+        		printEndDate = moment(endDateTime).format('dddd, MMMM Do [at] h:mm A');
+        	}
+        	
+        	$scope.printEndDate = " - " + printEndDate;
+        	$scope.printFullDate = $scope.printDate + $scope.printEndDate;
+        }
         
         $scope.readableDateFull = function(dateTime) {
-            
             //Default
             $scope.printDate = moment(dateTime).format('dddd, MMMM Do [at] h:mm A');
         }

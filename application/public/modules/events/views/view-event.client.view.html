@@ -64,8 +64,10 @@
 	                
 	                <!-- Initializing date formatter -->
 	                <span>{{readableDateFull(event.sched.start)}}</span>
+	                <span>{{readableEndDate(event.sched.start, event.length)}}</span>
 	                
-	                <i class="fa fa-calendar fa-2x yellow"></i> <span class="left-right-padding event-info" data-ng-bind="printDate"></span>
+	                <i class="fa fa-calendar fa-2x yellow"></i> 
+	                <span class="left-right-padding event-info" data-ng-bind="printFullDate"></span>
 	            </div>
 	            
 	            <hr>

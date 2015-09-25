@@ -8,8 +8,11 @@ var mongoose = require('mongoose'),
 	Event = mongoose.model('Event'),
     EventType = mongoose.model('EventType'),
     Location = mongoose.model('Location'),
+    moment = require('moment'),
     MongoPromise = require('mongoose').Types.Promise,
 	_ = require('lodash');
+
+
 
 /**
  * Create an Event
@@ -21,7 +24,24 @@ exports.create = function(req, res) {
     delete req.body.location;
 	var event = new Event(req.body);
 	event.owner = req.user;
-	event.execute(event.filters[0]);
+	event.possibleDates = {
+			start: parseInt(moment().add(1, 'hour').format('x')),
+			end: parseInt(moment().add(7, 'day').add(1, 'hour').format('x')),
+			priority: 0
+	}
+	var filt;
+	for(filt in event.filters) {
+		event.execute(filt);
+	}
+	event.possibleDates = event.possibleDates.sort(function(a,b) {
+		var prio = b.priority - a.priority;
+		if(prio == 0) {
+			return a.start - b.start
+		} else {
+			return prio;
+		}
+	});
+	
 	//event.filters[0].markModified('params');
 	
 	EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {

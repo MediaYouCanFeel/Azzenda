@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	map = {
 			FIXED: require('../../app/controllers/eventFilters/FixedDate'),
-			TIMERANGE: require('../../app/controllers/eventFilters/TimeRange')
+			TIMERANGE: require('../../app/controllers/eventFilters/TimeRange'),
+			DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	};
 
 /**

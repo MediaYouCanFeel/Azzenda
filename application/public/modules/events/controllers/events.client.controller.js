@@ -456,14 +456,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.setEarlyTime = function(earlyTimeFromModal) {
         	$scope.earlyTime = moment().set('hours', moment(earlyTimeFromModal).get('hours'));
-        	moment($scope.earlyTime).set('minutes', moment(earlyTimeFromModal).get('minutes'));
+        	$scope.earlyTime = moment().set('minutes', moment(earlyTimeFromModal).get('minutes'));
         	$scope.earlyTime = moment($scope.earlyTime).format('x');
         	console.log($scope.earlyTime);
         }
         
         $scope.setLateTime = function(lateTimeFromModal) {
         	$scope.lateTime = moment().set('hours', moment(lateTimeFromModal).get('hours'));
-        	moment($scope.lateTime).set('minutes', moment(lateTimeFromModal).get('minutes'));
+        	$scope.lateTime = moment().set('minutes', moment(lateTimeFromModal).get('minutes'));
         	$scope.lateTime = moment($scope.lateTime).format('x');
         	console.log($scope.lateTime);
         }

@@ -51,6 +51,16 @@
                             </div>
                         </div>
 
+						<!-- Duration -->
+                       
+                         <div class="form-group">
+                             <label class="control-label text-center" for="duration">Duration (Hours)</label>
+                             <div class="controls">
+                                <input type="number" ng-model="hourDurationFromModal" placeholder="0"></input>
+                             </div>
+                         </div>
+                       
+
                         <!-- Description -->
                         <div class="form-group">
                             <label class="control-label" for="description">Description</label>
@@ -65,12 +75,29 @@
                     <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
 
+						<div class="row">
+							<span class="col-md-4 btn btn-no-hover slider-buttons">
+								<span>Fixed Date</span>
+							  	<input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="fixedFilter" name="fixedFilter" value=true>
+							  	<label for="cmn-toggle-1"></label>
+							</span>
+							<span class="col-md-4 btn btn-no-hover slider-buttons">
+								<span>Time Range</span>
+							  	<input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="trFilter" name="trFilter" value=true>
+							  	<label for="cmn-toggle-2"></label>
+							</span>
+							<span class="col-md-4 btn btn-no-hover slider-buttons" ng-init="dowFilter = true">
+								<span>Day of Week</span>
+							  	<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="dowFilter" name="dowFilter" value=true>
+							  	<label for="cmn-toggle-3"></label>
+							</span>
+						</div>
+
                         <!-- Fixed -->
                         
                         <div class="col-md-6">
                             <!-- Date -->
-                            <div class="form-group">
-                            	<input type="checkbox" ng-model="fixedFilter" name="fixedFilter" value=true>Use Fixed</input>
+                            <div ng-show="fixedFilter" class="form-group">
                                 <label class="control-label text-center" for="name">Date</label>
                                 <div class="controls">
                                         <p class="input-group">
@@ -87,8 +114,9 @@
                         
                             <!-- Earliest Start Time -->
                             <div class="row">
-	                            <div class="form-group">
-	                                <label class="control-label text-center" for="name">Earliest Start Time</label>
+	                            <div ng-show="fixedFilter || trFilter"  class="form-group">
+	                                <label ng-show="trFilter" class="control-label text-center" for="name">Earliest Start Time</label>
+	                                <label ng-show="fixedFilter && !(trFilter)" class="control-label text-center" for="name">Start Time</label>
 	                                <div class="controls" ng-init="timepickerClear()">
 	                                   <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
 	                                </div>
@@ -97,8 +125,7 @@
                             
                             <!-- Latest Start Time -->
                             <div class="row">
-	                            <div class="form-group">
-	                            <input type="checkbox" ng-model="trFilter" name="trFilter" value=true>Use TR</input>
+	                            <div ng-show="trFilter" class="form-group">
 	                                <label class="control-label text-center" for="name">Latest Start Time</label>
 	                                <div class="controls" ng-init="timepickerClear()">
 	                                   <timepicker ng-model="latestTimeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
@@ -106,31 +133,34 @@
 	                            </div>
                             </div>
                             
-                            <!-- Duration -->
-                            <div class="row">
-	                            <div class="form-group">
-	                                <label class="control-label text-center" for="duration">Duration (Hours)</label>
-	                                <div class="controls">
-	                                   <input type="number" ng-model="hourDurationFromModal" placeholder="0"></input>
-	                                </div>
-	                            </div>
-                            </div>
+                            
                         </div>
                     
                     	<!-- Day of Week -->
                     	<div class="row">
-                    		<div class="form-group">
-                    		
-                    			<label class="control-label text-center" for="dayOfWeek">Day of Week</label>
-                    			<input type="checkbox" ng-model="dowFilter" name="dowFilter" value=true>Use DoW</input>
-                                <div class="controls">
-                                   <input type="checkbox" ng-model="sun" name="dayOfWeek" value=true>Sunday</input>
-                                   <input type="checkbox" ng-model="mon" name="dayOfWeek" value=true>Monday</input>
-                                   <input type="checkbox" ng-model="tue" name="dayOfWeek" value=true>Tuesday</input>
-                                   <input type="checkbox" ng-model="wed" name="dayOfWeek" value=true>Wednesday</input>
-                                   <input type="checkbox" ng-model="thu" name="dayOfWeek" value=true>Thursday</input>
-                                   <input type="checkbox" ng-model="fri" name="dayOfWeek" value=true>Friday</input>
-                                   <input type="checkbox" ng-model="sat" name="dayOfWeek" value=true>Saturday</input>
+                    		<div ng-show="dowFilter" class="form-group">
+                                <span class="formTitles">Which day(s) of the week?</span>
+                                <div class="controls col-md-12 button-labels">
+                                   <input type="checkbox" id="sun" ng-model="sun" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="sun">Sun</label>
+                                   <input type="checkbox" id="mon" ng-model="mon" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="mon">Mon</label>
+                                   </input>
+                                   <input type="checkbox" id="tue" ng-model="tue" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="tue">Tue</label>
+                                   </input>
+                                   <input type="checkbox" id="wed" ng-model="wed" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="wed">Wed</label>
+                                   </input>
+                                   <input type="checkbox" id="thu" ng-model="thu" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="thu">Thu</label>
+                                   </input>
+                                   <input type="checkbox" id="fri" ng-model="fri" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="fri">Fri</label>
+                                   </input>
+                                   <input type="checkbox" id="sat" ng-model="sat" name="dayOfWeek" value=true>
+                                   		<label class="btn btn-no-hover" for="sat">Sat</label>
+                                   </input>
                                 </div>
                     		</div>
                     	</div>

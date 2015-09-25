@@ -6,7 +6,9 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	map = {
-			FIXED: require('../../app/controllers/eventFilters/FixedDate')
+			FIXED: require('../../app/controllers/eventFilters/FixedDate'),
+			TIMERANGE: require('../../app/controllers/eventFilters/TimeRange'),
+			DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	};
 
 /**
@@ -82,12 +84,12 @@ var EventSchema = new Schema({
     		required: 'Invalid Event Filter type' 
     	},
     	params: {}
-    }]/*,
-    dateStack: [
-        dat: {
-        	type: Date
-        }
-    ]*/
+    }],
+    possibleDates: [{
+		start: Date,
+		end: Date,
+		priority: Number
+    }]
 });
 
 EventSchema.methods.execute = function (filter) {

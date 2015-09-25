@@ -6,6 +6,7 @@
 var _ = require('lodash'),
 	glob = require('glob');
 
+var demoDependencies = ['angularNumberPicker'];
 /**
  * Load app configurations
  */

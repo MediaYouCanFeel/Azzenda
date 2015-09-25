@@ -104,17 +104,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
 		// Create new Event
 		$scope.create = function() {
-            //Check for date mode
-            var dateTimeMode = "not set";
-            
-            if (this.fixedDate == true) {
-                dateTimeMode = "fixed";
-            } else {
-                dateTimeMode = "range";
-            }
             
 			// Create new Event object
-            console.log(this.type);
 			var event = new Events ({
                 name: this.name,
                 desc: this.description,
@@ -456,14 +447,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.setEarlyTime = function(earlyTimeFromModal) {
         	$scope.earlyTime = moment().set('hours', moment(earlyTimeFromModal).get('hours'));
-        	$scope.earlyTime = moment().set('minutes', moment(earlyTimeFromModal).get('minutes'));
+        	$scope.earlyTime.set('minutes', moment(earlyTimeFromModal).get('minutes'));
         	$scope.earlyTime = moment($scope.earlyTime).format('x');
         	console.log($scope.earlyTime);
         }
         
         $scope.setLateTime = function(lateTimeFromModal) {
         	$scope.lateTime = moment().set('hours', moment(lateTimeFromModal).get('hours'));
-        	$scope.lateTime = moment().set('minutes', moment(lateTimeFromModal).get('minutes'));
+        	$scope.lateTime.set('minutes', moment(lateTimeFromModal).get('minutes'));
         	$scope.lateTime = moment($scope.lateTime).format('x');
         	console.log($scope.lateTime);
         }

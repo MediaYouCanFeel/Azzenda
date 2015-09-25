@@ -18,8 +18,11 @@ exports.execute = function(filter) {
 	} else {
 		//throw error or something
 	}
+	console.log(startDate);
+	console.log(endDate);
 	
 	var oldPossibleDates = this.possibleDates;
+	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {
 		var dateRangeStart = moment(oldPossibleDates[i].start);
 		var dateRangeEnd = moment(oldPossibleDates[i].end);
@@ -36,11 +39,12 @@ exports.execute = function(filter) {
 					oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});
 				}
 			}
+			startDate.add(1, 'day');
+			endDate.add(1, 'day');
 		} else {
 			oldPossibleDates.splice(i,1);
+			i--;
 		}
-		startDate.add(1, 'day');
-		endDate.add(1, 'day');
 	}
 	this.possibleDates = oldPossibleDates;
 };

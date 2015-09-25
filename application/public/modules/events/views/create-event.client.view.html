@@ -4,7 +4,7 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row" ng-init="createPage=2; findProjects(); findEventTypes(); findEventLocs();">
+                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
                     <div class="modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
@@ -72,25 +72,27 @@
                     </div>
                 
                 	<!-- PAGE 2 -->
-                    <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true">
+                    <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true; fixedFilter=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
 
 						<div class="row">
-							<span class="col-md-4 btn btn-no-hover slider-buttons">
-								<span>Fixed Date</span>
+							<div class="col-md-4 slider-buttons">
+								<div class="col-md-6">Fixed Date</div>
 							  	<input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="fixedFilter" name="fixedFilter" value=true>
-							  	<label for="cmn-toggle-1"></label>
-							</span>
-							<span class="col-md-4 btn btn-no-hover slider-buttons">
-								<span>Time Range</span>
+							  	<label for="cmn-toggle-1" class="col-md-6"></label>
+							</div>
+							<div class="col-md-4 slider-buttons">
+								<div class="col-md-6">Time Range</div>
 							  	<input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="trFilter" name="trFilter" value=true>
-							  	<label for="cmn-toggle-2"></label>
-							</span>
-							<span class="col-md-4 btn btn-no-hover slider-buttons" ng-init="dowFilter = true">
-								<span>Day of Week</span>
+							  	<label for="cmn-toggle-2" class="col-md-6"></label>
+							</div>
+							<div class="col-md-4 slider-buttons">
+								<div class="col-md-6">Day of Week</div>
+								
 							  	<input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" ng-model="dowFilter" name="dowFilter" value=true>
-							  	<label for="cmn-toggle-3"></label>
-							</span>
+							  	<label for="cmn-toggle-3" class="col-md-6"></label>
+							  	
+							</div>
 						</div>
 
                         <!-- Fixed -->

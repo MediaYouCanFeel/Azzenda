@@ -196,8 +196,5 @@ input[type="checkbox"]:checked + label {
 }
 
 .slider-buttons {
-  color: #fff;
-  background-color: #008080;
   border-color: #00e0e0;
-  width:150px;
 }

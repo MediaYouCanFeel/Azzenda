@@ -5,6 +5,10 @@ angular.module('events').config(['$stateProvider',
 	function($stateProvider) {
 		// Events state routing
 		$stateProvider.
+		state('create-pers-event', {
+			url: '/create-pers-event',
+			templateUrl: 'modules/events/views/create-pers-event.client.view.html'
+		}).
 		state('schedule-input', {
 			url: '/schedule-input',
 			templateUrl: 'modules/events/views/schedule-input.client.view.html'

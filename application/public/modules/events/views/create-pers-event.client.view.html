@@ -1,0 +1,146 @@
+<section class="" data-ng-controller="EventsController">
+<div class="col-md-12 well">
+        <h1 class="text-center">Create Personal Event</h1>
+        <form class="form-horizontal" data-ng-submit="create()" id="createPersEventForm" novalidate>
+            <fieldset>
+                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
+                    <div class="modal-col" ng-show="createPage == 1">
+                        <div class="text-center modal-heading"><u>Basic Info</u></div>
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label class="control-label" for="name">Name</label>
+                            <div class="controls">
+                                <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                            </div>
+                            <div class="examples">
+                                Examples: "Pizza Party", "Pizza Eating Contest"
+                            </div>
+                        </div>
+						
+						<!-- Duration -->
+                         <div class="form-group">
+                             <label class="control-label text-center" for="duration">Duration (Hours)</label>
+                             <div class="controls">
+                                <input type="number" ng-model="hourDurationFromModal" placeholder="0"></input>
+                             </div>
+                         </div>
+                    </div>
+                	
+                	<div class="col-md-6 modal-col">
+                      <!-- Date -->
+                      <div class="form-group">
+                          <label class="control-label text-center" for="name">Date</label>
+                          <div class="controls">
+                                  <p class="input-group">
+                                    <input type="text" class="form-control" ng-change="updateMonthDay(dateFromModal); recMd = getRecMonthDay();" datepicker-popup="{{format}}" ng-model="dateFromModal" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                    <span class="input-group-btn">
+                                      <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                  </p>
+                        	</div>
+                    	</div>
+                    </div>
+                    
+                    <div class="col-md-6 timepicker modal-col">
+                        
+                        <!-- Start Time -->
+                        <div class="row">
+                         <div class="form-group">
+                             <label class="control-label text-center" for="name">Start Time</label>
+                             <div class="controls" ng-init="timepickerClear()">
+                                <timepicker ng-model="timeFromModal" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+                             </div>
+                         </div>
+                        </div>                         
+                    </div>
+                    
+                   
+                   
+                    	<div class="col-md-12">
+                    		<hr>
+                    		<div class="text-center modal-heading"><u>Recurring</u></div>
+                    	</div>
+                    	
+                    	<span ng-init="recType = 'NONE'"></span>
+                    	
+                   		<div class="col-md-12 modal-col form-group">
+                   			<div class="controls">
+                   				<input type="radio" id="noRec" ng-model="recType" name="Rec" ng-value="'NONE'" />
+                   					<label>None</label>
+                   				<input type="radio" id="weekRec" ng-model="recType" name="Rec" ng-value="'WEEKLY'">
+                   					<label>Weekly</label>
+                   				<input type="radio" id="monthRec" ng-model="recType" name="Rec" ng-value="'MONTHLY'">
+                   					<label>Month</label>
+                   			</div>
+                   		</div>
+                    	
+                    	
+                    	<!-- Day of Week -->
+                   		<div ng-show="recType == 'WEEKLY'" class="col-md-12 form-group">
+                               <span class="formTitles modal-col">Which day(s) of the week?</span>
+                               <div class="controls col-md-12 button-labels">
+                                  <input type="checkbox" id="sun" ng-model="sun" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="sun">Sun</label>
+                                  <input type="checkbox" id="mon" ng-model="mon" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="mon">Mon</label>
+                                  </input>
+                                  <input type="checkbox" id="tue" ng-model="tue" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="tue">Tue</label>
+                                  </input>
+                                  <input type="checkbox" id="wed" ng-model="wed" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="wed">Wed</label>
+                                  </input>
+                                  <input type="checkbox" id="thu" ng-model="thu" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="thu">Thu</label>
+                                  </input>
+                                  <input type="checkbox" id="fri" ng-model="fri" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="fri">Fri</label>
+                                  </input>
+                                  <input type="checkbox" id="sat" ng-model="sat" name="dayOfWeek" value=true>
+                                  		<label class="btn btn-no-hover" for="sat">Sat</label>
+                                  </input>
+                               </div>
+                   		</div>
+                   		
+                   		<!-- Month -->
+                   		<div ng-show="recType == 'MONTHLY'" class="col-md-12 modal-col form-group" ng-init="recMd = getRecMonthDay()">
+                   			<span data-ng-bind="recMd"></span>
+                   		</div>
+                   
+                   <div class="row" ng-show="recType != 'NONE'">
+                   		<div class="col-md-6 col-md-offset-3 modal-col">
+	                   		<div class="form-group">
+	                          <label class="control-label text-center" for="endDate">End Date</label>
+	                          <div class="controls">
+	                                  <p class="input-group">
+	                                    <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="recEndDate" is-open="opened1" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
+	                                    <span class="input-group-btn">
+	                                      <button type="button" class="btn btn-teal" ng-click="open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+	                                    </span>
+	                                  </p>
+	                        	</div>
+	                    	</div>
+                   		</div>
+                   </div>
+                    
+                    <div class="row">
+	                    <div class="col-md-12 modal-buttons-events" data-ng-init="personal = true;">
+		                    <!-- Submit -->    
+		                    <div class="form-group pull-right">
+		                        <input type="submit" class="btn btn-yellow" value="Add to Calendar">
+		                    </div>                 
+	                    </div>
+                    </div>
+             	
+                    <div class="row">
+                        <div class="text-center">
+                            <div data-ng-show="error" class="text-danger">
+                                <strong data-ng-bind="error"></strong>
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

@@ -11,11 +11,10 @@ var mongoose = require('mongoose'),
 		DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	},
 	persMap = {
-		SINGLE: require('../../app/controllers/eventRecurring/Single')//,
+		NONE: require('../../app/controllers/eventRecurring/None')//,
 		//WEEKLY: require('../../app/controllers/eventRecurring/Weekly'),
 		//MONTHLY: require('../../app/controllers/eventRecurring/Monthly')
 	};
-}
 
 /**
  * Event Schema

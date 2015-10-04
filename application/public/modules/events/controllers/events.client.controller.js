@@ -11,6 +11,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.eventTypes = Events.getTypes();
         
+        $scope.personal = false;
+        
         //dropdown init
         angular.element('select').select2({ 
             width: '100%'
@@ -88,8 +90,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               }
             });
             
-            //modalInstance.opened.then($scope.initModal);
-            
             modalInstance.result.then(function (selectedEvent) {
               $scope.selected = selectedEvent;
             }, function () {
@@ -97,6 +97,33 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
         };
 
+        $scope.createPersModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/events/views/create-pers-event.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  $scope.eventTypes = Events.getTypes();                      
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+        };
+        
         //Create Event Type
         $scope.createEventType = function() {
         
@@ -105,21 +132,90 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		// Create new Event
 		$scope.create = function() {
             
+			var thisDesc = null;
+			var thisLoc = null;
+			var thisType = null;
+			var thisProj = null;
+			
+			//For non-personal events
+			if (!$scope.personal) {
+				thisDesc = this.description;
+				thisLoc = this.location;
+				thisType = this.type;
+				thisProj = this.project;
+			}
+			
+			var recDays = null;
+			
+			$scope.combineDateTimes(this.dateFromModal, this.timeFromModal);
+			var thisSchedStart = $scope.sendDate; //Range start
+
+			var thisSchedEnd = null;
+			
+			//if it is a recurring event
+			if ($scope.recType != 'NONE') {
+			
+				thisSchedStart = this.dateFromModal;
+				
+				console.log("thisSchedStart: " + thisSchedStart);
+				
+				//for weekly recurrence
+				if ($scope.recType == 'WEEKLY') {
+					
+					//Store days of week
+					recDays = [];
+					if (this.sun) {
+						recDays.push(0);
+					}
+					if (this.mon) {
+						recDays.push(1);
+					}
+					if (this.tue) {
+						recDays.push(2);
+					}
+					if (this.wed) {
+						recDays.push(3);
+					}
+					if (this.thu) {
+						recDays.push(4);
+					}
+					if (this.fri) {
+						recDays.push(5);
+					}
+					if (this.sat) {
+						recDays.push(6);
+					}		
+				}
+				
+				//Range End DateTimes (in millis)
+				$scope.combineDateTimes(this.recEndDate, this.timeFromModal);
+				thisSchedEnd = $scope.sendDate; //Range end
+			}
+			
 			// Create new Event object
 			var event = new Events ({
                 name: this.name,
-                desc: this.description,
-                //this needs to be in milliseconds
+                desc: thisDesc,
                 length: parseInt(this.hourDurationFromModal * 3600000),
-                location: this.location,
-                type: this.type,
-                proj: this.project,
-                
+                location: thisLoc,
+                type: thisType,
+                proj: thisProj,
+                personal: $scope.personal,
+                recurring: {
+                	type: $scope.recType,
+                	params: {
+                		days: recDays
+                	}
+                },
+                sched: {
+                	start: thisSchedStart,
+                	end: thisSchedEnd
+                }
 			});
-            
+			
 			//Add event filters
 			event.filters = [];
-			if (this.fixedFilter) {
+			if (this.fixedFilter && !($scope.personal)) {
 				event.filters.push({
 					type: "FIXED",
 					params: {
@@ -128,7 +224,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				});
 			};
 			
-			if (this.trFilter) {
+			if (this.trFilter && !($scope.personal)) {
 				$scope.setEarlyTime(this.timeFromModal);
 				$scope.setLateTime(this.latestTimeFromModal);
 				event.filters.push({
@@ -140,7 +236,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				});
 			};
 			
-			if (this.dowFilter) {
+			if (this.dowFilter && !($scope.personal)) {
 				var dayArray = [];
 				if (this.sun) {
 					dayArray.push(0);
@@ -164,7 +260,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 					dayArray.push(6);
 				}
 
-				
 				event.filters.push({
 					type: "DAYOFWEEK",
 					params: {
@@ -173,30 +268,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				});
 			}
 			
-			console.log(event.filters);
-			
-//			[{
-//            	type: 'FIXED',
-//            	params: {
-//            		//This needs to be in milliseconds
-//            		start: parseInt($scope.sendDate)
-//            	}
-//            }, 
-//            {
-//            	type: 'TIMERANGE',
-//            	params: {
-//            		start: null, //curr date with selected time
-//            		end: null
-//            	}
-//            },
-//            {
-//            	type: 'DAYOFWEEK',
-//            	params: {
-//            		days: [1,2] //Sun=0 ... Sat=6
-//            	}
-//            }];
-            
-            
 			// Redirect after save
 			event.$save(function(response) {
 				$location.path('events/' + response._id);
@@ -347,6 +418,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $event.stopPropagation();
 
             $scope.opened = true;
+        };
+        
+        $scope.open1 = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened1 = true;
         };
 
         $scope.openWhich = function($event, which) {
@@ -543,5 +621,34 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             console.log('number changed', $scope.input.num);
         };
         
+        $scope.recMonthDay;
+        
+        $scope.updateMonthDay = function(dateFromModal) {
+        	$scope.recMonthDay = moment(dateFromModal).get('date');
+        };
+        
+        $scope.getRecMonthDay = function() {
+        	if ($scope.recMonthDay) {
+	        	var recMonthString = "Will repeat every " + $scope.recMonthDay;
+	        	if ($scope.recMonthDay == 1 || $scope.recMonthDay == 21 || $scope.recMonthDay == 31) {
+	        		recMonthString += "st ";
+	        	} else if ($scope.recMonthDay == 2 || $scope.recMonthDay == 22) {
+	        		recMonthString += "nd ";
+	        	} else if ($scope.recMonthDay == 3 || $scope.recMonthDay == 23) {
+	        		recMonthString += "rd ";
+	        	} else {
+	        		recMonthString += "th ";
+	        	}
+	        	recMonthString += "day of the month.";
+	        	
+	        	if ($scope.recMonthDay > 28) {
+	        		recMonthString += " NOTE: Not every month will contain this event, since certain months have less than " + $scope.recMonthDay + " days.";
+	        	}
+	        	
+        	} else {
+        		var recMonthString = "Select a date to enable monthly recurrence.";
+        	}
+        	return recMonthString;
+        }
     }
 ]);

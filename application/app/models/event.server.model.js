@@ -37,7 +37,6 @@ var EventSchema = new Schema({
     desc: {
         type: String,
         default: '',
-        required: 'Please enter a description of the event',
         trim: true
     },
     proj: {

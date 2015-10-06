@@ -7,7 +7,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.authentication = Authentication;
         
         $scope.events = Events.query();
-        //console.log($scope.events);
         
         $scope.eventTypes = Events.getTypes();
         
@@ -17,20 +16,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         angular.element('select').select2({ 
             width: '100%'
         });
-        
-        //spinner init
-//        angular.element('spinner').spinner({
-//        	incremental: false
-//        });
-        
+                
         $scope.initModal = function() {
             var input = /** @type {HTMLInputElement} */(document.getElementById('location'));
-            console.log(input);
-//            var autocomplete = new google.maps.places.Autocomplete(input);
-//            google.maps.event.addListener(autocomplete, 'place_changed', function() {
-//                $scope.place = autocomplete.getPlace();
-//                console.log($scope.place);
-//            });
         };
         
         //Open Modal window for creating events
@@ -40,9 +28,35 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-                  console.log('In Modal Controller');
                   $scope.eventTypes = Events.getTypes();
                                   
+                  $scope.ok = function () {
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {}
+              }
+            });
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {});
+        };
+
+        $scope.createTypeModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/events/views/create-event-type.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  $scope.eventTypes = Events.getTypes();                      
+                  
                   $scope.ok = function () {
                     modalInstance.close();
                   };
@@ -64,46 +78,12 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
         };
 
-        $scope.createTypeModal = function (size) {
-            
-            var modalInstance = $modal.open({
-              animation: $scope.animationsEnabled,
-              templateUrl: 'modules/events/views/create-event-type.client.view.html',
-              controller: function ($scope, $modalInstance, items) {
-                  console.log('In Modal Controller');
-                  $scope.eventTypes = Events.getTypes();                      
-                  
-                  $scope.ok = function () {
-                      //$scope.selected.event
-                    modalInstance.close();
-                  };
-
-                  $scope.cancel = function () {
-                    $modalInstance.dismiss('cancel');
-                  };
-              },
-              size: size,
-              resolve: {
-                items: function () {
-                  //return $scope.events;
-                }
-              }
-            });
-            
-            modalInstance.result.then(function (selectedEvent) {
-              $scope.selected = selectedEvent;
-            }, function () {
-              $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
-
         $scope.createPersModal = function (size) {
             
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-pers-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-                  console.log('In Modal Controller');
                   $scope.eventTypes = Events.getTypes();                      
                   
                   $scope.ok = function () {
@@ -156,8 +136,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			if ($scope.recType != 'NONE') {
 			
 				thisSchedStart = this.dateFromModal;
-				
-				console.log("thisSchedStart: " + thisSchedStart);
 				
 				//for weekly recurrence
 				if ($scope.recType == 'WEEKLY') {
@@ -320,9 +298,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         //NOTE: This returns a list of all active (non-archived) projects
         $scope.findProjects = function() {
             var response = Projects.query();
-            console.log(response);
             $scope.projects = response;
-            console.log($scope.projects);
         };
         
         //Find a list of Groups
@@ -341,9 +317,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         //Find a list of Users
         $scope.findUsers = function() {
             var response = Users.query();
-            console.log(response);
             $scope.users = response;
-            console.log($scope.users);
         };
         
         //Find a list of Event Types
@@ -527,14 +501,12 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	$scope.earlyTime = moment().set('hours', moment(earlyTimeFromModal).get('hours'));
         	$scope.earlyTime.set('minutes', moment(earlyTimeFromModal).get('minutes'));
         	$scope.earlyTime = moment($scope.earlyTime).format('x');
-        	console.log($scope.earlyTime);
         }
         
         $scope.setLateTime = function(lateTimeFromModal) {
         	$scope.lateTime = moment().set('hours', moment(lateTimeFromModal).get('hours'));
         	$scope.lateTime.set('minutes', moment(lateTimeFromModal).get('minutes'));
         	$scope.lateTime = moment($scope.lateTime).format('x');
-        	console.log($scope.lateTime);
         }
         
         $scope.sendDate = moment();
@@ -590,9 +562,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	var endDateTime = moment(dateTime).add(parseInt(duration), 'milliseconds');
         	var printEndDate;
         	duration = this.length;
-        	console.log(dateTime);
-        	
-        	console.log(endDateTime.format('dddd, MMMM Do h:mm A'));
         	
         	//Check if entirely contained within 1 calendar day
         	if (moment(dateTime).get('date') == moment(endDateTime).get('date')) {
@@ -617,9 +586,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             alert('The number is: [' + $scope.input.num + ']');
         };
 
-        $scope.onChange = function() {
-            console.log('number changed', $scope.input.num);
-        };
+        $scope.onChange = function() {};
         
         $scope.recMonthDay;
         

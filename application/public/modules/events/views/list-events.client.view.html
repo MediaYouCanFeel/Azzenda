@@ -14,7 +14,8 @@
             </h2>
             
 			<div class="list-group" data-ng-init="findFutureEvents();">
-				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <hr>
@@ -24,16 +25,18 @@
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                     
-                    <div data-ng-bind="event.location.name"></div>
-                    
-                   	<div class="row">
-			    	<div class="pull-right event-rep-proj">
-				    	<strong data-ng-bind="event.proj.name"> </strong>
-				        
-				        <i class="fa fa-ellipsis-v"></i>
-			        	<span data-ng-bind="event.type.name"></span>
-	        		</div>
-	        		</div>
+	                <span ng-hide="event.status == 'personal'">  
+	                   	<div data-ng-bind="event.location.name"></div>
+	                   
+	                   	<div class="row">
+					    	<div class="pull-right event-rep-proj">
+						    	<strong data-ng-bind="event.proj.name"> </strong>
+						        
+						        <i class="fa fa-ellipsis-v"></i>
+					        	<span data-ng-bind="event.type.name"></span>
+			        		</div>
+		        		</div>
+	        		</span>
 				</a>   
 			</div>
             

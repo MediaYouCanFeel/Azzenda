@@ -67,7 +67,7 @@ exports.create = function(req, res) {
 		var i;
 		for(i=0; i<event.filters.length; i++) {
 			event.filters[i].markModified('params');
-			event.execute(event.filters[i]);
+			event.possFilter(event.filters[i]);
 		}
 		
 		event.possibleDates = event.possibleDates.sort(function(a,b) {

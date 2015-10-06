@@ -18,97 +18,132 @@ var mongoose = require('mongoose'),
  * Create an Event
  */
 exports.create = function(req, res) {
-    var evType = req.body.type;
-    delete req.body.type;
-    var evLoc = req.body.location;
-    delete req.body.location;
-	var event = new Event(req.body);
-	event.owner = req.user;
-	event.possibleDates = {
-			start: parseInt(moment().add(1, 'hour').format('x')),
-			end: parseInt(moment().add(7, 'day').add(1, 'hour').format('x')),
-			priority: 0
-	}
-	
-	var i;
-	for(i=0; i<event.filters.length; i++) {
-		event.filters[i].markModified('params');
-		event.execute(event.filters[i]);
-	}
-	
-	event.possibleDates = event.possibleDates.sort(function(a,b) {
-		var prio = b.priority - a.priority;
-		if(prio == 0) {
-			return a.start.getTime() - b.start.getTime();
-		} else {
-			return prio;
+	if(req.body.personal) {
+		req.body.status = 'personal';
+		delete req.body.personal;
+		delete req.body.type;
+		delete req.body.location;
+		delete req.body.proj;
+		delete req.body.desc;
+		var event = new Event(req.body);
+		event.owner = req.user;
+		event.recurring.markModified('params');
+		
+		if(event.recurring.type == 'NONE') {
+			event.sched.end = event.sched.start + event.length;
 		}
-	});
-	
-	event.status = 'unschedulable';	
-	for(i=0; i<event.possibleDates.length; i++) {
-		var posDate = event.possibleDates[i];
-		if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
-			event.sched.start = posDate.start;
-			event.sched.end = posDate.start.getTime() + event.length;
-			event.status = 'scheduled';
-			break;
-		}
-	}
-	
-	EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
-        if(err) {
-        	console.log('Event Type Error');
-        	var errMsg = errorHandler.getErrorMessage(err);
-        	if(errMsg == '') {
-        		errMsg = err.message;
-        		if(errMsg == '') {
-        			errMsg = err;
-        		}
-        	}
-            return res.status(400).send({
-                message: errMsg
-            });
-        } else {
-            event.type = evntType;
-            
-            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
-            	if(err) {
-            		console.log('Location Error');
-            		var errMsg = errorHandler.getErrorMessage(err);
-                	if(errMsg == '') {
-                		errMsg = err.message;
-                		if(errMsg == '') {
-                			errMsg = err;
-                		}
-                	}
-                    return res.status(400).send({
-                        message: errMsg
-                    });
-            	} else {
-	            	event.location = locat;
-	            	
-		            event.save(function(err) {
-		                if(err) {
-		                	console.log('Event save error');
-		                	var errMsg = errorHandler.getErrorMessage(err);
-		                	if(errMsg == '') {
-		                		errMsg = err.message;
-		                		if(errMsg == '') {
-		                			errMsg = err;
-		                		}
-		                	}
-		                    return res.status(400).send({
-		                        message: errMsg
-		                    });
-		                } else {
-		                    return res.jsonp(event);
-		                }
-		            });
+		
+		event.save(function(err) {
+            if(err) {
+            	console.log('Event save error');
+            	var errMsg = errorHandler.getErrorMessage(err);
+            	if(errMsg == '') {
+            		errMsg = err.message;
+            		if(errMsg == '') {
+            			errMsg = err;
+            		}
             	}
-            });
-        }
-    });
+                return res.status(400).send({
+                    message: errMsg
+                });
+            } else {
+                return res.jsonp(event);
+            }
+        });
+	} else {
+		delete req.body.personal;
+		var evType = req.body.type;
+	    delete req.body.type;
+	    var evLoc = req.body.location;
+	    delete req.body.location;
+		var event = new Event(req.body);
+		event.owner = req.user;
+		event.possibleDates = {
+				start: parseInt(moment().add(1, 'hour').format('x')),
+				end: parseInt(moment().add(7, 'day').add(1, 'hour').format('x')),
+				priority: 0
+		}
+		
+		var i;
+		for(i=0; i<event.filters.length; i++) {
+			event.filters[i].markModified('params');
+			event.execute(event.filters[i]);
+		}
+		
+		event.possibleDates = event.possibleDates.sort(function(a,b) {
+			var prio = b.priority - a.priority;
+			if(prio == 0) {
+				return a.start.getTime() - b.start.getTime();
+			} else {
+				return prio;
+			}
+		});
+		
+		event.status = 'unschedulable';	
+		for(i=0; i<event.possibleDates.length; i++) {
+			var posDate = event.possibleDates[i];
+			if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
+				event.sched.start = posDate.start;
+				event.sched.end = posDate.start.getTime() + event.length;
+				event.status = 'scheduled';
+				break;
+			}
+		}
+		
+		EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
+	        if(err) {
+	        	console.log('Event Type Error');
+	        	var errMsg = errorHandler.getErrorMessage(err);
+	        	if(errMsg == '') {
+	        		errMsg = err.message;
+	        		if(errMsg == '') {
+	        			errMsg = err;
+	        		}
+	        	}
+	            return res.status(400).send({
+	                message: errMsg
+	            });
+	        } else {
+	            event.type = evntType;
+	            
+	            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
+	            	if(err) {
+	            		console.log('Location Error');
+	            		var errMsg = errorHandler.getErrorMessage(err);
+	                	if(errMsg == '') {
+	                		errMsg = err.message;
+	                		if(errMsg == '') {
+	                			errMsg = err;
+	                		}
+	                	}
+	                    return res.status(400).send({
+	                        message: errMsg
+	                    });
+	            	} else {
+		            	event.location = locat;
+		            	
+			            event.save(function(err) {
+			                if(err) {
+			                	console.log('Event save error');
+			                	var errMsg = errorHandler.getErrorMessage(err);
+			                	if(errMsg == '') {
+			                		errMsg = err.message;
+			                		if(errMsg == '') {
+			                			errMsg = err;
+			                		}
+			                	}
+			                    return res.status(400).send({
+			                        message: errMsg
+			                    });
+			                } else {
+			                    return res.jsonp(event);
+			                }
+			            });
+	            	}
+	            });
+	        }
+	    });
+	}
 };
 
 /**
@@ -160,23 +195,57 @@ exports.delete = function(req, res) {
 exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
+    var lastDate = new Date(parseInt(moment(currDate).add(1, 'week').format('x')));
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.start').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
+            	var i;
+            	console.log(events);
+            	for(i=0; i<events.length; i++) {
+            		var curEvent = events[i];
+            		if(curEvent.status == 'personal') {
+            			console.log('test');
+            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+            			console.log(unrolled);
+            			events.splice(i, 1);
+            			if(unrolled) {
+            				var j;
+                			for(j=0; j<unrolled.length; j++) {
+                				events.splice(i, 0, unrolled[j]);
+                				i++;
+                			}
+            			}
+            		}
+            	}
                 res.jsonp(events);
             }
         });
     } else {
-        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).where('sched.start').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
+            	var i;
+            	for(i=0; i<events.length; i++) {
+            		var curEvent = events[i];
+            		if(curEvent.status == 'personal') {
+            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+            			events.splice(i, 1);
+            			if(unrolled) {
+            				var j;
+                			for(j=0; j<unrolled.length; j++) {
+                				events.splice(i, 0, unrolled[j]);
+                				i++;
+                			}
+            			}
+            		}
+            	}
                 res.jsonp(events);
             }
         });

@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
 		DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	},
 	persMap = {
-		NONE: require('../../app/controllers/eventRecurring/None')//,
+		NONE: require('../../app/controllers/eventRecurring/None'),
 		WEEKLY: require('../../app/controllers/eventRecurring/Weekly'),
 		MONTHLY: require('../../app/controllers/eventRecurring/Monthly')
 	};

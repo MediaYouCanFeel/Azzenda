@@ -18,7 +18,9 @@ var mongoose = require('mongoose'),
  * Create an Event
  */
 exports.create = function(req, res) {
-	if(req.body.status == 'personal') {
+	if(req.body.personal) {
+		req.body.status = 'personal';
+		delete req.body.personal;
 		delete req.body.type;
 		delete req.body.location;
 		delete req.body.proj;
@@ -26,6 +28,10 @@ exports.create = function(req, res) {
 		var event = new Event(req.body);
 		event.owner = req.user;
 		event.recurring.markModified('params');
+		
+		if(event.recurring.type == 'NONE') {
+			event.sched.end = event.sched.start + event.length;
+		}
 		
 		event.save(function(err) {
             if(err) {
@@ -45,6 +51,7 @@ exports.create = function(req, res) {
             }
         });
 	} else {
+		delete req.body.personal;
 		var evType = req.body.type;
 	    delete req.body.type;
 	    var evLoc = req.body.location;
@@ -188,19 +195,22 @@ exports.delete = function(req, res) {
 exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
-    var lastDate = Date(parseInt(moment(currDate).add(1, 'week').format('x')));
+    var lastDate = new Date(parseInt(moment(currDate).add(1, 'week').format('x')));
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.end').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
             	var i;
+            	console.log(events);
             	for(i=0; i<events.length; i++) {
             		var curEvent = events[i];
             		if(curEvent.status == 'personal') {
+            			console.log('test');
             			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+            			console.log(unrolled);
             			events.splice(i, 1);
             			if(unrolled) {
             				var j;
@@ -215,7 +225,7 @@ exports.listUpcoming = function(req, res) {
             }
         });
     } else {
-        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)

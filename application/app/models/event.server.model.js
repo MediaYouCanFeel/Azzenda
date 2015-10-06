@@ -5,15 +5,19 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
+	moment = require('moment'),
 	map = {
+//		PERSONAL: require('../../app/controllers/events/Personal'),
+//		NONPERSONAL: require('../../app/controllers/events/Nonpersonal')
+//	};
 		FIXED: require('../../app/controllers/eventFilters/FixedDate'),
 		TIMERANGE: require('../../app/controllers/eventFilters/TimeRange'),
 		DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	},
 	persMap = {
 		NONE: require('../../app/controllers/eventRecurring/None')//,
-		//WEEKLY: require('../../app/controllers/eventRecurring/Weekly'),
-		//MONTHLY: require('../../app/controllers/eventRecurring/Monthly')
+//		WEEKLY: require('../../app/controllers/eventRecurring/Weekly'),
+//		MONTHLY: require('../../app/controllers/eventRecurring/Monthly')
 	};
 
 /**
@@ -34,6 +38,15 @@ var EventSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
     },
+//    classType: {
+//    	type: String,
+//    	enum: Object.keys(map),
+//    	required: 'Invalid Event class type'
+//    },
+    length: {
+    	type: Number,
+    	required: 'Please provide an Event length'
+    },
     desc: {
         type: String,
         default: '',
@@ -43,12 +56,8 @@ var EventSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Project'
     },
-    length: {
-    	type: Number,
-    	required: 'Please provide an Event length'
-    },
     sched: {
-        start: {
+    	start: {
             type: Date
         },
         end: {
@@ -58,8 +67,8 @@ var EventSchema = new Schema({
     recurring: {
     	type: {
     		type: String,
-    		enum: Object.keys(map),
-    		required: 'Invalid personal event type'
+    		enum: Object.keys(persMap),
+    		required: 'Invalid recurring event type'
     	},
     	params: {}
     	/*
@@ -111,20 +120,32 @@ var EventSchema = new Schema({
     }]
 });
 
+//EventSchema.statics.create = function(event, params) {
+//	map[event.classType].create.call(initEvent, event, params);
+//}
+//
+//EventSchema.methods.create = function(params) {
+//	return map[this.classType].create.call(this, params);
+//}
+//
+//EventSchema.methods.list = function(params) {
+//	return map[this.classType].list.call(this, params);
+//}
+
 EventSchema.methods.possFilter = function (filter) {
     return map[filter.type].execute.call(this, filter);
 };
 
 EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
-	if(this.personal && !moment(this.sched.start).isAfter(endDate) && !moment(this.sched.end).isBefore(startDate)) {
+	if(this.status == 'personal' && moment(this.sched.start).isBefore(endDate) && moment(this.sched.end).isAfter(startDate)) {
 		var curDate = moment(startDate).startOf('day');
 		var eDate = moment(endDate).endOf('day');
 		var unrolled = [];
-		var unrollInst = persMap[this.recurring.type].next.call(this, Date(parseInt(curDate.format('x'))));
-		while(eDate.isAfter(unrollInst.sched.start) && eDate.isAfter(curDate)) {
+		var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
+		while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
 				unrolled.push(unrollInst);
-				curDate.add(1, 'day');
-				unrollInst = persMap[this.recurring.type].next.call(this, Date(parseInt(curDate.format('x'))));
+				curDate = moment(unrollInst.sched.start).add(1, 'day').startOf('day');
+				unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 		}
 		return unrolled;
 	} else {

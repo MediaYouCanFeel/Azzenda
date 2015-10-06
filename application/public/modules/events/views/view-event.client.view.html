@@ -16,7 +16,7 @@
         <div class="col-md-8 event-name">
             <span class="" data-ng-bind="event.name"></span>
         </div>
-        <div class="col-md-4">
+        <div ng-hide="event.status == 'personal'" class="col-md-4">
 	    	<div class="pull-right">
 	    		<div class="row">
 	    			<div class="pull-right">
@@ -36,7 +36,7 @@
     </div>
     
     <!-- 2nd well (Host/Info) -->
-    <div class="row well event-proj-type">
+    <div ng-hide="event.status == 'personal'" class="row well event-proj-type">
 	    <div class="row">
 		    <div class="col-md-8">
 		    	Hosted by  
@@ -57,8 +57,8 @@
 	</div>
     
     <div class="row">
-        <!-- Basic info info -->
-        <div class="col-md-8">
+    	<!-- Basic info (personal) -->
+        <div ng-show="event.status == 'personal'" class="col-md-12">
         	<div class="row well">
 	            <div class="top-bottom-padding">
 	                
@@ -70,6 +70,35 @@
 	                <span class="left-right-padding event-info" data-ng-bind="printFullDate"></span>
 	            </div>
 	            
+	            <div ng-hide="event.status == 'personal'">
+		            <hr>
+		            
+		            <div class="top-bottom-padding">
+		                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.name"></span>
+		            </div>
+		            
+		            <hr>
+		            
+		            <div class="top-bottom-padding">
+		                <span data-ng-bind="event.desc"></span>
+		            </div>
+	            </div>
+            </div>
+        </div>
+    
+        <!-- Basic info (non-personal) -->
+        <div ng-hide="event.status == 'personal'" class="col-md-8">
+        	<div class="row well">
+	            <div class="top-bottom-padding">
+	                
+	                <!-- Initializing date formatter -->
+	                <span>{{readableDateFull(event.sched.start)}}</span>
+	                <span>{{readableEndDate(event.sched.start, event.length)}}</span>
+	                
+	                <i class="fa fa-calendar fa-2x yellow"></i> 
+	                <span class="left-right-padding event-info" data-ng-bind="printFullDate"></span>
+	            </div>
+
 	            <hr>
 	            
 	            <div class="top-bottom-padding">
@@ -85,7 +114,7 @@
         </div>
         
         <!-- Guest list info -->
-        <div class="col-md-4" class="text-center">
+        <div ng-hide="event.status == 'personal'" class="col-md-4" class="text-center">
         	<div class="row well guest-well">
 		        <div class="guest-list-header">Guest List</div>
 		        

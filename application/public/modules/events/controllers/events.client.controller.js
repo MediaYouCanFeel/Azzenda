@@ -132,6 +132,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 
 			var thisSchedEnd = null;
 			
+			
+			$scope.recType = 'NONE'
 			//if it is a recurring event
 			if ($scope.recType != 'NONE') {
 			

@@ -58,7 +58,7 @@ exports.create = function(req, res) {
 	    delete req.body.location;
 		var event = new Event(req.body);
 		event.owner = req.user;
-		event.possibleDates = {
+		event.possDates = {
 				start: parseInt(moment().add(1, 'hour').format('x')),
 				end: parseInt(moment().add(7, 'day').add(1, 'hour').format('x')),
 				priority: 0
@@ -80,8 +80,8 @@ exports.create = function(req, res) {
 		});
 		
 		event.status = 'unschedulable';	
-		for(i=0; i<event.possibleDates.length; i++) {
-			var posDate = event.possibleDates[i];
+		for(i=0; i<event.possDates.length; i++) {
+			var posDate = event.possDates[i];
 			if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
 				event.sched.start = posDate.start;
 				event.sched.end = posDate.start.getTime() + event.length;
@@ -196,6 +196,7 @@ exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
     var lastDate = new Date(parseInt(moment(currDate).add(1, 'week').format('x')));
+    console.log(currDate);
     if(_.intersection(req.user.roles,roles).length) {
         Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
@@ -204,13 +205,13 @@ exports.listUpcoming = function(req, res) {
                 });
             } else {
             	var i;
-            	console.log(events);
+            	//console.log(events);
             	for(i=0; i<events.length; i++) {
             		var curEvent = events[i];
             		if(curEvent.status == 'personal') {
             			console.log('test');
             			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-            			console.log(unrolled);
+            			//console.log(unrolled);
             			events.splice(i, 1);
             			if(unrolled) {
             				var j;

@@ -190,7 +190,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 sched: {
                 	start: thisSchedStart,
                 	end: thisSchedEnd
-                }
+                },
+                guests: this.guests
 			});
 			
 			//Add event filters

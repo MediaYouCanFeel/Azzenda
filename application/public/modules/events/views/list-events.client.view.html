@@ -50,7 +50,7 @@
                 <strong class="blue">Past Events</strong>
             </h2>
              <div class="list-group" data-ng-init="findPastEvents();">
-                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' : true" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <hr>

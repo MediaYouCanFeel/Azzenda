@@ -21,7 +21,7 @@ exports.execute = function(filter) {
 	console.log(startDate);
 	console.log(endDate);
 	
-	var oldPossibleDates = this.possibleDates;
+	var oldPossibleDates = this.possDates;
 	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {
 		var dateRangeStart = moment(oldPossibleDates[i].start);
@@ -46,5 +46,5 @@ exports.execute = function(filter) {
 			i--;
 		}
 	}
-	this.possibleDates = oldPossibleDates;
+	this.possDates = oldPossibleDates;
 };

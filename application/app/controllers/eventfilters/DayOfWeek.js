@@ -15,7 +15,7 @@ exports.execute = function(filter) {
 	startDate.startOf('day');
 	endDate.endOf('day');
 	
-	var oldPossibleDates = this.possibleDates;
+	var oldPossibleDates = this.possDates;
 	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {
 		while(days.indexOf(startDate.day()) == -1) {
@@ -48,5 +48,5 @@ exports.execute = function(filter) {
 			i--;
 		}
 	}
-	this.possibleDates = oldPossibleDates;
+	this.possDates = oldPossibleDates;
 };

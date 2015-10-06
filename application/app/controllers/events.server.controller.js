@@ -70,7 +70,7 @@ exports.create = function(req, res) {
 			event.possFilter(event.filters[i]);
 		}
 		
-		event.possibleDates = event.possibleDates.sort(function(a,b) {
+		event.possDates = event.possDates.sort(function(a,b) {
 			var prio = b.priority - a.priority;
 			if(prio == 0) {
 				return a.start.getTime() - b.start.getTime();

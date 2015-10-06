@@ -8,7 +8,7 @@
  * Apply filter
  */
 exports.execute = function(filter) {
-	this.possibleDates = {
+	this.possDates = {
 		start: filter.params.start,
 		end: filter.params.start + this.length,
 		priority: 0

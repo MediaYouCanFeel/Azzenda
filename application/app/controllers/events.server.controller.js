@@ -56,6 +56,8 @@ exports.create = function(req, res) {
 	    delete req.body.type;
 	    var evLoc = req.body.location;
 	    delete req.body.location;
+	    var guests = req.body.guests;
+	    delete req.body.guests;
 		var event = new Event(req.body);
 		event.owner = req.user;
 		event.possDates = {
@@ -79,53 +81,87 @@ exports.create = function(req, res) {
 			}
 		});
 		
-		event.status = 'unschedulable';	
-		for(i=0; i<event.possDates.length; i++) {
-			var posDate = event.possDates[i];
-			if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
-				event.sched.start = posDate.start;
-				event.sched.end = posDate.start.getTime() + event.length;
-				event.status = 'scheduled';
-				break;
-			}
-		}
-		
-		EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
-	        if(err) {
-	        	console.log('Event Type Error');
-	        	var errMsg = errorHandler.getErrorMessage(err);
-	        	if(errMsg == '') {
-	        		errMsg = err.message;
-	        		if(errMsg == '') {
-	        			errMsg = err;
-	        		}
-	        	}
+		Event.find({status: 'personal'}).where('owner').in(guests).exec(function(err,userEvents) {
+			if(err) {
 	            return res.status(400).send({
-	                message: errMsg
+	                message: err
 	            });
-	        } else {
-	            event.type = evntType;
-	            
-	            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
-	            	if(err) {
-	            		console.log('Location Error');
-	            		var errMsg = errorHandler.getErrorMessage(err);
-	                	if(errMsg == '') {
-	                		errMsg = err.message;
-	                		if(errMsg == '') {
-	                			errMsg = err;
-	                		}
-	                	}
-	                    return res.status(400).send({
-	                        message: errMsg
-	                    });
-	            	} else {
-		            	event.location = locat;
-		            	
-			            event.save(function(err) {
-			                if(err) {
-			                	console.log('Event save error');
-			                	var errMsg = errorHandler.getErrorMessage(err);
+			} else {
+				var j
+				for(j=0; j<guests.length; j++) {
+					var curGuest = guests[j];
+					event.guests.push({
+						user: curGuest,
+						status: 'invited'
+					});
+					var k;
+					var curUserEvents = [];
+					for(k=0; k<userEvents.length; k++) {
+						if(userEvents[k].owner == curGuest) {
+							curUserEvents.push(userEvents[k]);
+						}
+					}
+					var oldPossibleDates = event.possDates;
+					var i;
+					var l=0;
+					for(i=0; i<oldPossibleDates.length && l<curUserEvents.length; i++) {
+						var startDate = moment(curUserEvents[l].sched.start);
+						var endDate = moment(curUserEvents[l].sched.end);
+						var dateRangeStart = moment(oldPossibleDates[i].start);
+						var dateRangeEnd = moment(oldPossibleDates[i].end);
+						if(startDate.isBefore(dateRangeEnd)) {
+							if(endDate.isBefore(dateRangeStart)) {
+								i--;
+							} else {
+								if(startDate.isAfter(dateRangeStart)) {
+									 oldPossibleDates[i].start = parseInt(startDate.format('x'));
+								}
+								if(endDate.isBefore(dateRangeEnd)) {
+									var oldEndDate = oldPossibleDates[i].end;
+									oldPossibleDates[i].end = parseInt(endDate.format('x'));
+									oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});
+								}
+							}
+							l++;
+						} else {
+							oldPossibleDates.splice(i,1);
+							i--;
+						}
+					}
+					event.possDates = oldPossibleDates;
+				}
+				
+				event.status = 'unschedulable';	
+				for(i=0; i<event.possDates.length; i++) {
+					var posDate = event.possDates[i];
+					if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
+						event.sched.start = posDate.start;
+						event.sched.end = posDate.start.getTime() + event.length;
+						event.status = 'scheduled';
+						break;
+					}
+				}
+				
+				EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
+			        if(err) {
+			        	console.log('Event Type Error');
+			        	var errMsg = errorHandler.getErrorMessage(err);
+			        	if(errMsg == '') {
+			        		errMsg = err.message;
+			        		if(errMsg == '') {
+			        			errMsg = err;
+			        		}
+			        	}
+			            return res.status(400).send({
+			                message: errMsg
+			            });
+			        } else {
+			            event.type = evntType;
+			            
+			            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
+			            	if(err) {
+			            		console.log('Location Error');
+			            		var errMsg = errorHandler.getErrorMessage(err);
 			                	if(errMsg == '') {
 			                		errMsg = err.message;
 			                		if(errMsg == '') {
@@ -135,14 +171,32 @@ exports.create = function(req, res) {
 			                    return res.status(400).send({
 			                        message: errMsg
 			                    });
-			                } else {
-			                    return res.jsonp(event);
-			                }
+			            	} else {
+				            	event.location = locat;
+				            	
+					            event.save(function(err) {
+					                if(err) {
+					                	console.log('Event save error');
+					                	var errMsg = errorHandler.getErrorMessage(err);
+					                	if(errMsg == '') {
+					                		errMsg = err.message;
+					                		if(errMsg == '') {
+					                			errMsg = err;
+					                		}
+					                	}
+					                    return res.status(400).send({
+					                        message: errMsg
+					                    });
+					                } else {
+					                    return res.jsonp(event);
+					                }
+					            });
+			            	}
 			            });
-	            	}
-	            });
-	        }
-	    });
+			        }
+			    });
+			}
+		});
 	}
 };
 

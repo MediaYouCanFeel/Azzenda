@@ -111,15 +111,19 @@
         
         <!-- Guest list info -->
         <div ng-hide="event.status == 'personal'" class="col-md-4" class="text-center">
-        	<div class="row well guest-well">
+        	<div class="row well guest-well" ng-controller="RostersController" ng-init="findUsers()">
 		        <div class="guest-list-header">Guest List</div>
 		        
-		        <hr>
-		    
-			    <div>
-			    insert guests here
-			    </div>
+		        <div class="top-bottom-padding">
+		        	<hr>
+		        </div>
 		        
+		        <a data-ng-repeat="user in users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+					<!-- Last, First -->
+		            <div class="h4">
+		                <span data-ng-bind="user.firstName"></span> <span data-ng-bind="user.lastName"></span>
+		            </div>
+		        </a>		        
 		    </div>		    
         </div>
     </div>

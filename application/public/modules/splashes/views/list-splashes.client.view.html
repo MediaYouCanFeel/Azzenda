@@ -16,9 +16,14 @@
                 </strong>
             </h2>
             <div class="list-group" data-ng-init="findFutureEvents();">
-				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | limitTo: 3" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | limitTo: 3 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
+                        <span class="pull-right">
+                        	<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
+                        	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
+                        </span>
                         <hr>
                     </div>
                     
@@ -26,16 +31,18 @@
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                     
-                    <div data-ng-bind="event.location.name"></div>
-                    
-                   	<div class="row">
-			    	<div class="pull-right event-rep-proj">
-				    	<strong data-ng-bind="event.proj.name"> </strong>
-				        
-				        <i class="fa fa-ellipsis-v"></i>
-			        	<span data-ng-bind="event.type.name"></span>
-	        		</div>
-	        		</div>
+	                <span ng-hide="event.status == 'personal'">  
+	                   	<div data-ng-bind="event.location.name"></div>
+	                   
+	                   	<div class="row">
+					    	<div class="pull-right event-rep-proj">
+						    	<strong data-ng-bind="event.proj.name"> </strong>
+						        
+						        <i class="fa fa-ellipsis-v"></i>
+					        	<span data-ng-bind="event.type.name"></span>
+			        		</div>
+		        		</div>
+	        		</span>
 				</a>   
 			</div>
         </div>
@@ -55,131 +62,19 @@
                     <a ng-href="/#!/projects">Projects</a>
                 </strong>
             </h2>
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Fall 2015 Web Series</h3>
-                    </div>
-                    <i>Web Series - FA15</i>
-                    <p>Pre-Production</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Rules for Living the YOLO Lifestyle</h3>
-                    </div>
-                    <i>Web Series - RLY</i>
-                    <p>Post-Production</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Second Time</h3>
-                    </div>
-                    <i>Web Series - ST</i>
-                    <p>Post-Production</p>
-                </div>
-            </div>
-        </div>
-        <div class="row well">
-            <h2>
-                <strong>
-                    <a ng-href="/#!/groups">Groups</a>
-                </strong>
-            </h2>
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Top-Tier Executive Board</h3>
-                    </div>
-                    <p>You, Ben Heuser, and Emma Green.</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Editors</h3>
-                    </div>
-                    <p>You, Michelle Stone, Valentina Verano, and 2 others.</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Directors</h3>
-                    </div>
-                    <p>You and Ben Heuser.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-=======
-<section data-ng-controller="SplashesController" data-ng-init="find()">
-<div class="col-md-12 well top-well text-center">
-		<div>
-            <span class="h2 blue">Welcome to </span> 
-            <span class="azzenda-font h2 yellow"> Azzenda.</span>
-        </div>
-		<p class="blue">
-			This is some basic information and links.
-		</p>
-	</div>
-    <div class="col-md-7">
-        <div class="col-md-12 row well" data-ng-controller="EventsController" data-ng-init="find()">
-            <h2>
-                <strong>
-                    <a ng-href="/#!/events">Events</a>
-                </strong>
-            </h2>
-            <div class="list-group">
-				<a ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
-					<div id="info">
-                        <h3 data-ng-bind="event.name"></h3>
-                        <i data-ng-bind="event.project.name"></i>
-                    </div>
-                    
-                    <!-- Initializing date formatter -->
-                    <span>{{readableDate(event.scheduledDateTimeRange.start)}}</span>
-                
-                    <p data-ng-bind="printDate"></p>
-                    <p data-ng-bind="event.date"></p>
-                    <p data-ng-bind="event.location.loc"></p>
-				</a>   
-			</div>
-        </div>
-        <div class="col-md-12 row well">
-            <h2>
-                <strong>
-                    <a ng-href="/#!/finances">Finances</a>
-                </strong>
-            </h2>
-            <p>This is a look at the current financial situation.</p>
-        </div>
-    </div>
-    <div class="col-md-5">
-        <div class="row well">
-            <h2>
-                <strong>
-                    <a ng-href="/#!/projects">Projects</a>
-                </strong>
-            </h2>
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Fall 2015 Web Series</h3>
-                    </div>
-                    <i>Web Series - FA15</i>
-                    <p>Pre-Production</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Rules for Living the YOLO Lifestyle</h3>
-                    </div>
-                    <i>Web Series - RLY</i>
-                    <p>Post-Production</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Second Time</h3>
-                    </div>
-                    <i>Web Series - ST</i>
-                    <p>Post-Production</p>
-                </div>
-            </div>
+            <div class="list-group" data-ng-controller="ProjectsController" data-ng-init="find()">
+		        <a data-ng-repeat="project in projects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+					<small class="list-group-item-text">
+					<div class="row">
+						<div class="col-md-6 project-rep-name">
+							<div class="list-group-item-heading" data-ng-bind="project.name"></div>
+						</div>
+						<div class="col-md-6 project-rep-type">
+							<div class="pull-right" data-ng-bind="project.type"></div>
+						</div>
+					</div>
+		        </a>
+		    </div>
         </div>
         <div class="row well">
             <h2>

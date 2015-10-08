@@ -7,7 +7,7 @@
     </div>
     
     <div class="list-group">
-        <a data-ng-repeat="project in projects" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+        <a data-ng-repeat="project in projects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
 			<small class="list-group-item-text">
 			<div class="row">
 				<div class="col-md-6 project-rep-name">

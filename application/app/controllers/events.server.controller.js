@@ -73,20 +73,24 @@ exports.create = function(req, res) {
 		}
 		
 		event.possDates = event.possDates.sort(function(a,b) {
-			var prio = b.priority - a.priority;
-			if(prio == 0) {
-				return a.start.getTime() - b.start.getTime();
-			} else {
-				return prio;
-			}
+			return a.start.getTime() - b.start.getTime();
 		});
-		
+		console.log(guests);
 		Event.find({status: 'personal'}).where('owner').in(guests).exec(function(err,userEvents) {
 			if(err) {
+				console.log('Personal Event Error');
+	        	var errMsg = errorHandler.getErrorMessage(err);
+	        	if(errMsg == '') {
+	        		errMsg = err.message;
+	        		if(errMsg == '') {
+	        			errMsg = err;
+	        		}
+	        	}
 	            return res.status(400).send({
-	                message: err
+	                message: errMsg
 	            });
 			} else {
+				console.log("In here swag swag swag");
 				var j
 				for(j=0; j<guests.length; j++) {
 					var curGuest = guests[j];
@@ -114,22 +118,28 @@ exports.create = function(req, res) {
 								i--;
 							} else {
 								if(startDate.isAfter(dateRangeStart)) {
-									 oldPossibleDates[i].start = parseInt(startDate.format('x'));
-								}
-								if(endDate.isBefore(dateRangeEnd)) {
-									var oldEndDate = oldPossibleDates[i].end;
-									oldPossibleDates[i].end = parseInt(endDate.format('x'));
-									oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});
+									oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
+									if(endDate.isBefore(dateRangeEnd)) {
+										oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
+									}
+								} else if(endDate.isBefore(dateRangeEnd)) {
+									oldPossibleDates[i].start = new Date(parseInt(endDate.format('x')));
 								}
 							}
 							l++;
-						} else {
-							oldPossibleDates.splice(i,1);
-							i--;
 						}
 					}
 					event.possDates = oldPossibleDates;
 				}
+				
+				event.possDates = event.possDates.sort(function(a,b) {
+					var prio = b.priority - a.priority;
+					if(prio == 0) {
+						return a.start.getTime() - b.start.getTime();
+					} else {
+						return prio;
+					}
+				});
 				
 				event.status = 'unschedulable';	
 				for(i=0; i<event.possDates.length; i++) {

@@ -18,6 +18,10 @@
 					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
+                        <span class="pull-right">
+                        	<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
+                        	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
+                        </span>
                         <hr>
                     </div>
                     
@@ -50,9 +54,13 @@
                 <strong class="blue">Past Events</strong>
             </h2>
              <div class="list-group" data-ng-init="findPastEvents();">
-                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" class="list-group-item">
+                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' : true | limitTo: 10" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
+                        <span class="pull-right">
+                        	<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
+                        	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
+                        </span>
                         <hr>
                     </div>
                     
@@ -60,16 +68,18 @@
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                     
-                    <div data-ng-bind="event.location.name"></div>
-                    
-                   	<div class="row">
-			    	<div class="pull-right event-rep-proj">
-				    	<strong data-ng-bind="event.proj.name"> </strong>
-				        
-				        <i class="fa fa-ellipsis-v"></i>
-			        	<span data-ng-bind="event.type.name"></span>
-	        		</div>
-	        		</div>
+	                <span ng-hide="event.status == 'personal'">  
+	                   	<div data-ng-bind="event.location.name"></div>
+	                   
+	                   	<div class="row">
+					    	<div class="pull-right event-rep-proj">
+						    	<strong data-ng-bind="event.proj.name"> </strong>
+						        
+						        <i ng-hide="event.proj.name == null || event.type.name == null" class="fa fa-ellipsis-v"></i>
+					        	<span data-ng-bind="event.type.name"></span>
+			        		</div>
+		        		</div>
+	        		</span>
 				</a>   
             </div>
         </div>

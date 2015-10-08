@@ -190,7 +190,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 sched: {
                 	start: thisSchedStart,
                 	end: thisSchedEnd
-                }
+                },
+                guests: this.guests
 			});
 			
 			//Add event filters
@@ -535,16 +536,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             var alreadyHappened = moment(dateTime) < moment(rightNow);
             
             //If the event is happening today           
-        	if(moment(dateTime).add(1, 'days').get('date') == moment(rightNow).get('date') && alreadyHappened) {
+        	if($scope.checkSameDay(moment(dateTime).add(1, 'days')) && alreadyHappened) {
 	        	$scope.printDateDate = 'Yesterday at ';
 	        } else if (moment(dateTime).add(7, 'days') > moment(rightNow) && alreadyHappened) {
 	            //If the event is less than 7 days away
 	            $scope.printDateDate = moment(dateTime).format('[Last] dddd [at] ');   
-	        } else if (moment(dateTime).get('date') == moment(rightNow).get('date')) {
+	        } else if ($scope.checkSameDay(dateTime)) {
 	            $scope.printDateDate = 'Today at ';
 	        } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
 	        	$scope.printDateDate = 'Tomorrow at ';
-	        } else if (moment(dateTime).subtract(7, 'days') < moment(rightNow)) {
+	        } else if (moment(dateTime).subtract(7, 'days') < moment(rightNow) && !alreadyHappened) {
 	            //If the event is less than 7 days away
 	            $scope.printDateDate = moment(dateTime).format('dddd [at] ');   
 	        } else {
@@ -555,6 +556,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.printDateTime = moment(dateTime).format('h:mm A');
             
             $scope.printDate = $scope.printDateDate + $scope.printDateTime;
+        }
+        
+        $scope.checkSameDay = function(dateTime) {
+        	var rightNow = moment();
+        	var sameDay = (moment(dateTime).get('date') == moment(rightNow).get('date'));
+        	var sameMonth = (moment(dateTime).get('month') == moment(rightNow).get('month'));
+        	var sameYear = (moment(dateTime).get('year') == moment(rightNow).get('year'));
+        	if(sameDay && sameMonth && sameYear) {
+        		return true;
+        	} 
         }
         
         $scope.readableEndDate = function(dateTime, duration) {

@@ -6,7 +6,8 @@
             </a>
         </div>
         <div class="pull-right">
-        	<strong class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Event</strong>
+        	<strong ng-show="event.status != 'personal'" class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Event</strong>
+        	<strong ng-show="event.status == 'personal'" class="btn btn-blue" ng-click="createPersModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Personal Event</strong>
         </div>
         
     </div>
@@ -16,6 +17,7 @@
         <div class="col-md-8 event-name">
             <span class="" data-ng-bind="event.name"></span>
         </div>
+        
         <div ng-hide="event.status == 'personal'" class="col-md-4">
 	    	<div class="pull-right">
 	    		<div class="row">
@@ -39,6 +41,7 @@
     <div ng-hide="event.status == 'personal'" class="row well event-proj-type">
 	    <div class="row">
 		    <div class="col-md-8">
+		    	<i class="fa fa-users"></i>
 		    	Hosted by  
 		    	<a ng-href="/#!/users/{{event.owner._id}}">
 		    		<strong data-ng-bind="event.owner.displayName"></strong>
@@ -70,19 +73,12 @@
 	                <span class="left-right-padding event-info" data-ng-bind="printFullDate"></span>
 	            </div>
 	            
-	            <div ng-hide="event.status == 'personal'">
-		            <hr>
-		            
-		            <div class="top-bottom-padding">
-		                <i class="fa fa-map-marker fa-2x blue"></i> <span class="left-right-padding event-info" data-ng-bind="event.location.name"></span>
-		            </div>
-		            
-		            <hr>
-		            
-		            <div class="top-bottom-padding">
-		                <span data-ng-bind="event.desc"></span>
-		            </div>
-	            </div>
+	            <hr> 
+	                
+                <div class="top-bottom-padding event-info">
+		    		<i class="fa fa-user"></i>
+		    		This is a personal event. Only you can see it, and no one else can be invited.
+	    		</div>
             </div>
         </div>
     
@@ -115,15 +111,19 @@
         
         <!-- Guest list info -->
         <div ng-hide="event.status == 'personal'" class="col-md-4" class="text-center">
-        	<div class="row well guest-well">
+        	<div class="row well guest-well" ng-controller="RostersController" ng-init="findUsers()">
 		        <div class="guest-list-header">Guest List</div>
 		        
-		        <hr>
-		    
-			    <div>
-			    insert guests here
-			    </div>
+		        <div class="top-bottom-padding">
+		        	<hr>
+		        </div>
 		        
+		        <a data-ng-repeat="user in users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+					<!-- Last, First -->
+		            <div class="h4">
+		                <span data-ng-bind="user.firstName"></span> <span data-ng-bind="user.lastName"></span>
+		            </div>
+		        </a>		        
 		    </div>		    
         </div>
     </div>

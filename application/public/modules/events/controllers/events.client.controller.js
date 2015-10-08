@@ -538,11 +538,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             //If the event is happening today           
         	if($scope.checkSameDay(moment(dateTime).add(1, 'days')) && alreadyHappened) {
 	        	$scope.printDateDate = 'Yesterday at ';
+	        } else if ($scope.checkSameDay(dateTime)) {
+	            $scope.printDateDate = 'Today at ';
 	        } else if (moment(dateTime).add(7, 'days') > moment(rightNow) && alreadyHappened) {
 	            //If the event is less than 7 days away
 	            $scope.printDateDate = moment(dateTime).format('[Last] dddd [at] ');   
-	        } else if ($scope.checkSameDay(dateTime)) {
-	            $scope.printDateDate = 'Today at ';
 	        } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
 	        	$scope.printDateDate = 'Tomorrow at ';
 	        } else if (moment(dateTime).subtract(7, 'days') < moment(rightNow) && !alreadyHappened) {

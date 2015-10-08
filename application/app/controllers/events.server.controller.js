@@ -30,7 +30,7 @@ exports.create = function(req, res) {
 		event.recurring.markModified('params');
 		
 		if(event.recurring.type == 'NONE') {
-			event.sched.end = event.sched.start + event.length;
+			event.sched.end = event.sched.start.getTime() + event.length;
 		}
 		
 		event.save(function(err) {
@@ -76,7 +76,7 @@ exports.create = function(req, res) {
 			return a.start.getTime() - b.start.getTime();
 		});
 		console.log(guests);
-		Event.find({status: 'personal'}).where('owner').in(guests).exec(function(err,userEvents) {
+		Event.find({status: 'personal'}).where('owner').in(guests).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
 			if(err) {
 				console.log('Personal Event Error');
 	        	var errMsg = errorHandler.getErrorMessage(err);
@@ -90,7 +90,6 @@ exports.create = function(req, res) {
 	                message: errMsg
 	            });
 			} else {
-				console.log("In here swag swag swag");
 				var j
 				for(j=0; j<guests.length; j++) {
 					var curGuest = guests[j];
@@ -113,7 +112,16 @@ exports.create = function(req, res) {
 						var endDate = moment(curUserEvents[l].sched.end);
 						var dateRangeStart = moment(oldPossibleDates[i].start);
 						var dateRangeEnd = moment(oldPossibleDates[i].end);
+						console.log("Start Date");
+						console.log(startDate._d);
+						console.log("End Date");
+						console.log(endDate._d);
+						console.log("Date Range Start");
+						console.log(dateRangeStart._d);
+						console.log("Date Range End");
+						console.log(dateRangeEnd._d);
 						if(startDate.isBefore(dateRangeEnd)) {
+							console.log("in here");
 							if(endDate.isBefore(dateRangeStart)) {
 								i--;
 							} else {
@@ -124,6 +132,9 @@ exports.create = function(req, res) {
 									}
 								} else if(endDate.isBefore(dateRangeEnd)) {
 									oldPossibleDates[i].start = new Date(parseInt(endDate.format('x')));
+								} else {
+									oldPossibleDates.splice(i,1);
+									i--;
 								}
 							}
 							l++;
@@ -259,7 +270,7 @@ exports.delete = function(req, res) {
 exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
-    var lastDate = new Date(parseInt(moment(currDate).add(1, 'week').format('x')));
+    var lastDate = new Date(parseInt(moment(currDate).add(2, 'week').format('x')));
     console.log(currDate);
     if(_.intersection(req.user.roles,roles).length) {
         Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {

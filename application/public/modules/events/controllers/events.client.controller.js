@@ -12,6 +12,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.personal = false;
         
+        $scope.showPers;
+        
         //dropdown init
         angular.element('select').select2({ 
             width: '100%'
@@ -176,7 +178,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			var event = new Events ({
                 name: this.name,
                 desc: thisDesc,
-                length: parseInt(this.hourDurationFromModal * 3600000),
+                length: parseInt($scope.getLength(this.hourDurationFromModal, this.minDurationFromModal)),
                 location: thisLoc,
                 type: thisType,
                 proj: thisProj,
@@ -538,11 +540,11 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             //If the event is happening today           
         	if($scope.checkSameDay(moment(dateTime).add(1, 'days')) && alreadyHappened) {
 	        	$scope.printDateDate = 'Yesterday at ';
+	        } else if ($scope.checkSameDay(dateTime)) {
+	            $scope.printDateDate = 'Today at ';
 	        } else if (moment(dateTime).add(7, 'days') > moment(rightNow) && alreadyHappened) {
 	            //If the event is less than 7 days away
 	            $scope.printDateDate = moment(dateTime).format('[Last] dddd [at] ');   
-	        } else if ($scope.checkSameDay(dateTime)) {
-	            $scope.printDateDate = 'Today at ';
 	        } else if(moment(dateTime).subtract(1, 'days').get('date') == moment(rightNow).get('date')) {
 	        	$scope.printDateDate = 'Tomorrow at ';
 	        } else if (moment(dateTime).subtract(7, 'days') < moment(rightNow) && !alreadyHappened) {
@@ -629,6 +631,30 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         		var recMonthString = "Select a date to enable monthly recurrence.";
         	}
         	return recMonthString;
+        }
+        
+        $scope.getLength = function(hours, mins) {
+        	var tot = 0;
+        	if (hours) {
+        		tot += (hours * 3600000);
+        	}
+        	
+        	if (mins) {
+        		tot += (mins * 60000);
+        	}
+        	
+        	return tot;
+        }
+        
+        $scope.checkPersonalEvents = function(element) {
+        	var filter = false;
+        	console.log("NAME: " + element.name + "\nSTATUS: " + element.status + "\nShowPers: " + $scope.showPers);
+        	if (element.status != 'personal') {
+        		filter = true;
+        	} else if ($scope.showPers) {
+        		filter = true;
+        	}
+        	return filter;
         }
     }
 ]);

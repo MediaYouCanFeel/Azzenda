@@ -176,7 +176,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			var event = new Events ({
                 name: this.name,
                 desc: thisDesc,
-                length: parseInt(this.hourDurationFromModal * 3600000),
+                length: parseInt($scope.getLength(this.hourDurationFromModal, this.minDurationFromModal)),
                 location: thisLoc,
                 type: thisType,
                 proj: thisProj,
@@ -629,6 +629,19 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         		var recMonthString = "Select a date to enable monthly recurrence.";
         	}
         	return recMonthString;
+        }
+        
+        $scope.getLength = function(hours, mins) {
+        	var tot = 0;
+        	if (hours) {
+        		tot += (hours * 3600000);
+        	}
+        	
+        	if (mins) {
+        		tot += (mins * 60000);
+        	}
+        	
+        	return tot;
         }
     }
 ]);

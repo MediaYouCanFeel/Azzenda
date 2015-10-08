@@ -10,11 +10,14 @@
     <div class="col-md-7">
         <div class="col-md-12 row well">
             <h2>
-                <strong class="blue">Upcoming Events</strong>
+                <strong class="blue">Upcoming Events</strong>                                   		
             </h2>
             
+            <label for="togPers" data-ng-init="showPers = true">Show Personal</label>
+                <input type="checkbox" id="togPers" ng-model="showPers" name="togPers" value=true>
+            
 			<div class="list-group" data-ng-init="findFutureEvents();">
-				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | filter: checkPersonalEvents " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
@@ -54,7 +57,7 @@
                 <strong class="blue">Past Events</strong>
             </h2>
              <div class="list-group" data-ng-init="findPastEvents();">
-                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' : true | limitTo: 10" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' : true | limitTo: 10 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <span class="pull-right">

@@ -12,6 +12,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.personal = false;
         
+        $scope.showPers;
+        
         //dropdown init
         angular.element('select').select2({ 
             width: '100%'
@@ -642,6 +644,17 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	}
         	
         	return tot;
+        }
+        
+        $scope.checkPersonalEvents = function(element) {
+        	var filter = false;
+        	console.log("NAME: " + element.name + "\nSTATUS: " + element.status + "\nShowPers: " + $scope.showPers);
+        	if (element.status != 'personal') {
+        		filter = true;
+        	} else if ($scope.showPers) {
+        		filter = true;
+        	}
+        	return filter;
         }
     }
 ]);

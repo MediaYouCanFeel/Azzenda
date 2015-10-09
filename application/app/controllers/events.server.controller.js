@@ -105,10 +105,10 @@ exports.create = function(req, res) {
 					var curUserEvents = userEvents;
 					for(m=0; m<userEvents.length; m++) {
 						if(curUserEvents[m].owner == curGuest) {
+							console.log('curGuest:');
+							console.log(curGuest);
 							var curEvent = curUserEvents[m];
 							if(curEvent.status == 'personal') {
-								console.log('curGuest:');
-								console.log(curGuest);
 		            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
 		            			curUserEvents.splice(m, 1);
 		            			if(unrolled) {

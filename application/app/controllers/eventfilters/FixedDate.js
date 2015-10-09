@@ -21,7 +21,7 @@ exports.execute = function(filter) {
 //		console.log(dateRangeStart);
 //		console.log(dateRangeEnd);
 		if(startDate.isBefore(dateRangeEnd)) {
-			if(endDate.isBefore(dateRangeStart) || endDate == dateRangeStart) {
+			if(endDate.isBefore(dateRangeStart) || moment(endDate).isSame(moment(dateRangeStart))) {
 				oldPossibleDates.splice(i,1);
 				i--;
 			} else {

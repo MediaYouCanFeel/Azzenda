@@ -112,14 +112,14 @@ exports.create = function(req, res) {
 						var endDate = moment(curUserEvents[l].sched.end);
 						var dateRangeStart = moment(oldPossibleDates[i].start);
 						var dateRangeEnd = moment(oldPossibleDates[i].end);
-						console.log("Start Date");
-						console.log(startDate._d);
-						console.log("End Date");
-						console.log(endDate._d);
-						console.log("Date Range Start");
-						console.log(dateRangeStart._d);
-						console.log("Date Range End");
-						console.log(dateRangeEnd._d);
+//						console.log("Start Date");
+//						console.log(startDate._d);
+//						console.log("End Date");
+//						console.log(endDate._d);
+//						console.log("Date Range Start");
+//						console.log(dateRangeStart._d);
+//						console.log("Date Range End");
+//						console.log(dateRangeEnd._d);
 						if(startDate.isBefore(dateRangeEnd)) {
 							console.log("in here");
 							if(endDate.isBefore(dateRangeStart)) {
@@ -270,7 +270,7 @@ exports.delete = function(req, res) {
 exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
-    var lastDate = new Date(parseInt(moment(currDate).add(2, 'week').format('x')));
+    var lastDate = new Date(parseInt(moment(currDate).add(6, 'week').format('x')));
     console.log(currDate);
     if(_.intersection(req.user.roles,roles).length) {
         Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {

@@ -28,10 +28,22 @@
 			    </div>
 			    <div class="row">
 				    <div class="event-rsvp">
-				    <p> You haven't responded yet. </p>
+				    <span ng-repeat="guest in event.guests | filter: thisUser">
+						<p ng-show="guest.status == 'invited'">
+							You haven't responded yet.
+						</p>
+						<p ng-show="guest.status == 'going'">
+							You're going!
+						</p>
+						<p ng-show="guest.status == 'not going'">
+							You can't make this one.
+						</p>
+						<!-- <div data-ng-bind="guest.status"></div>  -->
+					</span>  
+				    
 				    <!-- <p> You're going! </p> 
 				    <p> You can't make it. </p> -->
-			</div>
+					</div>
 			    </div>
 			</div>    
 	    </div>        

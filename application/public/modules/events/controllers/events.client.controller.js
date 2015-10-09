@@ -686,5 +686,15 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	}
         	return filter;
         }
+        
+        
+        $scope.thisUser = function(element) {
+        	var filter = false;
+        	if (element.user == $scope.authentication.user._id) {
+        		filter = true;
+        	}
+        	
+        	return filter;
+        }
     }
 ]);

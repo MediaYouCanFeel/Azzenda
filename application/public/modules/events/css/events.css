@@ -201,3 +201,7 @@ input[type="checkbox"]:checked + label {
 .slider-buttons {
   border-color: #00e0e0;
 }
+
+.personalName {
+  font-size: 14px;
+}

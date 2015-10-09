@@ -22,10 +22,7 @@
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <span class="pull-right">
-                        	<span ng-show="event.status == 'personal'">
-                        		<span class="personalName" data-ng-bind="event.owner.displayName"></span>
-                        		<i class="fa fa-user"></i>
-                        	</span>
+                       		<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
                         	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
                         </span>
                         <hr>
@@ -35,18 +32,24 @@
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                     
-	                <span ng-hide="event.status == 'personal'">  
-	                   	<div data-ng-bind="event.location.name"></div>
-	                   
-	                   	<div class="row">
-					    	<div class="pull-right event-rep-proj">
+	                
+                   	<div  ng-hide="event.status == 'personal'" data-ng-bind="event.location.name"></div>
+                   
+                   	<div class="row">
+				    	<div class="pull-right event-rep-proj">
+					    	
+					    	<span ng-show="event.status == 'personal'">
+					    		<span data-ng-bind="event.owner.displayName"></span>
+					    	</span>
+					    	
+					    	<span ng-hide="event.status == 'personal'">
 						    	<strong data-ng-bind="event.proj.name"> </strong>
 						        
-						        <i class="fa fa-ellipsis-v"></i>
+						        <i ng-hide="event.proj.name == null || event.type.name == null" class="fa fa-ellipsis-v"></i>
 					        	<span data-ng-bind="event.type.name"></span>
-			        		</div>
+				        	</span>
 		        		</div>
-	        		</span>
+	        		</div>
 				</a>   
 			</div>
             

@@ -100,34 +100,33 @@ exports.create = function(req, res) {
 						user: curGuest,
 						status: 'invited'
 					});
+				}
 					
-					var m;
-					var curUserEvents = userEvents;
-					for(m=0; m<userEvents.length; m++) {
-						if(curUserEvents[m].owner == curGuest) {
-							var curEvent = curUserEvents[m];
-							if(curEvent.status == 'personal') {
-		            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
-		            			curUserEvents.splice(m, 1);
-		            			if(unrolled) {
-		            				var n;
-		                			for(n=0; n<unrolled.length; n++) {
-		                				curUserEvents.splice(m, 0, unrolled[n]);
-		                				m++;
-		                			}
-		            			}
-		            		}
-						}
-					}
-					
-					var oldPossibleDates = event.possDates;
-					var i;
-					var l=0;
-					for(i=0; i<oldPossibleDates.length && l<curUserEvents.length; i++) {
-						var startDate = moment(curUserEvents[l].sched.start);
-						var endDate = moment(curUserEvents[l].sched.end);
-						var dateRangeStart = moment(oldPossibleDates[i].start);
-						var dateRangeEnd = moment(oldPossibleDates[i].end);
+				var m;
+				var curUserEvents = userEvents;
+				for(m=0; m<userEvents.length; m++) {
+					var curEvent = curUserEvents[m];
+					if(curEvent.status == 'personal') {
+            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
+            			curUserEvents.splice(m, 1);
+            			if(unrolled) {
+            				var n;
+                			for(n=0; n<unrolled.length; n++) {
+                				curUserEvents.splice(m, 0, unrolled[n]);
+                				m++;
+                			}
+            			}
+            		}
+				}
+				
+				var oldPossibleDates = event.possDates;
+				var i;
+				var l=0;
+				for(i=0; i<oldPossibleDates.length && l<curUserEvents.length; i++) {
+					var startDate = moment(curUserEvents[l].sched.start);
+					var endDate = moment(curUserEvents[l].sched.end);
+					var dateRangeStart = moment(oldPossibleDates[i].start);
+					var dateRangeEnd = moment(oldPossibleDates[i].end);
 //						console.log("Start Date");
 //						console.log(startDate._d);
 //						console.log("End Date");
@@ -136,28 +135,27 @@ exports.create = function(req, res) {
 //						console.log(dateRangeStart._d);
 //						console.log("Date Range End");
 //						console.log(dateRangeEnd._d);
-						if(startDate.isBefore(dateRangeEnd)) {
-							console.log("in here");
-							if(endDate.isBefore(dateRangeStart)) {
-								i--;
-							} else {
-								if(startDate.isAfter(dateRangeStart)) {
-									oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
-									if(endDate.isBefore(dateRangeEnd)) {
-										oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
-									}
-								} else if(endDate.isBefore(dateRangeEnd)) {
-									oldPossibleDates[i].start = new Date(parseInt(endDate.format('x')));
-								} else {
-									oldPossibleDates.splice(i,1);
-									i--;
+					if(startDate.isBefore(dateRangeEnd)) {
+						console.log("in here");
+						if(endDate.isBefore(dateRangeStart)) {
+							i--;
+						} else {
+							if(startDate.isAfter(dateRangeStart)) {
+								oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
+								if(endDate.isBefore(dateRangeEnd)) {
+									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
 								}
+							} else if(endDate.isBefore(dateRangeEnd)) {
+								oldPossibleDates[i].start = new Date(parseInt(endDate.format('x')));
+							} else {
+								oldPossibleDates.splice(i,1);
+								i--;
 							}
-							l++;
 						}
+						l++;
 					}
-					event.possDates = oldPossibleDates;
 				}
+				event.possDates = oldPossibleDates;
 				
 				event.possDates = event.possDates.sort(function(a,b) {
 					var prio = b.priority - a.priority;

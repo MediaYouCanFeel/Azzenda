@@ -10,7 +10,7 @@ var moment = require('moment');
  */
 exports.execute = function(filter) {
 	var startDate = moment(filter.params.start).startOf('day');
-	var oldDate = moment(filter.params.start + this.length).endOf('day');
+	var endDate = moment(filter.params.start + this.length).endOf('day');
 	var oldPossibleDates = this.possDates;
 	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {

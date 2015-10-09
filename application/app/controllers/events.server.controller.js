@@ -78,7 +78,7 @@ exports.create = function(req, res) {
 		event.possDates = event.possDates.sort(function(a,b) {
 			return a.start.getTime() - b.start.getTime();
 		});
-		Event.find({status: 'personal'}).where('owner').in(guests).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
+		Event.find({$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
 			if(err) {
 				console.log('Personal Event Error');
 	        	var errMsg = errorHandler.getErrorMessage(err);
@@ -103,43 +103,56 @@ exports.create = function(req, res) {
 					var m;
 					var curUserEvents = userEvents.slice(0);
 					for(m=0; m<curUserEvents.length; m++) {
-						if(curUserEvents[m].owner == curGuest) {
+						var guestCheck = (String(curUserEvents[m].owner) == String(curGuest));
+						if(!guestCheck) {
+							for(var cGuest in curUserEvents.guests) {
+								if(String(cGuest.user) == String(curGuest)) {
+									guestCheck = true;
+									break;
+								}
+							}
+						}
+						if(guestCheck) {
 							var curEvent = curUserEvents[m];
-							if(curEvent.status == 'personal') {
-		            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
-		            			curUserEvents.splice(m, 1);
-		            			if(unrolled) {
-		            				var n;
-		                			for(n=0; n<unrolled.length; n++) {
-		                				curUserEvents.splice(m, 0, unrolled[n]);
-		                				m++;
-		                			}
-		            			}
-		            		}
+							//console.log("CUREVENT:\n" + curEvent);
+	            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
+	            			curUserEvents.splice(m, 1);
+	            			if(unrolled) {
+	            				var n;
+	                			for(n=0; n<unrolled.length; n++) {
+	                				curUserEvents.splice(m, 0, unrolled[n]);
+	                				m++;
+	                			}
+	            			}
 						} else {
 							curUserEvents.splice(m,1);
 							m--;
 						}
 					}
+					//console.log(curUserEvents);
+					curUserEvents = curUserEvents.sort(function(a,b) {
+						return a.sched.start.getTime() - b.sched.start.getTime();
+					});
 					
 					var oldPossibleDates = event.possDates;
 					var i;
 					var l=0;
 					for(i=0; i<oldPossibleDates.length && l<curUserEvents.length; i++) {
+						console.log('possible date loop');
 						var startDate = moment(curUserEvents[l].sched.start);
 						var endDate = moment(curUserEvents[l].sched.end);
 						var dateRangeStart = moment(oldPossibleDates[i].start);
 						var dateRangeEnd = moment(oldPossibleDates[i].end);
-//						console.log("Start Date");
-//						console.log(startDate._d);
-//						console.log("End Date");
-//						console.log(endDate._d);
-//						console.log("Date Range Start");
-//						console.log(dateRangeStart._d);
-//						console.log("Date Range End");
-//						console.log(dateRangeEnd._d);
+						console.log("Start Date");
+						console.log(startDate._d);
+						console.log("End Date");
+						console.log(endDate._d);
+						console.log("Date Range Start");
+						console.log(dateRangeStart._d);
+						console.log("Date Range End");
+						console.log(dateRangeEnd._d);
 						if(startDate.isBefore(dateRangeEnd)) {
-							if(endDate.isBefore(dateRangeStart)) {
+							if(endDate.isBefore(dateRangeStart) || endDate.isSame(dateRangeStart)) {
 								i--;
 							} else {
 								if(startDate.isAfter(dateRangeStart)) {
@@ -148,10 +161,9 @@ exports.create = function(req, res) {
 										oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
 									}
 								} else if(endDate.isBefore(dateRangeEnd)) {
-									oldPossibleDates[i].start = new Date(parseInt(endDate.format('x')));
+									oldPossibleDates[i--].start = new Date(parseInt(endDate.format('x')));
 								} else {
-									oldPossibleDates.splice(i,1);
-									i--;
+									oldPossibleDates.splice(i--,1);
 								}
 							}
 							l++;

@@ -138,24 +138,22 @@ EventSchema.methods.possFilter = function (filter) {
 };
 
 EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
+	var unrolled = [];
 	if(this.status == 'personal') {
 		if(moment(this.sched.start).isBefore(endDate) && moment(this.sched.end).isAfter(startDate)) {
 			var curDate = moment(startDate).startOf('day');
 			var eDate = moment(endDate).endOf('day');
-			var unrolled = [];
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
 					unrolled.push(unrollInst);
 					curDate = moment(unrollInst.sched.start).add(1, 'day').startOf('day');
 					unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			}
-			return unrolled;
-		} else {
-			return null;
 		}
 	} else {
-		return this;
+		unrolled.push(this);
 	}
+	return unrolled;
 };
 
 EventSchema.methods.recurUnrollPrev = function(recur, startDate, endDate) {

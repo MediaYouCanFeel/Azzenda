@@ -22,7 +22,10 @@
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <span class="pull-right">
-                        	<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
+                        	<span ng-show="event.status == 'personal'">
+                        		<span class="personalName" data-ng-bind="event.owner.displayName"></span>
+                        		<i class="fa fa-user"></i>
+                        	</span>
                         	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
                         </span>
                         <hr>

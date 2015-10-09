@@ -119,6 +119,9 @@ exports.create = function(req, res) {
 		                			}
 		            			}
 		            		}
+						} else {
+							curUserEvents.splice(m,1);
+							m--;
 						}
 					}
 					

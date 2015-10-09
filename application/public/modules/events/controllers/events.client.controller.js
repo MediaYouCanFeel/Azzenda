@@ -387,7 +387,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				eventId: $stateParams.eventId
 			});
 		};  
-	        
+		
+		// RSVP
+		$scope.rsvp = function(status) {
+            //find event with id $stateParams.eventId, then set $scope.event to it
+			$scope.event = Events.rsvp({
+				eventId: $stateParams.eventId,
+				going: status
+			});
+		};  
+		
         // DATEPICKER CONFIG
         $scope.datepickers = {
             earliest: false,

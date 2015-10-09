@@ -10,7 +10,8 @@ var mongoose = require('mongoose'),
 //		PERSONAL: require('../../app/controllers/events/Personal'),
 //		NONPERSONAL: require('../../app/controllers/events/Nonpersonal')
 //	};
-		FIXED: require('../../app/controllers/eventFilters/FixedDate'),
+		FIXED: require('../../app/controllers/eventFilters/Fixed'),
+		FIXEDDATE: require('../../app/controllers/eventFilters/FixedDate'),
 		TIMERANGE: require('../../app/controllers/eventFilters/TimeRange'),
 		DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
 	},

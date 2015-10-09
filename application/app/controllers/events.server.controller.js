@@ -58,11 +58,14 @@ exports.create = function(req, res) {
 	    delete req.body.location;
 	    var guests = req.body.guests;
 	    delete req.body.guests;
+	    delete req.body.sched.start;
 		var event = new Event(req.body);
 		event.owner = req.user;
+		var lasttDate = moment().add(7, 'day').endOf('day');
+		var currDate = moment();
 		event.possDates = {
-				start: parseInt(moment().add(1, 'hour').format('x')),
-				end: parseInt(moment().add(7, 'day').add(1, 'hour').format('x')),
+				start: parseInt(currDate.format('x')),
+				end: parseInt(lasttDate.format('x')),
 				priority: 0
 		}
 		
@@ -97,13 +100,26 @@ exports.create = function(req, res) {
 						user: curGuest,
 						status: 'invited'
 					});
-					var k;
-					var curUserEvents = [];
-					for(k=0; k<userEvents.length; k++) {
-						if(userEvents[k].owner == curGuest) {
-							curUserEvents.push(userEvents[k]);
+					
+					var m;
+					var curUserEvents = userEvents;
+					for(m=0; m<userEvents.length; m++) {
+						if(curUserEvents[m].owner == curGuest) {
+							var curEvent = curUserEvents[m];
+							if(curEvent.status == 'personal') {
+		            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
+		            			curUserEvents.splice(m, 1);
+		            			if(unrolled) {
+		            				var n;
+		                			for(n=0; n<unrolled.length; n++) {
+		                				curUserEvents.splice(m, 0, unrolled[n]);
+		                				m++;
+		                			}
+		            			}
+		            		}
 						}
 					}
+					
 					var oldPossibleDates = event.possDates;
 					var i;
 					var l=0;

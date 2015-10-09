@@ -208,12 +208,21 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			//Add event filters
 			event.filters = [];
 			if (this.fixedFilter && !($scope.personal)) {
-				event.filters.push({
-					type: "FIXED",
-					params: {
-						start: parseInt($scope.sendDate)
-					}
-				});
+				if(this.trFilter) {
+					event.filters.push({
+						type: "FIXEDDATE",
+						params: {
+							start: parseInt($scope.sendDate)
+						}
+					});
+				} else {
+					event.filters.push({
+						type: "FIXED",
+						params: {
+							start: parseInt($scope.sendDate)
+						}
+					});
+				}
 			};
 			
 			if (this.trFilter && !($scope.personal)) {

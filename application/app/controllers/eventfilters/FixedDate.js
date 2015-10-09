@@ -9,15 +9,15 @@ var moment = require('moment');
  * Apply filter
  */
 exports.execute = function(filter) {
-	var startDate = moment(filter.params.start).startOf('day');
-	var endDate = moment(filter.params.start + this.length).endOf('day');
+	var startDate = moment(filter.params.start).startOf('day').set({'second': 0, 'millisecond': 0});
+	var endDate = moment(filter.params.start + this.length).endOf('day').set({'second': 0, 'millisecond': 0});
 	var oldPossibleDates = this.possDates;
 	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {
 //		console.log(startDate);
 //		console.log(endDate);
-		var dateRangeStart = moment(oldPossibleDates[i].start);
-		var dateRangeEnd = moment(oldPossibleDates[i].end);
+		var dateRangeStart = moment(oldPossibleDates[i].start).set({'second': 0, 'millisecond': 0});
+		var dateRangeEnd = moment(oldPossibleDates[i].end).set({'second': 0, 'millisecond': 0});
 //		console.log(dateRangeStart);
 //		console.log(dateRangeEnd);
 		if(startDate.isBefore(dateRangeEnd)) {
@@ -30,7 +30,7 @@ exports.execute = function(filter) {
 				}
 				if(endDate.isBefore(dateRangeEnd)) {
 					console.log("This should not happen more than once");
-					console.log(oldPossibleDates);
+					//console.log(oldPossibleDates);
 					var oldEndDate = oldPossibleDates[i].end;
 					oldPossibleDates[i].end = parseInt(endDate.format('x'));
 					oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});

@@ -28,11 +28,15 @@ exports.execute = function(filter) {
 				if(startDate.isAfter(dateRangeStart)) {
 					 oldPossibleDates[i].start = parseInt(startDate.format('x'));
 				}
-				if(dateRangeEnd.add(-1, 'second').isAfter(endDate)) {
-					console.log("dateRangeEnd:");
-					console.log(dateRangeEnd);
+				if(endDate.isBefore(dateRangeEnd)) {
+					console.log("startDate:");
+					console.log(startDate);
 					console.log("endDate:");
 					console.log(endDate);
+					console.log("dateRangeStart:");
+					console.log(dateRangeStart);
+					console.log("dateRangeEnd:");
+					console.log(dateRangeEnd);
 					var oldEndDate = oldPossibleDates[i].end;
 					oldPossibleDates[i].end = parseInt(endDate.format('x'));
 					oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});

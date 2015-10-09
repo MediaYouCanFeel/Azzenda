@@ -29,7 +29,7 @@ exports.execute = function(filter) {
 //		console.log(dateRangeStart);
 //		console.log(dateRangeEnd);
 		if(startDate.isBefore(dateRangeEnd)) {
-			if(endDate.isBefore(dateRangeStart)) {
+			if(endDate.isBefore(dateRangeStart) || endDate == dateRangeStart) {
 				i--;
 			} else {
 				if(startDate.isAfter(dateRangeStart)) {

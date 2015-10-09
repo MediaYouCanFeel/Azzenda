@@ -32,8 +32,8 @@ angular.module('events').factory('Events', ['$resource',
             	isArray: true
             },
             rsvp: {
-            	method: 'POST',
-            	url: 'events/:eventId',
+            	method: 'PUT',
+            	url: 'events/update/rsvp/:eventId',
             	params: {eventId: '@_id'}
             }
 		});

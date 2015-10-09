@@ -78,7 +78,6 @@ exports.create = function(req, res) {
 		event.possDates = event.possDates.sort(function(a,b) {
 			return a.start.getTime() - b.start.getTime();
 		});
-		console.log(guests);
 		Event.find({status: 'personal'}).where('owner').in(guests).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
 			if(err) {
 				console.log('Personal Event Error');
@@ -140,7 +139,6 @@ exports.create = function(req, res) {
 //						console.log("Date Range End");
 //						console.log(dateRangeEnd._d);
 						if(startDate.isBefore(dateRangeEnd)) {
-							console.log("in here");
 							if(endDate.isBefore(dateRangeStart)) {
 								i--;
 							} else {
@@ -290,7 +288,6 @@ exports.listUpcoming = function(req, res) {
     var roles = ['admin'];
     var currDate = new Date();
     var lastDate = new Date(parseInt(moment(currDate).add(6, 'week').format('x')));
-    console.log(currDate);
     if(_.intersection(req.user.roles,roles).length) {
         Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
@@ -299,13 +296,10 @@ exports.listUpcoming = function(req, res) {
                 });
             } else {
             	var i;
-            	//console.log(events);
             	for(i=0; i<events.length; i++) {
             		var curEvent = events[i];
             		if(curEvent.status == 'personal') {
-            			console.log('test');
             			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-            			//console.log(unrolled);
             			events.splice(i, 1);
             			if(unrolled) {
             				var j;
@@ -402,12 +396,13 @@ exports.rsvp = function(req, res) {
     var user = req.user;
     var going = req.body.going;
     
-    for(var guest in event.guests) {
-    	if(guest.user == user._id) {
+    var i;
+    for(i=0; i<event.guests.length; i++) {
+    	if(String(event.guests[i].user) == String(user._id)) {
     		if(going) {
-    			guest.status = 'going';
+    			event.guests[i].status = 'going';
     		} else {
-    			guest.status = 'not going';
+    			event.guests[i].status = 'not going';
     		}
     		break;
     	}

@@ -4132,7 +4132,7 @@ angular.module("template/timepicker/timepicker.html", []).run(["$templateCache",
     "			<td style=\"width:50px;\" class=\"form-group\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
     "				<input type=\"text\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\">\n" +
     "			</td>\n" +
-    "			<td ng-show=\"showMeridian\"><button type=\"button\" class=\"btn btn-teal text-center\" ng-click=\"toggleMeridian()\">{{meridian}}</button></td>\n" +
+    "			<td id=\"toggMer\" ng-show=\"showMeridian\"><button type=\"button\" class=\"btn btn-teal text-center\" ng-click=\"toggleMeridian()\">{{meridian}}</button></td>\n" +
     "		</tr>\n" +
     "		<tr class=\"text-center\">\n" +
     "			<td ng-show=\"showMeridian\"></td>\n" +

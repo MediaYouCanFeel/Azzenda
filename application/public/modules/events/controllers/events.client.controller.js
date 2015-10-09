@@ -129,13 +129,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			
 			var recDays = null;
 			
+			console.log("BEFORE");
 			$scope.combineDateTimes(this.dateFromModal, this.timeFromModal);
+			console.log("AFTER");
+			
 			var thisSchedStart = $scope.sendDate; //Range start
 
 			var thisSchedEnd = null;
 			
 			//if it is a recurring event
-			if ($scope.recType != 'NONE') {
+			if (($scope.recType != 'NONE') && $scope.recType) {
 			
 				thisSchedStart = this.dateFromModal;
 				
@@ -172,6 +175,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				thisSchedEnd = $scope.sendDate; //Range end
 			}
 			
+			var rec;
+			
+			if (!$scope.recType) {
+				rec = "NONE";
+			} else {
+				rec = $scope.recType;
+			}
+			
 			// Create new Event object
 			var event = new Events ({
                 name: this.name,
@@ -182,7 +193,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 proj: thisProj,
                 personal: $scope.personal,
                 recurring: {
-                	type: $scope.recType,
+                	type: rec,
                 	params: {
                 		days: recDays
                 	}
@@ -517,8 +528,12 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         //Combining Date & Time fields
         $scope.combineDateTimes = function(dateFromModal,
                                            timeFromModal) {
-            dateFromModal.setHours($scope.timeFromModal.getHours());
-            dateFromModal.setMinutes($scope.timeFromModal.getMinutes());
+//            if (!dateFromModal) {
+//            	console.log("DATEFROMMODAL NULL");
+//            	dateFromModal = new Date();
+//            }
+        	dateFromModal.setHours(timeFromModal.getHours());
+            dateFromModal.setMinutes(timeFromModal.getMinutes());
             $scope.sendDate = moment(dateFromModal).format('x');      
         };    
         
@@ -646,7 +661,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.checkPersonalEvents = function(element) {
         	var filter = false;
-        	console.log("NAME: " + element.name + "\nSTATUS: " + element.status + "\nShowPers: " + $scope.showPers);
         	if (element.status != 'personal') {
         		filter = true;
         	} else if ($scope.showPers) {

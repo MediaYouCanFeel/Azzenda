@@ -1,4 +1,4 @@
-describe('angularjs pers-event-1', function() {
+describe('angularjs pers-event-jp', function() {
   
 	var moment = require('moment');
 	
@@ -25,18 +25,18 @@ describe('angularjs pers-event-1', function() {
     
     it('should allow creation of a personal event', function() {
         persEvent.click();
-    	eventName.sendKeys('Walter\'s Lecture');
-        eventHrDur.sendKeys('2');
-        eventMinDur.sendKeys('30');
+    	eventName.sendKeys('Meeting with Client');
+        eventHrDur.sendKeys('1');
+        eventMinDur.sendKeys('00');
         eventDate.sendKeys('10/10/2015');
         eventTmHrs.sendKeys(protractor.Key.END);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
-        eventTmHrs.sendKeys('8');
+        eventTmHrs.sendKeys('11');
         eventTmMins.sendKeys(protractor.Key.END);
         eventTmMins.sendKeys(protractor.Key.BACK_SPACE);
         eventTmMins.sendKeys(protractor.Key.BACK_SPACE);
-        eventTmMins.sendKeys('00');
+        eventTmMins.sendKeys('15');
         
         var now = new Date();
         if (now.getHours() >= 12) {

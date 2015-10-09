@@ -28,7 +28,7 @@ exports.execute = function(filter) {
 				if(startDate.isAfter(dateRangeStart)) {
 					 oldPossibleDates[i].start = parseInt(startDate.format('x'));
 				}
-				if(endDate.isBefore(dateRangeEnd)) {
+				if(dateRangeEnd.isAfter(endDate)) {
 					console.log("This should not happen more than once");
 					//console.log(oldPossibleDates);
 					var oldEndDate = oldPossibleDates[i].end;

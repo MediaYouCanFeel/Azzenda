@@ -15,6 +15,7 @@ module.exports = function(app) {
 	app.route('/events/:eventId')
 		.get(users.requiresLogin, events.read)
 		.put(users.requiresLogin, events.hasAuthorization, events.update)
+		.post(users.requiresLogin, events.rsvp)
 		.delete(users.requiresLogin, events.hasAuthorization, events.delete);
     
     app.route('/events/create/types')

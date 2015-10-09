@@ -395,6 +395,36 @@ exports.getLocations = function(req, res) {
 };
 
 /**
+ * RSVP to an event
+ */
+exports.rsvp = function(req, res) {
+    var event = req.event;
+    var user = req.user;
+    var going = req.body.going;
+    
+    for(var guest in event.guests) {
+    	if(guest.user == user._id) {
+    		if(going) {
+    			guest.status = 'going';
+    		} else {
+    			guest.status = 'not going';
+    		}
+    		break;
+    	}
+    }
+    
+    event.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(event);
+		}
+	});
+};
+
+/**
  * Save a new event type
  */
 exports.addType = function(req, res) {

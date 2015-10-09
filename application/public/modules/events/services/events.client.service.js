@@ -30,6 +30,11 @@ angular.module('events').factory('Events', ['$resource',
             	method: 'GET',
             	url: 'events/past/events',
             	isArray: true
+            },
+            rsvp: {
+            	method: 'POST',
+            	url: 'events/:eventId',
+            	params: {eventId: '@_id'}
             }
 		});
 	}

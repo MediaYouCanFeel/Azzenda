@@ -30,6 +30,7 @@ exports.execute = function(filter) {
 				}
 				if(endDate.isBefore(dateRangeEnd)) {
 					console.log("This should not happen more than once");
+					console.log(oldPossibleDates);
 					var oldEndDate = oldPossibleDates[i].end;
 					oldPossibleDates[i].end = parseInt(endDate.format('x'));
 					oldPossibleDates.splice(i+1,0,{start: oldPossibleDates[i].end, end: oldEndDate});

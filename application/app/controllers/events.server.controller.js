@@ -93,7 +93,7 @@ exports.create = function(req, res) {
 	                message: errMsg
 	            });
 			} else {
-				var j
+				var j;
 				for(j=0; j<guests.length; j++) {
 					var curGuest = guests[j];
 					event.guests.push({
@@ -102,11 +102,9 @@ exports.create = function(req, res) {
 					});
 					
 					var m;
-					var curUserEvents = userEvents;
-					for(m=0; m<userEvents.length; m++) {
+					var curUserEvents = userEvents.slice(0);
+					for(m=0; m<curUserEvents.length; m++) {
 						if(curUserEvents[m].owner == curGuest) {
-							console.log('curGuest:');
-							console.log(curGuest);
 							var curEvent = curUserEvents[m];
 							if(curEvent.status == 'personal') {
 		            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);

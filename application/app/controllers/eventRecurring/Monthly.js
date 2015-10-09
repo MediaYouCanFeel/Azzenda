@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+var moment = require('moment');
 
 /**
  * Get the next instance of the recurring this after curDate
@@ -11,12 +12,12 @@ exports.next = function(curDate) {
 	console.log(curDate);
 	var monthDate = moment(this.sched.start.getTime());
 	var monthDay = moment(monthDate).date();
-	var curDate = moment(curDate.getTime());
-	var curMonth = moment(curDate.getTime()).month();
+	var curDate = moment(curDate);
+	var curMonth = moment(curDate).month();
 	var i=0;
 	var nextDate;
 	do {
-		nextDate = moment(monthDate).add(i, 'month');
+		nextDate = moment(monthDate).add(i++, 'month');
 	} while(nextDate.date() != monthDay || nextDate.isBefore(curDate))
 	var nDate = parseInt(nextDate.format('x'));
 	return {
@@ -28,7 +29,8 @@ exports.next = function(curDate) {
 		sched: {
 			start: new Date(nDate),
 			end: new Date(nDate + this.length)
-		}
+		},
+		status: this.status
 	}
 };
 

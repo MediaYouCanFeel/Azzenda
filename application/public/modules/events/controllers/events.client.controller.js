@@ -387,7 +387,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				eventId: $stateParams.eventId
 			});
 		};  
-	        
+		
+		// RSVP
+		$scope.rsvp = function(status) {
+            //find event with id $stateParams.eventId, then set $scope.event to it
+			$scope.event = Events.rsvp({
+				eventId: $stateParams.eventId,
+				going: status
+			});
+		};  
+		
         // DATEPICKER CONFIG
         $scope.datepickers = {
             earliest: false,
@@ -675,6 +684,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	} else if ($scope.showPers) {
         		filter = true;
         	}
+        	return filter;
+        }
+        
+        
+        $scope.thisUser = function(element) {
+        	var filter = false;
+        	if (element.user == $scope.authentication.user._id) {
+        		filter = true;
+        	}
+        	
         	return filter;
         }
     }

@@ -32,13 +32,17 @@ describe('angularjs pers-event-jp', function() {
         eventTmHrs.sendKeys(protractor.Key.END);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
-        eventTmHrs.sendKeys(protractor.Key.NUMPAD1);
-        eventTmHrs.sendKeys(protractor.Key.NUMPAD1);
+//        eventTmHrs.sendKeys(protractor.Key.NUMPAD1);
+//        eventTmHrs.sendKeys(protractor.Key.NUMPAD1);
+        eventTmHrs.sendKeys('1');
+        eventTmHrs.sendKeys('1');
         eventTmMins.sendKeys(protractor.Key.END);
         eventTmMins.sendKeys(protractor.Key.BACK_SPACE);
         eventTmMins.sendKeys(protractor.Key.BACK_SPACE);
-        eventTmMins.sendKeys(protractor.Key.NUMPAD1);
-        eventTmMins.sendKeys(protractor.Key.NUMPAD5);
+//        eventTmMins.sendKeys(protractor.Key.NUMPAD1);
+//        eventTmMins.sendKeys(protractor.Key.NUMPAD5);
+        eventTmMins.sendKeys('1');
+        eventTmMins.sendKeys('5');
         
         var now = new Date();
         if (now.getHours() >= 12) {

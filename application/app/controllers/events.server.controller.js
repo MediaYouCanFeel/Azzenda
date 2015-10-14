@@ -296,31 +296,42 @@ exports.delete = function(req, res) {
 /**
  * List of Events
  */
-exports.listUpcoming = function(req, res) {
+exports.list = function(req, res) {
     var roles = ['admin'];
-    var currDate = new Date();
-    var lastDate = new Date(parseInt(moment(currDate).add(6, 'week').format('x')));
+    var currDate = moment(req.startDate);
+    var lastDate = req.(endDate);
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
             	var i;
-            	for(i=0; i<events.length; i++) {
+            	for(i=0; i<events.length;) {
+            		//console.log('outer for loop');
             		var curEvent = events[i];
-            		if(curEvent.status == 'personal') {
-            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-            			events.splice(i, 1);
-            			if(unrolled) {
-            				var j;
-                			for(j=0; j<unrolled.length; j++) {
-                				events.splice(i, 0, unrolled[j]);
-                				i++;
-                			}
-            			}
+            		console.log(i);
+            		if(events[i-1]) {
+            			console.log(events[i-1].name);
+                		console.log(events[i-1].sched);
             		}
+            		console.log(curEvent.name);
+            		console.log(curEvent.sched);
+            		if(events[i+1]) {
+            			console.log(events[i+1].name);
+                		console.log(events[i+1].sched);
+            		}
+            		
+        			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+        			events.splice(i, 1);
+        			if(unrolled) {
+        				var j;
+            			for(j=0; j<unrolled.length; j++) {
+            				//console.log('inner for loop');
+            				events.splice(i++, 0, unrolled[j]);
+            			}
+        			}
             	}
                 res.jsonp(events);
             }
@@ -347,35 +358,6 @@ exports.listUpcoming = function(req, res) {
             			}
             		}
             	}
-                res.jsonp(events);
-            }
-        });
-    }
-};
-
-/**
- * List of Events
- */
-exports.listPast = function(req, res) {
-	var roles = ['admin'];
-    var currDate = Date.now();
-    if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.start').lt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
-            if (err) {
-                return res.status(400).send({
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp(events);
-            }
-        });
-    } else {
-        Event.find({$or: [{user: req.user._id},{'guests.user': req.user._id}]}).where('sched.start').lt(currDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
-            if (err) {
-                return res.status(400).send({
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
                 res.jsonp(events);
             }
         });

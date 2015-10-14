@@ -33,7 +33,3 @@ exports.next = function(curDate) {
 		status: this.status
 	}
 };
-
-exports.past = function(curDate) {
-	return this;
-};

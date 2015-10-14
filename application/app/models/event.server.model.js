@@ -139,14 +139,19 @@ EventSchema.methods.possFilter = function (filter) {
 
 EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 	var unrolled = [];
+	console.log('this.sched.end: ' + (new Date(this.sched.end)));
 	if(this.status == 'personal') {
 		if(moment(this.sched.start).isBefore(endDate) && moment(this.sched.end).isAfter(startDate)) {
 			var curDate = moment(startDate).startOf('day');
 			var eDate = moment(endDate).endOf('day');
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
+			//console.log('unrollInst.sched.start: ' + (new Date(unrollInst.sched.start)));
 			while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
+					//console.log('eDate: ' + eDate._d);
+					//console.log('curDate: ' + curDate._d);
+					//console.log('this.sched.end: ' + (new Date(this.sched.end)));
 					unrolled.push(unrollInst);
-					curDate = moment(unrollInst.sched.start).add(1, 'day').startOf('day');
+					curDate = moment(unrollInst.sched.end);
 					unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			}
 		}
@@ -154,11 +159,6 @@ EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 		unrolled.push(this);
 	}
 	return unrolled;
-};
-
-EventSchema.methods.recurUnrollPrev = function(recur, startDate, endDate) {
-	//return persMap[recur.type].past.call(recur, date);
-	return null;
 };
 
 mongoose.model('Event', EventSchema);

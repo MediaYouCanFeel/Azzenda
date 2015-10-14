@@ -10,7 +10,3 @@
 exports.next = function(curDate) {
 	return this;
 };
-
-exports.past = function(curDate) {
-	return this;
-};

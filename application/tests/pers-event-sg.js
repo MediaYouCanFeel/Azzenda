@@ -28,7 +28,7 @@ describe('angularjs pers-event-jp', function() {
     	eventName.sendKeys('Meeting with Client');
         eventHrDur.sendKeys('1');
         eventMinDur.sendKeys('00');
-        eventDate.sendKeys('10/10/2015');
+        eventDate.sendKeys('10/16/2015');
         eventTmHrs.sendKeys(protractor.Key.END);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);

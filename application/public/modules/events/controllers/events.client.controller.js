@@ -1,8 +1,8 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$timeout', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
+	function($scope, $stateParams, $timeout, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
         
         $scope.authentication = Authentication;
         
@@ -13,6 +13,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         $scope.personal = false;
         
         $scope.showPers;
+        
+        $scope.sidebarDay = moment();
         
         //dropdown init
         angular.element('select').select2({ 
@@ -580,9 +582,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             var alreadyHappened = moment(dateTime) < moment(rightNow);
             
             //If the event is happening today           
-        	if($scope.checkSameDay(moment(dateTime).add(1, 'days')) && alreadyHappened) {
+        	if($scope.checkToday(moment(dateTime).add(1, 'days')) && alreadyHappened) {
 	        	$scope.printDateDate = 'Yesterday at ';
-	        } else if ($scope.checkSameDay(dateTime)) {
+	        } else if ($scope.checkToday(dateTime)) {
 	            $scope.printDateDate = 'Today at ';
 	        } else if (moment(dateTime).add(7, 'days') > moment(rightNow) && alreadyHappened) {
 	            //If the event is less than 7 days away
@@ -602,11 +604,20 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.printDate = $scope.printDateDate + $scope.printDateTime;
         }
         
-        $scope.checkSameDay = function(dateTime) {
+        $scope.checkToday = function(dateTime) {
         	var rightNow = moment();
         	var sameDay = (moment(dateTime).get('date') == moment(rightNow).get('date'));
         	var sameMonth = (moment(dateTime).get('month') == moment(rightNow).get('month'));
         	var sameYear = (moment(dateTime).get('year') == moment(rightNow).get('year'));
+        	if(sameDay && sameMonth && sameYear) {
+        		return true;
+        	} 
+        }
+        
+        $scope.checkSameDay = function(dateTime1, dateTime2) {
+        	var sameDay = (moment(dateTime1).get('date') == moment(dateTime2).get('date'));
+        	var sameMonth = (moment(dateTime1).get('month') == moment(dateTime2).get('month'));
+        	var sameYear = (moment(dateTime1).get('year') == moment(dateTime2).get('year'));
         	if(sameDay && sameMonth && sameYear) {
         		return true;
         	} 
@@ -706,6 +717,67 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	}
         	
         	return filter;
+        }
+        
+        $scope.getDateReadable = function(daysAway){
+        	var ret = moment();
+        	if (daysAway < 0) {
+        		daysAway *= (-1);
+        		ret = moment(ret).subtract(daysAway, 'days');
+        	} else if (daysAway > 0) {
+        		ret = moment(ret).add(daysAway, 'days');        		
+        	}
+        	
+        	return moment(ret).format('dddd, MMMM DD, YYYY');
+        }
+        
+        $scope.offset;
+        $scope.sidebarDayIndex = 100;
+        
+        $scope.setSidebarDayIndex = function(ind) {
+        	$scope.sidebarDayIndex = ind;
+        }
+        
+        $scope.justThisDay = function(element) {
+        	var filter = false;
+        	$scope.sidebarDay = $scope.getDateReadable($scope.offset + $scope.sidebarDayIndex);
+        	if ($scope.checkSameDay($scope.sidebarDay, element.sched.start)) {
+        		filter = true;
+        	}
+         	return filter;
+        }
+        
+        $scope.justThisDayFull = function(element) {
+        	var filter = false;
+        	$scope.fullEventsDate = $scope.getDateReadable($scope.offset + $scope.selectedIndex);
+        	if ($scope.checkSameDay($scope.fullEventsDate, element.sched.start)) {
+        		filter = true;
+        	}
+         	return filter;
+        }
+        
+        $scope.setSidebarDay = function(dateTime) {
+        	$scope.sidebarDay = moment(dateTime);
+        }
+        
+        $scope.getNumber = function(num) {
+            return new Array(num);   
+        }
+        
+        $scope.getShortTime = function(dateTime) {
+        	return moment(dateTime).format("hh A");
+        }
+        
+        $scope.selectedIndex = 0;
+        
+        $scope.updateSelected = function(index) {
+        	$scope.selectedIndex = index;
+        }
+        
+        $scope.fullEventsDate;
+        
+        $scope.refreshFilter = function() {
+        	$timeout;
         }
     }
 ]);

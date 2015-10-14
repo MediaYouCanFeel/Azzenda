@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Events Routes
 	app.route('/events')
-		.get(users.requiresLogin, events.list)
+		.put(users.requiresLogin, events.list)
 		.post(users.requiresLogin, events.create);
 
 	app.route('/events/:eventId')

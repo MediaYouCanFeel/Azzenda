@@ -363,24 +363,21 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             });
             $scope.ok();
         };
-        
-		//Find a list of all Events
-		$scope.find = function() {
-            var response = Events.query();
+		
+		//Find a list of all Events in a range
+		$scope.findEvents = function() {
+            var response = Events.query({
+            	startDate: new Date(),
+            	endDate: moment().add(1, 'week').format('x')
+            });
             $scope.events = response;
 		};
 		
-		//Find a list of all future Events
-		$scope.findFutureEvents = function() {
-            var response = Events.query();
-            $scope.futureEvents = response;
-		};
-		
-		//Find a list of all past Events
-		$scope.findPastEvents = function() {
-            var response = Events.getPastEvents();
-            $scope.pastEvents = response;
-		};
+//		//Find a list of all past Events
+//		$scope.findPastEvents = function() {
+//            var response = Events.getPastEvents();
+//            $scope.pastEvents = response;
+//		};
 
 		// Find existing Event
 		$scope.findOne = function() {

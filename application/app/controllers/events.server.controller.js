@@ -298,8 +298,13 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
     var roles = ['admin'];
-    var currDate = moment(req.startDate);
-    var lastDate = req.(endDate);
+    var currDate = moment(req.body.startDate);
+    console.log("HEEEEEEEEEREEEEEE");
+    console.log(req.body.startDate);
+    console.log(currDate._d);
+    console.log(req.body.endDate);
+    var lastDate = moment(parseInt(req.body.endDate));
+    console.log(lastDate._d);
     if(_.intersection(req.user.roles,roles).length) {
         Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
             if (err) {

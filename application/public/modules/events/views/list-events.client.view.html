@@ -18,7 +18,7 @@
     				
     				<strong data-ng-bind="getDateReadable(offset + $index);"></strong>
     				<span data-ng-bind="setSidebarDayIndex($index);"></span>
-    				<div ng-repeat="event in futureEvents | orderBy : 'sched.start' | filter: justThisDay | filter: checkPersonalEvents">
+    				<div ng-repeat="event in events | orderBy : 'sched.start' | filter: justThisDay | filter: checkPersonalEvents">
     					<strong data-ng-bind="getShortTime(event.sched.start)"></strong>
     					<span data-ng-bind="event.name"></span>
     					<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
@@ -34,7 +34,7 @@
     	<div class="col-md-8 well">
     		<strong data-ng-bind="getDateReadable(selectedIndex);"></strong>
     		<span data-ng-init="fullEventsDate = getDateReadable(selectedIndex);"></span>
-    		<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | filter: justThisDayFull | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+    		<a ng-repeat="event in events | orderBy : 'sched.start' | filter: justThisDayFull | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
                         <span class="pull-right">
@@ -83,8 +83,8 @@
             <label for="togPers" data-ng-init="showPers = true">Show Personal</label>
                 <input type="checkbox" id="togPers" ng-model="showPers" name="togPers" value=true>
             
-			<div class="list-group" data-ng-init="findFutureEvents();">
-				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+			<div class="list-group" data-ng-init="findEvents();">
+				<a ng-repeat="event in events | orderBy : 'sched.start' | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>

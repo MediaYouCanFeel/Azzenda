@@ -3,7 +3,11 @@
 //Events service used to communicate Events REST endpoints
 angular.module('events').factory('Events', ['$resource',
 	function($resource) {
-		return $resource('events/:eventId', {eventId: '@_id'}, { 
+		return $resource('events/:eventId', {eventId: '@_id'}, {
+			query: {
+				method: 'PUT',
+				isArray: true
+			},
 			update: {
                 method: 'PUT'
             },
@@ -25,11 +29,6 @@ angular.module('events').factory('Events', ['$resource',
                 method: 'GET',
                 url: 'events/create/locations',
                 isArray: true
-            },
-            getPastEvents: {
-            	method: 'GET',
-            	url: 'events/past/events',
-            	isArray: true
             },
             rsvp: {
             	method: 'PUT',

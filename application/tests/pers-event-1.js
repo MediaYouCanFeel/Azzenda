@@ -28,7 +28,7 @@ describe('angularjs pers-event-1', function() {
     	eventName.sendKeys('Walter\'s Lecture');
         eventHrDur.sendKeys('2');
         eventMinDur.sendKeys('30');
-        eventDate.sendKeys('10/10/2015');
+        eventDate.sendKeys('10/16/2015');
         eventTmHrs.sendKeys(protractor.Key.END);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);
         eventTmHrs.sendKeys(protractor.Key.BACK_SPACE);

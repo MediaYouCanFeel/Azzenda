@@ -8,32 +8,34 @@
             </span>
         </div>
     
-    <div class="col-md-12">
+    <div class="col-md-12" data-ng-init="findEvents();">
+    	 <label for="togPers" data-ng-init="showPers = true">Show Personal</label>
+                <input type="checkbox" id="togPers" ng-model="showPers" name="togPers" value=true>
     	<div class="col-md-4" >
-    		<div class="btn btn-teal" ng-click="offset = offset - 1;">
-    			Up
+    		<div class="btn btn-teal" ng-click="offset = offset - 1; findEventsCustom(selDateMain);">
+    			<i class="fa fa-arrow-up"></i>
     		</div>
-    		<div class="list-group" data-ng-init="offset = 0; daySelected = 6;">
-    			<div ng-repeat="i in getNumber(7) track by $index"  data-ng-init="i.isSelected = false" ng-click="i.isSelected = !i.isSelected; updateSelected($index);" ng-class="{'list-group-item' : true, 'list-group-item-selected': i.isSelected}">
+    		<div class="btn btn-teal" ng-click="offset = offset + 1; findEventsCustom(selDateMain);">
+    			<i class="fa fa-arrow-down"></i>
+    		</div>
+    		<div class="list-group" data-ng-init="offset = 0; daySelected = 6;  getNumber(7)">
+    			<div ng-repeat="i in selDayArr track by $index"  ng-click="selIndex = $index; updateSelected(selIndex);" ng-class="{'list-group-item' : true, 'list-group-item-selected': isSelected($index)}">
     				
-    				<strong data-ng-bind="getDateReadable(offset + $index);"></strong>
+					<strong data-ng-bind="getDateReadable(offset + $index);"></strong>
     				<span data-ng-bind="setSidebarDayIndex($index);"></span>
     				<div ng-repeat="event in events | orderBy : 'sched.start' | filter: justThisDay | filter: checkPersonalEvents">
     					<strong data-ng-bind="getShortTime(event.sched.start)"></strong>
-    					<span data-ng-bind="event.name"></span>
+    					<span data-ng-bind="getShortName(event.name)"></span>
     					<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
                         <i ng-show="event.status != 'personal'" class="fa fa-users"></i>
     				</div>
     			</div>
     		</div>
-    		<div class="btn btn-teal" ng-click="offset = offset + 1;">
-    			Down
-    		</div>
     	</div>
     	
     	<div class="col-md-8 well">
-    		<strong data-ng-bind="getDateReadable(selectedIndex);"></strong>
-    		<span data-ng-init="fullEventsDate = getDateReadable(selectedIndex);"></span>
+    		<strong data-ng-bind="getDateReadable(selectedIndex + offset);"></strong>
+    		<span data-ng-bind="setSelDateMain(offset);"></span>
     		<a ng-repeat="event in events | orderBy : 'sched.start' | filter: justThisDayFull | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
@@ -47,8 +49,7 @@
                      <!-- Initializing date formatter -->
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
-                    
-	                
+                                  
                    	<div  ng-hide="event.status == 'personal'" data-ng-bind="event.location.name"></div>
                    
                    	<div class="row">
@@ -69,109 +70,5 @@
 			</a>
     	</div>
     </div>
-    
-    
-    
-    
-    
-    <div class="col-md-7">
-        <div class="col-md-12 row well">
-            <h2>
-                <strong class="blue">Upcoming Events</strong>                                   		
-            </h2>
-            
-            <label for="togPers" data-ng-init="showPers = true">Show Personal</label>
-                <input type="checkbox" id="togPers" ng-model="showPers" name="togPers" value=true>
-            
-			<div class="list-group" data-ng-init="findEvents();">
-				<a ng-repeat="event in events | orderBy : 'sched.start' | filter: checkPersonalEvents" data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
-					
-					<div class="event-rep-name">
-                        <span data-ng-bind="event.name"></span>
-                        <span class="pull-right">
-                       		<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
-                        	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
-                        </span>
-                        <hr>
-                    </div>
-                    
-                     <!-- Initializing date formatter -->
-                    <span>{{readableDate(event.sched.start)}}</span>
-                    <div class="event-rep-date" data-ng-bind="printDate"></div>
-                    
-	                
-                   	<div  ng-hide="event.status == 'personal'" data-ng-bind="event.location.name"></div>
-                   
-                   	<div class="row">
-				    	<div class="pull-right event-rep-proj">
-					    	
-					    	<span ng-show="event.status == 'personal'">
-					    		<span data-ng-bind="event.owner.displayName"></span>
-					    	</span>
-					    	
-					    	<span ng-hide="event.status == 'personal'">
-						    	<strong data-ng-bind="event.proj.name"> </strong>
-						        
-						        <i ng-hide="event.proj.name == null || event.type.name == null" class="fa fa-ellipsis-v"></i>
-					        	<span data-ng-bind="event.type.name"></span>
-				        	</span>
-		        		</div>
-	        		</div>
-				</a>   
-			</div>
-            
-        </div>
-        <div class="col-md-12 row">
-        </div>
-    </div>
-    <div class="col-md-5">
-        <div class="row well">
-            <h2>
-                <strong class="blue">Past Events</strong>
-            </h2>
-             <div class="list-group" data-ng-init="findPastEvents();">
-                <a ng-repeat="event in pastEvents | orderBy : 'sched.start' : true | limitTo: 10 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
-					<div class="event-rep-name">
-                        <span data-ng-bind="event.name"></span>
-                        <span class="pull-right">
-                        	<i ng-show="event.status == 'personal'" class="fa fa-user"></i>
-                        	<i ng-show="event.status != 'personal'" class="fa fa-users"></i>
-                        </span>
-                        <hr>
-                    </div>
-                    
-                     <!-- Initializing date formatter -->
-                    <span>{{readableDate(event.sched.start)}}</span>
-                    <div class="event-rep-date" data-ng-bind="printDate"></div>
-                    
-	                <span ng-hide="event.status == 'personal'">  
-	                   	<div data-ng-bind="event.location.name"></div>
-	                   
-	                   	<div class="row">
-					    	<div class="pull-right event-rep-proj">
-						    	<strong data-ng-bind="event.proj.name"> </strong>
-						        
-						        <i ng-hide="event.proj.name == null || event.type.name == null" class="fa fa-ellipsis-v"></i>
-					        	<span data-ng-bind="event.type.name"></span>
-			        		</div>
-		        		</div>
-	        		</span>
-				</a>   
-            </div>
-        </div>
-    </div>
-    
-    <!--
-    <div class="list-group">
-        <a data-ng-repeat="event in events" data-ng-href="#!/events/{{event._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="event.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="event.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="event.name"></h4>
-        </a>
-    </div> -->
    
 </section>

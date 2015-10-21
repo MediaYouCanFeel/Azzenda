@@ -1,0 +1,20 @@
+<section data-ng-controller="TeamsController" data-ng-init="find()">
+    <div class="top-well well">
+            <h1>Teams</h1>
+            <span class="pull-right">
+                <a id="new-team-button" class="btn btn-yellow create-button" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Team</a>
+            </span>
+    </div>
+    
+    <div class="col-md-12 well">
+	    <div class="list-group">
+	        <a data-ng-repeat="team in teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
+				<h4 class="list-group-item-heading" data-ng-bind="team.name"></h4>
+				<span>0 members</span>
+	        </a>
+	    </div>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!teams.$resolved || teams.length">
+    	No Teams yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
+    </div>
+</section>

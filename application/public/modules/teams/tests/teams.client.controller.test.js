@@ -1,10 +1,10 @@
 'use strict';
 
 (function() {
-	// Groups Controller Spec
-	describe('Groups Controller Tests', function() {
+	// Teams Controller Spec
+	describe('Teams Controller Tests', function() {
 		// Initialize global variables
-		var GroupsController,
+		var TeamsController,
 		scope,
 		$httpBackend,
 		$stateParams,
@@ -44,69 +44,69 @@
 			$httpBackend = _$httpBackend_;
 			$location = _$location_;
 
-			// Initialize the Groups controller.
-			GroupsController = $controller('GroupsController', {
+			// Initialize the Teams controller.
+			TeamsController = $controller('TeamsController', {
 				$scope: scope
 			});
 		}));
 
-		it('$scope.find() should create an array with at least one Group object fetched from XHR', inject(function(Groups) {
-			// Create sample Group using the Groups service
-			var sampleGroup = new Groups({
-				name: 'New Group'
+		it('$scope.find() should create an array with at least one Team object fetched from XHR', inject(function(Teams) {
+			// Create sample Team using the Teams service
+			var sampleTeam = new Teams({
+				name: 'New Team'
 			});
 
-			// Create a sample Groups array that includes the new Group
-			var sampleGroups = [sampleGroup];
+			// Create a sample Teams array that includes the new Team
+			var sampleTeams = [sampleTeam];
 
 			// Set GET response
-			$httpBackend.expectGET('groups').respond(sampleGroups);
+			$httpBackend.expectGET('teams').respond(sampleTeams);
 
 			// Run controller functionality
 			scope.find();
 			$httpBackend.flush();
 
 			// Test scope value
-			expect(scope.groups).toEqualData(sampleGroups);
+			expect(scope.teams).toEqualData(sampleTeams);
 		}));
 
-		it('$scope.findOne() should create an array with one Group object fetched from XHR using a groupId URL parameter', inject(function(Groups) {
-			// Define a sample Group object
-			var sampleGroup = new Groups({
-				name: 'New Group'
+		it('$scope.findOne() should create an array with one Team object fetched from XHR using a teamId URL parameter', inject(function(Teams) {
+			// Define a sample Team object
+			var sampleTeam = new Teams({
+				name: 'New Team'
 			});
 
 			// Set the URL parameter
-			$stateParams.groupId = '525a8422f6d0f87f0e407a33';
+			$stateParams.teamId = '525a8422f6d0f87f0e407a33';
 
 			// Set GET response
-			$httpBackend.expectGET(/groups\/([0-9a-fA-F]{24})$/).respond(sampleGroup);
+			$httpBackend.expectGET(/teams\/([0-9a-fA-F]{24})$/).respond(sampleTeam);
 
 			// Run controller functionality
 			scope.findOne();
 			$httpBackend.flush();
 
 			// Test scope value
-			expect(scope.group).toEqualData(sampleGroup);
+			expect(scope.team).toEqualData(sampleTeam);
 		}));
 
-		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function(Groups) {
-			// Create a sample Group object
-			var sampleGroupPostData = new Groups({
-				name: 'New Group'
+		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function(Teams) {
+			// Create a sample Team object
+			var sampleTeamPostData = new Teams({
+				name: 'New Team'
 			});
 
-			// Create a sample Group response
-			var sampleGroupResponse = new Groups({
+			// Create a sample Team response
+			var sampleTeamResponse = new Teams({
 				_id: '525cf20451979dea2c000001',
-				name: 'New Group'
+				name: 'New Team'
 			});
 
 			// Fixture mock form input values
-			scope.name = 'New Group';
+			scope.name = 'New Team';
 
 			// Set POST response
-			$httpBackend.expectPOST('groups', sampleGroupPostData).respond(sampleGroupResponse);
+			$httpBackend.expectPOST('teams', sampleTeamPostData).respond(sampleTeamResponse);
 
 			// Run controller functionality
 			scope.create();
@@ -115,49 +115,49 @@
 			// Test form inputs are reset
 			expect(scope.name).toEqual('');
 
-			// Test URL redirection after the Group was created
-			expect($location.path()).toBe('/groups/' + sampleGroupResponse._id);
+			// Test URL redirection after the Team was created
+			expect($location.path()).toBe('/teams/' + sampleTeamResponse._id);
 		}));
 
-		it('$scope.update() should update a valid Group', inject(function(Groups) {
-			// Define a sample Group put data
-			var sampleGroupPutData = new Groups({
+		it('$scope.update() should update a valid Team', inject(function(Teams) {
+			// Define a sample Team put data
+			var sampleTeamPutData = new Teams({
 				_id: '525cf20451979dea2c000001',
-				name: 'New Group'
+				name: 'New Team'
 			});
 
-			// Mock Group in scope
-			scope.group = sampleGroupPutData;
+			// Mock Team in scope
+			scope.team = sampleTeamPutData;
 
 			// Set PUT response
-			$httpBackend.expectPUT(/groups\/([0-9a-fA-F]{24})$/).respond();
+			$httpBackend.expectPUT(/teams\/([0-9a-fA-F]{24})$/).respond();
 
 			// Run controller functionality
 			scope.update();
 			$httpBackend.flush();
 
 			// Test URL location to new object
-			expect($location.path()).toBe('/groups/' + sampleGroupPutData._id);
+			expect($location.path()).toBe('/teams/' + sampleTeamPutData._id);
 		}));
 
-		it('$scope.remove() should send a DELETE request with a valid groupId and remove the Group from the scope', inject(function(Groups) {
-			// Create new Group object
-			var sampleGroup = new Groups({
+		it('$scope.remove() should send a DELETE request with a valid teamId and remove the Team from the scope', inject(function(Teams) {
+			// Create new Team object
+			var sampleTeam = new Teams({
 				_id: '525a8422f6d0f87f0e407a33'
 			});
 
-			// Create new Groups array and include the Group
-			scope.groups = [sampleGroup];
+			// Create new Teams array and include the Team
+			scope.teams = [sampleTeam];
 
 			// Set expected DELETE response
-			$httpBackend.expectDELETE(/groups\/([0-9a-fA-F]{24})$/).respond(204);
+			$httpBackend.expectDELETE(/teams\/([0-9a-fA-F]{24})$/).respond(204);
 
 			// Run controller functionality
-			scope.remove(sampleGroup);
+			scope.remove(sampleTeam);
 			$httpBackend.flush();
 
 			// Test array after successful delete
-			expect(scope.groups.length).toBe(0);
+			expect(scope.teams.length).toBe(0);
 		}));
 	});
 }());

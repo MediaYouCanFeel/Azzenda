@@ -20,22 +20,33 @@ var TaskSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	user: {
-		type: Schema.ObjectId,
-		ref: 'User'
-	},
-	users: [{
+	owners: [{
 		type: Schema.ObjectId,
 		ref: 'User'
 	}],
-    messageThreads: [{
-    	type: Schema.ObjectId,
-    	ref: 'MessageThread'
-    }]
+	workers: [{
+		type: Schema.ObjectId,
+		ref: 'User'
+	}],
+	project: {
+		type: Schema.ObjectId,
+		ref: 'Project'
+	},
+	parent: {
+		type: Schema.ObjectId,
+		ref: 'Task'
+	},
+	subtasks: [{
+		type: Schema.ObjectId,
+		ref: 'Task',
+	}],
+	status: {
+		type: String,
+		enum: ['in progress','not started','finished']
+	},
+	deadline: {
+		type: Date
+	}
 });
-
-TaskSchema.methods.getUsersForMessage = function() {
-	return this.users;
-};
 
 mongoose.model('Task', TaskSchema);

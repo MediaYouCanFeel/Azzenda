@@ -7,8 +7,7 @@ var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
-	User = mongoose.model('User'),
-    Group = mongoose.model('Group');
+	User = mongoose.model('User');
 
 /**
  * Signup
@@ -39,36 +38,29 @@ exports.signup = function(req, res) {
             user.displayName = user.firstName + ' ' + user.lastName;
             //user.username = user.email;
             
-            var group = new Group({
-                name: 'admin',
-                user: req.user
-            });
             
-            group.save(function(err, savedGroup) {
-                user.group = savedGroup
-                // Then save the user 
-                user.save(function(err) {
-                    if (err) {
-                        var msg = errorHandler.getErrorMessage(err);
-                        msg = msg.replace(/username/g, "email");
-                        msg = msg.replace(/Username/g, "Email");
-                        return res.status(400).send({
-                            message: msg
-                        });
-                    } else {
-                        // Remove sensitive data before login
-                        user.password = undefined;
-                        user.salt = undefined;
+            // Then save the user 
+            user.save(function(err) {
+                if (err) {
+                    var msg = errorHandler.getErrorMessage(err);
+                    msg = msg.replace(/username/g, "email");
+                    msg = msg.replace(/Username/g, "Email");
+                    return res.status(400).send({
+                        message: msg
+                    });
+                } else {
+                    // Remove sensitive data before login
+                    user.password = undefined;
+                    user.salt = undefined;
 
-                        req.login(user, function(err) {
-                            if (err) {
-                                res.status(400).send(err);
-                            } else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
+                    req.login(user, function(err) {
+                        if (err) {
+                            res.status(400).send(err);
+                        } else {
+                            res.json(user);
+                        }
+                    });
+                }
             });
         }
     });

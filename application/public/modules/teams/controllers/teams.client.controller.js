@@ -1,8 +1,8 @@
 'use strict';
 
-// Groups controller
-angular.module('groups').controller('GroupsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Groups', 'Users', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Groups, Users, $modal, $log) {
+// Teams controller
+angular.module('teams').controller('TeamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Teams', 'Users', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Teams, Users, $modal, $log) {
 		$scope.authentication = Authentication;
         
 		angular.element('select').select2({ 
@@ -14,7 +14,7 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
             
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
-              templateUrl: 'modules/groups/views/create-group.client.view.html',
+              templateUrl: 'modules/teams/views/create-team.client.view.html',
               controller: function ($scope, $modalInstance, items) {
                   console.log('In Modal Controller');
                                     
@@ -45,16 +45,16 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
         };
         
         
-		// Create new Group
+		// Create new Team
 		$scope.create = function() {
-			// Create new Group object
-			var group = new Groups ({
+			// Create new Team object
+			var team = new Teams ({
 				name: this.name
 			});
 
 			// Redirect after save
-			group.$save(function(response) {
-				$location.path('groups/' + response._id);
+			team.$save(function(response) {
+				$location.path('teams/' + response._id);
 
                 $scope.ok();
                 
@@ -65,43 +65,43 @@ angular.module('groups').controller('GroupsController', ['$scope', '$stateParams
 			});
 		};
 
-		// Remove existing Group
-		$scope.remove = function(group) {
-			if ( group ) { 
-				group.$remove();
+		// Remove existing Team
+		$scope.remove = function(team) {
+			if ( team ) { 
+				team.$remove();
 
-				for (var i in $scope.groups) {
-					if ($scope.groups [i] === group) {
-						$scope.groups.splice(i, 1);
+				for (var i in $scope.teams) {
+					if ($scope.teams [i] === team) {
+						$scope.teams.splice(i, 1);
 					}
 				}
 			} else {
-				$scope.group.$remove(function() {
-					$location.path('groups');
+				$scope.team.$remove(function() {
+					$location.path('teams');
 				});
 			}
 		};
 
-		// Update existing Group
+		// Update existing Team
 		$scope.update = function() {
-			var group = $scope.group;
+			var team = $scope.team;
 
-			group.$update(function() {
-				$location.path('groups/' + group._id);
+			team.$update(function() {
+				$location.path('teams/' + team._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
-		// Find a list of Groups
+		// Find a list of Teams
 		$scope.find = function() {
-			$scope.groups = Groups.query();
+			$scope.teams = Teams.query();
 		};
 
-		// Find existing Group
+		// Find existing Team
 		$scope.findOne = function() {
-			$scope.group = Groups.get({ 
-				groupId: $stateParams.groupId
+			$scope.team = Teams.get({ 
+				teamId: $stateParams.teamId
 			});
 		};
 		

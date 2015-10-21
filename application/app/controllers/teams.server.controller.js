@@ -5,103 +5,113 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Group = mongoose.model('Group'),
+	Team = mongoose.model('Team'),
 	_ = require('lodash');
 
 /**
- * Create a Group
+ * Create a Team
  */
 exports.create = function(req, res) {
-	var group = new Group(req.body);
-	group.user = req.user;
+	var team = new Team(req.body);
+	team.owners.push(req.user);
 
-	group.save(function(err) {
+	team.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(group);
+			res.jsonp(team);
 		}
 	});
 };
 
 /**
- * Show the current Group
+ * Show the current Team
  */
 exports.read = function(req, res) {
-	res.jsonp(req.group);
+	res.jsonp(req.team);
 };
 
 /**
- * Update a Group
+ * Update a Team
  */
 exports.update = function(req, res) {
-	var group = req.group ;
+	var team = req.team ;
 
-	group = _.extend(group , req.body);
+	team = _.extend(team , req.body);
 
-	group.save(function(err) {
+	team.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(group);
+			res.jsonp(team);
 		}
 	});
 };
 
 /**
- * Delete an Group
+ * Delete a Team
  */
 exports.delete = function(req, res) {
-	var group = req.group ;
+	var team = req.team ;
 
-	group.remove(function(err) {
+	team.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(group);
+			res.jsonp(team);
 		}
 	});
 };
 
 /**
- * List of Groups
+ * List of Teams
  */
 exports.list = function(req, res) { 
-	Group.find().sort('-created').populate('user', 'displayName').exec(function(err, groups) {
+	Team.find().exec(function(err, teams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(groups);
+			res.jsonp(teams);
 		}
 	});
 };
 
+///**
+// * Create a new thread
+// */
+//exports.newThread = function(req, res) {
+//	var 
+//}
+
 /**
- * Group middleware
+ * Team middleware
  */
-exports.groupByID = function(req, res, next, id) { 
-	Group.findById(id).populate('user', 'displayName').exec(function(err, group) {
+exports.teamByID = function(req, res, next, id) { 
+	Team.findById(id).populate('owners', 'displayName').populate('users','displayName').exec(function(err, team) {
 		if (err) return next(err);
-		if (! group) return next(new Error('Failed to load Group ' + id));
-		req.group = group ;
+		if (! team) return next(new Error('Failed to load Team ' + id));
+		req.team = team ;
 		next();
 	});
 };
 
 /**
- * Group authorization middleware
+ * Team authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.group.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
+	for(var owner in req.team.owners) {
+		if(owner.id === req.user.id) {
+			next();
+			return;
+		}
 	}
-	next();
+	return res.status(403).send('User is not authorized');
 };

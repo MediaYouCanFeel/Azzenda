@@ -86,16 +86,6 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-    groups: [{
-        //Make this reference group schema
-        type: Schema.ObjectId,
-        ref: 'Group'
-        //default: [{group: 'member'}]
-    }],
-    messageThreads: [{
-    	type: Schema.ObjectId,
-    	ref: 'MessageThread'
-    }],
 	/* For reset password */
 	resetPasswordToken: {
 		type: String

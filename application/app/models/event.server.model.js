@@ -142,7 +142,7 @@ EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 	console.log('this.sched.end: ' + (new Date(this.sched.end)));
 	if(this.status == 'personal') {
 		if(moment(this.sched.start).isBefore(endDate) && moment(this.sched.end).isAfter(startDate)) {
-			var curDate = moment(startDate).startOf('day');
+			var curDate = moment(startDate).startOf('day').max(this.sched.start);
 			var eDate = moment(endDate).endOf('day');
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			//console.log('unrollInst.sched.start: ' + (new Date(unrollInst.sched.start)));

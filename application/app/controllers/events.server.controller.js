@@ -299,10 +299,6 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) {
     var roles = ['admin'];
     var currDate = moment(req.body.startDate);
-    console.log("HEEEEEEEEEREEEEEE");
-    console.log(req.body.startDate);
-    console.log(currDate._d);
-    console.log(req.body.endDate);
     var lastDate = moment(parseInt(req.body.endDate));
     console.log(lastDate._d);
     if(_.intersection(req.user.roles,roles).length) {

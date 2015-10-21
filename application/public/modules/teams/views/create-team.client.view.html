@@ -1,6 +1,6 @@
-<section data-ng-controller="GroupsController">
+<section data-ng-controller="TeamsController">
     <div class="col-md-12 modal-col well">
-        <h1><u>New Group</u></h1>
+        <h1><u>New Team</u></h1>
         <form class="form-horizontal" novalidate>
             <fieldset>
                 <div class="form-group">
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 
-                <!-- Add to Group -->
+                <!-- Add to Team -->
                 <div class="form-group">
                    <label class="control-label" for="members">Members</label>
                    <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="members" id="members" data-ng-init="findUsers()">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Group">
+                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Team">
                         </div>
                     </div>
                 </div>

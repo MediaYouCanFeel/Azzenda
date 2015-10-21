@@ -367,7 +367,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		//Find a list of all Events in a range
 		$scope.findEvents = function() {
             var response = Events.query({
-            	startDate: new Date(),
+            	startDate: new Date(moment().set('hours', 0).set('minutes',0)),
             	endDate: moment().add(1, 'week').format('x')
             });
             $scope.events = response;
@@ -716,6 +716,37 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	return moment(ret).format('dddd, MMMM DD, YYYY');
         }
         
+        $scope.selDate;
+        
+        $scope.selDateMain;
+        
+        $scope.setDateReadable = function(daysAway){
+        	var ret = moment();
+        	if (daysAway < 0) {
+        		daysAway *= (-1);
+        		ret = moment(ret).subtract(daysAway, 'days');
+        	} else if (daysAway > 0) {
+        		ret = moment(ret).add(daysAway, 'days');        		
+        	}
+        	
+        	return moment(ret).format('dddd, MMMM DD, YYYY');
+        }
+        
+        $scope.setSelDateMain = function(offset) {
+        	$scope.selDateMain =  $scope.setDateReadable(offset);
+        }
+        
+        $scope.setSelDate = function(daysAway) {
+        	var ret = moment();
+        	if (daysAway < 0) {
+        		daysAway *= (-1);
+        		ret = moment(ret).subtract(daysAway, 'days');
+        	} else if (daysAway > 0) {
+        		ret = moment(ret).add(daysAway, 'days');        		
+        	}
+        	$scope.selDate = ret;
+        }
+        
         $scope.offset;
         $scope.sidebarDayIndex = 100;
         
@@ -745,24 +776,83 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         	$scope.sidebarDay = moment(dateTime);
         }
         
+        $scope.selDayArr;
+        
         $scope.getNumber = function(num) {
-            return new Array(num);   
+            var ret = [];
+            var i = 1;
+            for (var ind = 0; ind < num; ind++) {
+            	if (ind == 0) {
+            		ret.push({sel: true});
+            	} else {
+            		ret.push({sel: false});
+            	}
+            	i++;
+            }
+            $scope.selDayArr = ret;
+            return ret;   
         }
         
         $scope.getShortTime = function(dateTime) {
-        	return moment(dateTime).format("hh A");
+        	return moment(dateTime).format("hh:mm A");
         }
+        
+        $scope.getShortName = function(longName) {
+        	return longName.trunc(25);
+        }
+        
+        String.prototype.trunc = String.prototype.trunc ||
+        function(n){
+            return this.length>n ? this.substr(0,n-1)+'...' : this;
+        };
         
         $scope.selectedIndex = 0;
         
         $scope.updateSelected = function(index) {
+        	$scope.selDayArr[$scope.selectedIndex] = {sel: false};
         	$scope.selectedIndex = index;
+           	$scope.selDayArr[$scope.selectedIndex] = {sel: true};
+        }
+        
+        $scope.isSelected = function(index) {
+        	return $scope.selDayArr[index].sel;
         }
         
         $scope.fullEventsDate;
         
+        $scope.selIndex;
+        
         $scope.refreshFilter = function() {
         	$timeout;
         }
+        
+        $scope.findEventsCustom = function(start) {
+        	console.log("START: " + start); 
+            
+        	var changeRange = false;
+        	
+        	if (moment(start).format('x') < moment($scope.startRange).add(1, 'day').format('x')) {
+        		$scope.startRange = new Date(moment(start).subtract(1, 'week'));
+        		$scope.endRange = moment(start).add(2, 'week').format('x');
+        		changeRange = true;
+        	}
+        	
+        	console.log("NEW START: " + moment(start).add(2, 'week')._d + "\nOLD END: " + moment(parseInt($scope.endRange))._d)
+        	
+        	if ( moment(start).add(1, 'week').isAfter(moment(parseInt($scope.endRange))) ) {
+        		console.log("HERE");
+        		$scope.startRange = new Date(moment(start).subtract(1, 'week'));
+        		$scope.endRange = moment(start).add(2, 'week').format('x');
+            	changeRange = true;
+        	}
+        	
+        	if (changeRange) {
+	        	var response = Events.query({
+	            	startDate: $scope.startRange,
+	            	endDate: $scope.endRange
+	            });
+	            $scope.events = response;
+        	}
+		};
     }
 ]);

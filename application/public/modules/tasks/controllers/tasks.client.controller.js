@@ -1,15 +1,26 @@
 'use strict';
 
 // Tasks controller
-angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', '$location', 'Authentication', 'Tasks',
-	function($scope, $stateParams, $location, Authentication, Tasks) {
+angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks',
+	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks) {
 		$scope.authentication = Authentication;
 
+		//dropdown init
+        angular.element('select').select2({ 
+            width: '100%'
+        });
+		
 		// Create new Task
 		$scope.create = function() {
 			// Create new Task object
 			var task = new Tasks ({
-				name: this.name
+				name: this.name,
+				owners: this.owners,
+				workers: {
+					users: this.user_assigned, 
+					teams: this.team_assigned
+				},
+				project: this.project
 			});
 
 			// Redirect after save
@@ -62,5 +73,31 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				taskId: $stateParams.taskId
 			});
 		};
+		
+		//Find a list of Projects
+        $scope.findProjects = function() {
+            var response = Projects.query();
+            $scope.projects = response;
+        };
+        
+        //Find a list of Teams
+        $scope.findTeams = function() {
+            var response = Teams.query();
+            $scope.teams = response;
+        };
+        
+        //Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            $scope.users= response;
+        };
+        
+        $scope.projectFilter = function(element) {
+        	var filter = true;
+        	if (element.project._id != $scope.project) {
+        		filter = false;
+        	} 
+        	return filter;
+        }
 	}
 ]);

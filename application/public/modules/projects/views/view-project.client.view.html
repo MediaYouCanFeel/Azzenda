@@ -2,7 +2,7 @@
 	<div class="row top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/projects" class="btn btn-blue" style="margin-bottom: -20px;">
-                <i class="fa fa-arrow-left"></i> &nbsp; All Projects
+                <i class="fa fa-paperclip"></i> &nbsp; All Projects
             </a>
         </div>
         <div class="pull-right">
@@ -14,6 +14,7 @@
     <!-- Top well (project name) -->
     <div class="row well">
         <div class="col-md-8 project-name">
+            <i class="fa fa-paperclip"></i>
             <span data-ng-bind="project.name"></span>
         </div> 
         <div class="col-md-4">
@@ -26,8 +27,7 @@
     <div class="row well">
     	Hosts:
     	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
-    		<span data-ng-init="findUser(owner);"></span>
-    		<strong><a ng-href="/#!/users/{{user._id}}" data-ng-bind="user.displayName"></a></strong>
+    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong>
     	</span>
     	
     </div>

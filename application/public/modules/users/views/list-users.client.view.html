@@ -10,12 +10,18 @@
     <div class="list-group well">
         <a data-ng-repeat="user in users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
 			<!-- Last, First -->
-            <div class="h4">
-                <span data-ng-bind="user.lastName"></span>, <span data-ng-bind="user.firstName"></span>
+            <div class="row">
+           		<div class="col-md-1">
+           			<img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture">
+           		</div>
+           		<div class="col-md-11">
+                	<span class="display-name" data-ng-bind="user.displayName"></span>
+                 	<!-- Email -->
+            		<div data-ng-bind="user.email"></div>
+                </div>
             </div>
             
-            <!-- Email -->
-            <div data-ng-bind="user.email"></div>
+           
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!users.$resolved || users.length">

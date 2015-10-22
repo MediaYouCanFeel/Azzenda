@@ -11,7 +11,7 @@
         
     </div>
     
-    <!-- Top well (event name/RSVP) -->
+    <!-- Top well (project name) -->
     <div class="row well">
         <div class="col-md-8 project-name">
             <span data-ng-bind="project.name"></span>
@@ -21,6 +21,15 @@
         		<span data-ng-bind="project.type"></span>
         	</div>
         </div>  
+    </div>
+    
+    <div class="row well">
+    	Hosts:
+    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
+    		<span data-ng-init="findUser(owner);"></span>
+    		<strong><a ng-href="/#!/users/{{user._id}}" data-ng-bind="user.displayName"></a></strong>
+    	</span>
+    	
     </div>
     
     <div class="row well">

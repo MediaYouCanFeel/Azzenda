@@ -1,8 +1,8 @@
 'use strict';
 
 // Events controller
-angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$timeout', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Groups', '$modal', '$log',
-	function($scope, $stateParams, $timeout, $location, Authentication, Events, Projects, Users, Groups, $modal, $log) {
+angular.module('events').controller('EventsController', ['$scope', '$stateParams', '$timeout', '$location', 'Authentication', 'Events', 'Projects', 'Users', 'Teams', '$modal', '$log',
+	function($scope, $stateParams, $timeout, $location, Authentication, Events, Projects, Users, Teams, $modal, $log) {
         
         $scope.authentication = Authentication;
         
@@ -326,16 +326,16 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
             $scope.projects = response;
         };
         
-        //Find a list of Groups
-        $scope.findGroups = function() {
-            //For getting list of all needed group numbers
-            $scope.groupValues = [];
-            $scope.groups = Groups.query();
+        //Find a list of Teams
+        $scope.findTeams = function() {
+            //For getting list of all needed team numbers
+            $scope.teamValues = [];
+            $scope.teams = Teams.query();
         }
         
-        $scope.findGroup = function(groupId) {
-            return Groups.get({
-				groupId: groupId
+        $scope.findTeam = function(teamId) {
+            return Teams.get({
+				teamId: teamId
 			});
         }
         

@@ -1,6 +1,8 @@
 <section data-ng-controller="TeamsController">
     <div class="col-md-12 modal-col well">
-        <h1><u>New Team</u></h1>
+        <span class="text-center">
+        	<h1><u>New Team</u></h1>
+        </span>
         <form class="form-horizontal" novalidate>
             <fieldset>
                 <div class="form-group">
@@ -13,13 +15,31 @@
                     </div>
                 </div>
                 
+                <!-- Project -->
+                <div class="form-group" data-ng-init="findProjects();">
+                    <label class="control-label" for="project">Project</label>
+                    <div class="fullWidth">
+                        <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="project" id="project">
+                            <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                        </select>
+                    </div>
+				</div> 
+                
                 <!-- Add to Team -->
                 <div class="form-group">
-                   <label class="control-label" for="members">Members</label>
+                   <label class="control-label" for="members">Team Members</label>
                    <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="members" id="members" data-ng-init="findUsers()">
                        <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
                    </select>
 				</div> 
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="control-label" for="description">Description</label>
+                    <div class="controls">
+                        <textarea data-ng-model="description" id="description" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+                    </div>
+                </div>
                 
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>

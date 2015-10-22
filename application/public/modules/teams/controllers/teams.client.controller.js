@@ -1,8 +1,8 @@
 'use strict';
 
 // Teams controller
-angular.module('teams').controller('TeamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Teams', 'Users', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Teams, Users, $modal, $log) {
+angular.module('teams').controller('TeamsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Teams', 'Users', 'Projects', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Teams, Users, Projects, $modal, $log) {
 		$scope.authentication = Authentication;
         
 		angular.element('select').select2({ 
@@ -30,7 +30,6 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
               size: size,
               resolve: {
                 items: function () {
-                  //return $scope.events;
                 }
               }
             });
@@ -49,7 +48,10 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		$scope.create = function() {
 			// Create new Team object
 			var team = new Teams ({
-				name: this.name
+				name: this.name,
+				project: this.project,
+				description: this.description,
+				users: members
 			});
 
 			// Redirect after save
@@ -111,6 +113,13 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
             console.log(response);
             $scope.users = response;
             console.log($scope.users);
+        };
+        
+        //Find a list of Projects
+        //NOTE: This returns a list of all active (non-archived) projects
+        $scope.findProjects = function() {
+        	var response = Projects.query();
+        	$scope.projects = response;
         };
 	}
 ]);

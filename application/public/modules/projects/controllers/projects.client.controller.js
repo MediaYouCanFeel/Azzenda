@@ -1,8 +1,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', '$modal', '$log',
-	function($scope, $stateParams, $location, Authentication, Projects, $modal, $log) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Projects', 'Users', '$modal', '$log',
+	function($scope, $stateParams, $location, Authentication, Projects, Users, $modal, $log) {
 		$scope.authentication = Authentication;
 
         //Projects.listArchived();
@@ -53,6 +53,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 			// Create new Project object
 			var project = new Projects ({
 				name: this.name,
+				owners: this.owners,
 				type: this.type,
 				description: this.description
 			});
@@ -61,8 +62,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 			project.$save(function(response) {
 				$location.path('projects/' + response._id);
                 
-                $scope.ok();
-                
+				$scope.ok();
+				
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {
@@ -109,5 +110,18 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 				projectId: $stateParams.projectId
 			});
 		};
+		
+		// Find existing User
+		$scope.findUser = function(userId) {
+			$scope.user = Users.get({ 
+				userId: userId
+			});
+		};
+		
+		//Find a list of Users
+        $scope.findUsers = function() {
+            var response = Users.query();
+            $scope.users = response;
+        };
 	}
 ]);

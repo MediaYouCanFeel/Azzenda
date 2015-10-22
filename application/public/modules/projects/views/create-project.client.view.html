@@ -14,6 +14,14 @@
                     </div>
                 </div>
                 
+                <!-- Owner(s) -->
+                <div class="form-group">
+                   <label class="control-label" for="owners">Owners</label>
+                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="owners" id="owners" data-ng-init="findUsers()">
+                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                   </select>
+				</div> 
+                
                 <!-- Project Type -->
                 <div class="form-group">
                     <label class="control-label" for="type">Type</label>

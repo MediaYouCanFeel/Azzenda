@@ -142,17 +142,20 @@ EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 	console.log('this.sched.end: ' + (new Date(this.sched.end)));
 	if(this.status == 'personal') {
 		if(moment(this.sched.start).isBefore(endDate) && moment(this.sched.end).isAfter(startDate)) {
-			var curDate = moment(startDate).startOf('day').max(this.sched.start);
+			var curDate = moment.max(moment(startDate).startOf('day'),moment(this.sched.start).startOf('day'));
 			var eDate = moment(endDate).endOf('day');
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			//console.log('unrollInst.sched.start: ' + (new Date(unrollInst.sched.start)));
 			while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
-					//console.log('eDate: ' + eDate._d);
-					//console.log('curDate: ' + curDate._d);
-					//console.log('this.sched.end: ' + (new Date(this.sched.end)));
+					console.log('eDate: ' + eDate._d);
+					console.log('curDate: ' + curDate._d);
+					console.log('this.sched.end: ' + (new Date(this.sched.end)));
 					unrolled.push(unrollInst);
 					curDate = moment(unrollInst.sched.end);
 					unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
+					if(moment(unrollInst.sched.start).isAfter(this.sched.end)) {
+						break;
+					}
 			}
 		}
 	} else {

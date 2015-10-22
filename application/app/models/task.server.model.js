@@ -24,10 +24,16 @@ var TaskSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	}],
-	workers: [{
-		type: Schema.ObjectId,
-		ref: 'User'
-	}],
+	workers: {
+		users: [{
+			type: Schema.ObjectId,
+			ref: 'User'
+		}],
+		teams: [{
+			type: Schema.ObjectId,
+			ref: 'Team'
+		}]
+	},
 	project: {
 		type: Schema.ObjectId,
 		ref: 'Project'

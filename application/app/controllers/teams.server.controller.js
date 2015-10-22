@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var team = new Team(req.body);
-	team.owners.push(req.user);
+	team.owner = req.user;
 
 	team.save(function(err) {
 		if (err) {
@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Teams
  */
 exports.list = function(req, res) { 
-	Team.find().exec(function(err, teams) {
+	Team.find().populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').exec(function(err, teams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -84,18 +84,11 @@ exports.list = function(req, res) {
 	});
 };
 
-///**
-// * Create a new thread
-// */
-//exports.newThread = function(req, res) {
-//	var 
-//}
-
 /**
  * Team middleware
  */
 exports.teamByID = function(req, res, next, id) { 
-	Team.findById(id).populate('owners', 'displayName').populate('users','displayName').exec(function(err, team) {
+	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));
 		req.team = team ;
@@ -107,11 +100,11 @@ exports.teamByID = function(req, res, next, id) {
  * Team authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	for(var owner in req.team.owners) {
-		if(owner.id === req.user.id) {
+//	for(var owner in req.team.owners) {
+//		if(owner.id === req.user.id) {
 			next();
-			return;
-		}
-	}
-	return res.status(403).send('User is not authorized');
+//			return;
+//		}
+//	}
+//	return res.status(403).send('User is not authorized');
 };

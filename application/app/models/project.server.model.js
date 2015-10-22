@@ -41,6 +41,10 @@ var ProjectSchema = new Schema({
     	type: Schema.ObjectId,
     	ref: 'Thread'
     },
+    tasks: [{
+    	type: Schema.ObjectId,
+    	ref: 'Task'
+    }],
     archived: {
         type: Boolean,
         default: false

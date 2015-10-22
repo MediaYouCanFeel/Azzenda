@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Team = mongoose.model('Team'),
+	Project = mongoose.model('Project'),
 	_ = require('lodash');
 
 /**
@@ -21,7 +22,24 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(team);
+			Project.findById(team.project).exec(function(err, proj) {
+				if(err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					proj.teams.push(team);
+					proj.save(function(err) {
+						if(err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						} else {
+							res.jsonp(team);
+						}
+					});
+				}
+			});
 		}
 	});
 };

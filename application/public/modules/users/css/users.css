@@ -12,3 +12,12 @@
 	right: 10px;
 	position: absolute;
 }
+
+.prof-pic {
+	width: 64px;
+	height: 64px;
+}
+
+.display-name {
+	font-size: 16px;
+}

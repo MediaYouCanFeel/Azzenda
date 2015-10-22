@@ -51,7 +51,7 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 				name: this.name,
 				project: this.project,
 				description: this.description,
-				users: members
+				users: this.members
 			});
 
 			// Redirect after save

@@ -2,7 +2,7 @@
     <div class="row top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/events" class="btn btn-blue" style="margin-bottom: -20px;">
-                <i class="fa fa-arrow-left"></i> &nbsp; All Events
+                <i class="fa fa-calendar"></i> &nbsp; All Events
             </a>
         </div>
         <div class="pull-right">
@@ -14,11 +14,11 @@
     
     <!-- Top well (event name/RSVP) -->
     <div class="row well">
-        <div class="col-md-8 event-name">
-            <span class="" data-ng-bind="event.name"></span>
+        <div class="col-md-9 event-name">
+            <i class="fa fa-calendar"></i> <span class="" data-ng-bind="event.name"></span>
         </div>
         
-        <div ng-hide="event.status == 'personal'" class="col-md-4">
+        <div ng-hide="event.status == 'personal'" class="col-md-3">
 	    	<div class="pull-right">
 	    		<div class="row">
 	    			<div class="pull-right">

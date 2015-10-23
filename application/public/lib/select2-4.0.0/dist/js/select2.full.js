@@ -1427,9 +1427,11 @@ S2.define('select2/selection/single',[
 
     $selection.addClass('select2-selection--single');
 
+    $selection.attr("id", "selectDropdown");
+    
     $selection.html(
       '<span class="select2-selection__rendered"></span>' +
-      '<span class="select2-selection__arrow" role="presentation">' +
+      '<span id="select2_dropdown_arrow" class="select2-selection__arrow" role="presentation">' +
         '<b role="presentation"></b>' +
       '</span>'
     );
@@ -1521,7 +1523,7 @@ S2.define('select2/selection/multiple',[
     $selection.addClass('select2-selection--multiple');
 
     $selection.html(
-      '<ul class="select2-selection__rendered"></ul>'
+      '<ul id="select2MultArea" class="select2-selection__rendered"></ul>'
     );
 
     return $selection;
@@ -3701,7 +3703,7 @@ S2.define('select2/dropdown/search',[
 
     var $search = $(
       '<span class="select2-search select2-search--dropdown">' +
-        '<input class="select2-search__field" type="search" tabindex="-1"' +
+        '<input id="select2_search" class="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="off"' +
         ' spellcheck="false" role="textbox" />' +
       '</span>'

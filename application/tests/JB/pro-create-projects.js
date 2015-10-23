@@ -1,6 +1,6 @@
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs: ['sign-up.js, create-users.js'],
+  specs: ['sign-in-JB.js','create-projects.js'],
   capabilities: {
     'browserName': 'firefox' // or 'safari'
   }

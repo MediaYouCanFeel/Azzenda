@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="control-label" for="type">Type</label>
                     <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="type">
-                                <option ng-repeat="type in projectTypes" data-ng-value="type">{{type}}</option>
+                    	<option ng-repeat="type in projectTypes" data-ng-value="type">{{type}}</option>
                     </select>
                     <div class="examples">
                         Examples: "New Ingredients", "New Crust Filling"
@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input type="submit" ng-click="create()" class="btn btn-yellow" value="Create Project">
+                            <input type="submit" id="createProject" ng-click="create()" class="btn btn-yellow" value="Create Project">
                         </div>
                     </div>
                 </div>

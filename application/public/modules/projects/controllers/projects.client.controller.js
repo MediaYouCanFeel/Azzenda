@@ -103,6 +103,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 		$scope.find = function() {
 			$scope.projects = Projects.query();
 		};
+		
+		//Find a list of Archived Projects
+		$scope.findArchived = function() {
+			$scope.yourVariableHere = Projects.query({archived: true});
+		};
+		
+		//Find a list of project types
+		$scope.findTypes = function() {
+			$scope.projectTypes = Projects.query({types: true});
+		};
 
 		// Find existing Project
 		$scope.findOne = function() {

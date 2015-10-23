@@ -20,10 +20,10 @@ var TeamSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	owner: {
+	owners: [{
 		type: Schema.ObjectId,
 		ref: 'User'
-	},
+	}],
 	description: {
         type: String,
         default: '',

@@ -7,12 +7,7 @@ angular.module('projects').factory('Projects', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
-			},
-            listArchived: {
-                method: 'GET',
-                url: 'projects/archive/list',
-                isArray: true
-            }
+			}
 		});
 	}
 ]);

@@ -6,9 +6,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.authentication = Authentication;
         
-        $scope.events = Events.query();
+        //$scope.events = Events.query();
         
-        $scope.eventTypes = Events.getTypes();
+        //$scope.eventTypes = Events.getTypes();
         
         $scope.personal = false;
         
@@ -347,20 +347,24 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         //Find a list of Event Types
         $scope.findEventTypes = function() {
-            var response = Events.getTypes();
+            var response = Events.query({
+            	types: true
+            });
             $scope.eventTypes = response;
         };
         
         //Find a list of Event Locations
         $scope.findEventLocs = function() {
-            var response = Events.getLocs();
+            var response = Events.query({
+            	locations: true
+            });
         	$scope.eventLocs = response;
         };
         
         $scope.createEventType = function(type) {
-            Events.addType({
-                name: type
-            });
+//            Events.addType({
+//                name: type
+//            });
             $scope.ok();
         };
 		
@@ -389,7 +393,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 		
 		// RSVP
 		$scope.rsvp = function(status) {
-			$scope.event = Events.rsvp({
+			$scope.event = Events.update({
 					_id: $stateParams.eventId,
 					going: status
 			});

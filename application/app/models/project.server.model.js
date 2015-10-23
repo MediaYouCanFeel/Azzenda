@@ -29,6 +29,7 @@ var ProjectSchema = new Schema({
         default: '',
         trim: true
     },
+    type: String,
     teams: [{
     	type: Schema.ObjectId,
     	ref: 'Team'

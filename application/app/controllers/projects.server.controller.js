@@ -71,10 +71,10 @@ exports.delete = function(req, res) {
 };
 
 /**
- * List of unarchived Projects
+ * List projects
  */
-exports.list = function(req, res) { 
-	Project.find({archived: false}).sort('-created').populate('owners').populate('teams').populate('users').populate('tasks').populate('thread').exec(function(err, projects) {
+exports.list = function(req, res) {
+	Project.find({archived: (req.query.archived || false)}).populate('owners','displayName').populate('teams').populate('users','displayName').populate('tasks').populate('thread').exec(function(err, projects) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -88,17 +88,29 @@ exports.list = function(req, res) {
 /**
  * List of archived Projects
  */
-exports.listArchived = function(req, res) {
-    Project.find({archived: true}).sort('-created').populate('owners').populate('teams').populate('users').populate('tasks').populate('thread').exec(function(err, projects) {
-		if (err) {
+//exports.listArchived = function(req, res) {
+//    Project.find({archived: true}).sort('-created').populate('owners').populate('teams').populate('users').populate('tasks').populate('thread').exec(function(err, projects) {
+//		if (err) {
+//			return res.status(400).send({
+//				message: errorHandler.getErrorMessage(err)
+//			});
+//		} else {
+//			res.jsonp(projects);
+//		}
+//	});
+//};
+
+exports.listTypes = function(req, res) {
+	Project.find().distinct('type').exec(function(err, types) {
+		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(projects);
+			res.jsonp(types);
 		}
 	});
-};
+}
 
 /**
  * Project middleware

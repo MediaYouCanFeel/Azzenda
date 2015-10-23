@@ -14,7 +14,6 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var team = new Team(req.body);
-	team.owner = req.user;
 
 	team.save(function(err) {
 		if (err) {

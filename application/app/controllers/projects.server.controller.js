@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var project = new Project(req.body);
-	project.owners.push(req.user);
+	//project.owners.push(req.user);
 	project.thread = new Thread();
 	project.save(function(err) {
 		if (err) {

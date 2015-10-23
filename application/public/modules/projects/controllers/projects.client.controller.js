@@ -133,5 +133,14 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             var response = Users.query();
             $scope.users = response;
         };
+        
+        $scope.getTotalUsers = function(teams) {
+        	var totUsers = 0;
+        	
+        	for (var i = 0; (i < teams.length) && teams[i]; i++) {
+    			totUsers += teams[i].users.length;
+        	}
+        	return totUsers;
+        }
 	}
 ]);

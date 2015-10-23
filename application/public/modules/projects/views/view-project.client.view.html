@@ -12,7 +12,7 @@
     </div>
     
     <!-- Top well (project name) -->
-    <div class="row well">
+    <div class="col-md-12 well">
         <div class="col-md-8 project-name">
             <i class="fa fa-paperclip"></i>
             <span data-ng-bind="project.name"></span>
@@ -23,19 +23,36 @@
         	</div>
         </div>  
     </div>
-    
-    <div class="row well">
-    	Hosts:
-    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
-    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong>
-    	</span>
+        
+    <div class="col-md-5 project-col-left">
     	
+    	<div class="col-md-12 well">
+    		Owners:
+	    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
+	    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong>
+	    	</span>
+    	</div>
+    	
+    	<div class="col-md-12 well">
+	    	<span data-ng-bind="project.description"></span>
+    	</div>
+    	
+    	<div class="col-md-12 well">
+	    	<h1><u>Teams</u></h1>
+	    	<a ng-repeat="team in project.teams" ng-href="/#!/teams/{{team._id}}" class="list-group-item">
+	    		<div class="team-name" data-ng-bind="team.name"></div>
+	    		<span data-ng-bind="team.users.length"></span> members
+	    	</a>
+    	</div>
     </div>
     
-    <div class="row well">
-    	<span data-ng-bind="project.description"></span>
+    
+    <div class="col-md-7 project-col-right">
+    	<div class="col-md-12 well">
+    		<h1>Tasks (To be implemented)</h1>
+    	</div>
     </div>
-	
+   		
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == project.user._id))">
 		<a class="btn btn-primary" href="/#!/projects/{{project._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
@@ -44,12 +61,4 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="project.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="project.user.displayName"></span>
-		</em>
-	</small>
 </section>

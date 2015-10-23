@@ -2,7 +2,7 @@
     <div class="top-well well">
             <h1>Projects</h1>
             <span class="pull-right">
-                <a class="btn btn-yellow create-button" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</a>
+                <a id="newProjButton" class="btn btn-yellow create-button" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Project</a>
             </span>
     </div>
     
@@ -10,8 +10,9 @@
         <a data-ng-repeat="project in projects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
 			<small class="list-group-item-text">
 			<div class="row">
-				<div class="col-md-6 project-rep-name">
-					<div class="list-group-item-heading" data-ng-bind="project.name"></div>
+				<div class="col-md-6">
+					<div class="project-rep-name list-group-item-heading" data-ng-bind="project.name"></div>
+					<span data-ng-bind="project.teams.length"></span> teams, <span data-ng-bind="getTotalUsers(project.teams)"></span> members
 				</div>
 				<div class="col-md-6 project-rep-type">
 					<div class="pull-right" data-ng-bind="project.type"></div>

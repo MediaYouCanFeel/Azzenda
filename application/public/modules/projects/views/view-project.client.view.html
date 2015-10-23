@@ -25,16 +25,16 @@
     </div>
         
     <div class="col-md-5 project-col-left">
-    	
+		
+		<div class="col-md-12 well">
+	    	<span data-ng-bind="project.description"></span>
+    	</div>    	
+
     	<div class="col-md-12 well">
     		Owners:
 	    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
 	    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong>
 	    	</span>
-    	</div>
-    	
-    	<div class="col-md-12 well">
-	    	<span data-ng-bind="project.description"></span>
     	</div>
     	
     	<div class="col-md-12 well">

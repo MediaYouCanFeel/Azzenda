@@ -79,14 +79,8 @@ var EventSchema = new Schema({
 	    	}]
     	*/
     },
-    location: {
-        type: Schema.ObjectId,
-        ref: 'Location'
-    },
-    type: {
-        type: Schema.ObjectId,
-        ref: 'EventType'
-    },
+    location: String,
+    type: String,
     guests: [{
         user: {
             type: Schema.ObjectId,

@@ -6,8 +6,6 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Event = mongoose.model('Event'),
-    EventType = mongoose.model('EventType'),
-    Location = mongoose.model('Location'),
     moment = require('moment'),
     MongoPromise = require('mongoose').Types.Promise,
 	_ = require('lodash');
@@ -52,15 +50,12 @@ exports.create = function(req, res) {
         });
 	} else {
 		delete req.body.personal;
-		var evType = req.body.type;
-	    delete req.body.type;
-	    var evLoc = req.body.location;
-	    delete req.body.location;
 	    var guests = req.body.guests;
 	    delete req.body.guests;
 	    delete req.body.sched.start;
 		var event = new Event(req.body);
 		event.owner = req.user;
+		//Make this a parameter that can be passed by the front-end
 		var lasttDate = moment().add(7, 'day').endOf('day');
 		var currDate = moment();
 		event.possDates = {
@@ -191,60 +186,24 @@ exports.create = function(req, res) {
 						break;
 					}
 				}
-				
-				EventType.findOneAndUpdate({name: evType},{name: evType},{upsert: true}).exec(function(err,evntType) {
-			        if(err) {
-			        	console.log('Event Type Error');
-			        	var errMsg = errorHandler.getErrorMessage(err);
-			        	if(errMsg == '') {
-			        		errMsg = err.message;
-			        		if(errMsg == '') {
-			        			errMsg = err;
-			        		}
-			        	}
-			            return res.status(400).send({
-			                message: errMsg
-			            });
-			        } else {
-			            event.type = evntType;
-			            
-			            Location.findOneAndUpdate({name: evLoc},{name: evLoc},{upsert: true}).exec(function(err,locat) {
-			            	if(err) {
-			            		console.log('Location Error');
-			            		var errMsg = errorHandler.getErrorMessage(err);
-			                	if(errMsg == '') {
-			                		errMsg = err.message;
-			                		if(errMsg == '') {
-			                			errMsg = err;
-			                		}
-			                	}
-			                    return res.status(400).send({
-			                        message: errMsg
-			                    });
-			            	} else {
-				            	event.location = locat;
 				            	
-					            event.save(function(err) {
-					                if(err) {
-					                	console.log('Event save error');
-					                	var errMsg = errorHandler.getErrorMessage(err);
-					                	if(errMsg == '') {
-					                		errMsg = err.message;
-					                		if(errMsg == '') {
-					                			errMsg = err;
-					                		}
-					                	}
-					                    return res.status(400).send({
-					                        message: errMsg
-					                    });
-					                } else {
-					                    return res.jsonp(event);
-					                }
-					            });
-			            	}
-			            });
-			        }
-			    });
+	            event.save(function(err) {
+	                if(err) {
+	                	console.log('Event save error');
+	                	var errMsg = errorHandler.getErrorMessage(err);
+	                	if(errMsg == '') {
+	                		errMsg = err.message;
+	                		if(errMsg == '') {
+	                			errMsg = err;
+	                		}
+	                	}
+	                    return res.status(400).send({
+	                        message: errMsg
+	                    });
+	                } else {
+	                    return res.jsonp(event);
+	                }
+	            });
 			}
 		});
 	}
@@ -298,11 +257,11 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
     var roles = ['admin'];
-    var currDate = moment(req.body.startDate);
-    var lastDate = moment(parseInt(req.body.endDate));
+    var currDate = moment(req.query.startDate);
+    var lastDate = moment(parseInt(req.query.endDate));
     console.log(lastDate._d);
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -338,7 +297,7 @@ exports.list = function(req, res) {
             }
         });
     } else {
-        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').populate('type', 'name').populate('location','name').exec(function(err, events) {
+        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
@@ -368,18 +327,30 @@ exports.list = function(req, res) {
 /**
  * Get list of event types
  */
-exports.getTypes = function(req, res) {
-    EventType.find().exec(function(err, types) {
-        res.jsonp(types);
+exports.listTypes = function(req, res) {
+	Event.find({$and: [{status: {$ne: 'personal'}},{type: {$ne: ''}}]}).distinct('type').exec(function(err, types) {
+    	if(err) {
+    		return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+    	} else {
+    		res.jsonp(types);
+    	}
     });
 };
 
 /**
  * Get list of event locations
  */
-exports.getLocations = function(req, res) {
-    Location.find().exec(function(err, locs) {
-        res.jsonp(locs);
+exports.listLocations = function(req, res) {
+	Event.find({$and: [{status: {$ne: 'personal'}},{location: {$ne: ''}}]}).distinct('location').exec(function(err, locs) {
+    	if(err) {
+    		return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+    	} else {
+    		res.jsonp(locs);
+    	}
     });
 };
 
@@ -415,42 +386,6 @@ exports.rsvp = function(req, res) {
 };
 
 /**
- * Save a new event type
- */
-exports.addType = function(req, res) {
-    var eventType = new EventType(req.body);
-	
-	eventType.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.json(eventType);
-		}
-	});
-};
-
-/**
- * Archive an event type
- */
-exports.updateType = function(req, res) {
-	var eventType = req.eventType;
-
-	eventType = _.extend(eventType, req.body);
-
-	eventType.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.json(eventType);
-		}
-	});
-};
-
-/**
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
@@ -461,19 +396,6 @@ exports.eventByID = function(req, res, next, id) {
 		next();
 	});
 };
-
-/**
- * Event Type middleware
- */
-exports.eventTypeByID = function(req, res, next, id) { 
-	EventType.findById(id).populate('owner', 'displayName').exec(function(err, eventType) {
-		if (err) return next(err);
-		if (! eventType) return next(new Error('Failed to load EventType ' + id));
-		req.eventType = eventType;
-		next();
-	});
-};
-
 
 /**
  * Event authorization middleware

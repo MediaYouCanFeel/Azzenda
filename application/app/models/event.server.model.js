@@ -141,9 +141,9 @@ EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
 			//console.log('unrollInst.sched.start: ' + (new Date(unrollInst.sched.start)));
 			while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
-					console.log('eDate: ' + eDate._d);
-					console.log('curDate: ' + curDate._d);
-					console.log('this.sched.end: ' + (new Date(this.sched.end)));
+//					console.log('eDate: ' + eDate._d);
+//					console.log('curDate: ' + curDate._d);
+//					console.log('this.sched.end: ' + (new Date(this.sched.end)));
 					unrolled.push(unrollInst);
 					curDate = moment(unrollInst.sched.end);
 					unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));

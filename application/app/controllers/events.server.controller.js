@@ -110,21 +110,24 @@ exports.create = function(req, res) {
 						}
 						if(guestCheck) {
 							var curEvent = curUserEvents[m];
-							//console.log("CUREVENT:\n" + curEvent);
+//							console.log("CUREVENT:\n" + curEvent);
 	            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
-	            			curUserEvents.splice(m, 1);
+	            			curUserEvents = curUserEvents.splice(m, 1);
 	            			if(unrolled) {
 	            				var n;
 	                			for(n=0; n<unrolled.length; n++) {
-	                				curUserEvents.splice(m++, 0, unrolled[n]);
+	                				console.log("INFOR: " + curUserEvents);
+	                				if(!unrolled[n].recurring) {
+	                					curUserEvents = curUserEvents.splice(m++, 0, unrolled[n]);
+	                				}
 	                			}
 	            			}
 						} else {
-							curUserEvents.splice(m,1);
+							curUserEvents = curUserEvents.splice(m,1);
 							m--;
 						}
 					}
-					//console.log(curUserEvents);
+					console.log(curUserEvents);
 					curUserEvents = curUserEvents.sort(function(a,b) {
 						return a.sched.start.getTime() - b.sched.start.getTime();
 					});
@@ -158,7 +161,7 @@ exports.create = function(req, res) {
 								} else if(endDate.isBefore(dateRangeEnd)) {
 									oldPossibleDates[i--].start = new Date(parseInt(endDate.format('x')));
 								} else {
-									oldPossibleDates.splice(i--,1);
+									oldPossibleDates = oldPossibleDates.splice(i--,1);
 								}
 							}
 							l++;

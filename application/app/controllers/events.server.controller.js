@@ -73,6 +73,7 @@ exports.create = function(req, res) {
 		event.possDates = event.possDates.sort(function(a,b) {
 			return a.start.getTime() - b.start.getTime();
 		});
+		
 		Event.find({$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
 			if(err) {
 				console.log('Personal Event Error');
@@ -115,8 +116,7 @@ exports.create = function(req, res) {
 	            			if(unrolled) {
 	            				var n;
 	                			for(n=0; n<unrolled.length; n++) {
-	                				curUserEvents.splice(m, 0, unrolled[n]);
-	                				m++;
+	                				curUserEvents.splice(m++, 0, unrolled[n]);
 	                			}
 	            			}
 						} else {
@@ -138,14 +138,14 @@ exports.create = function(req, res) {
 						var endDate = moment(curUserEvents[l].sched.end);
 						var dateRangeStart = moment(oldPossibleDates[i].start);
 						var dateRangeEnd = moment(oldPossibleDates[i].end);
-						console.log("Start Date");
-						console.log(startDate._d);
-						console.log("End Date");
-						console.log(endDate._d);
-						console.log("Date Range Start");
-						console.log(dateRangeStart._d);
-						console.log("Date Range End");
-						console.log(dateRangeEnd._d);
+//						console.log("Start Date");
+//						console.log(startDate._d);
+//						console.log("End Date");
+//						console.log(endDate._d);
+//						console.log("Date Range Start");
+//						console.log(dateRangeStart._d);
+//						console.log("Date Range End");
+//						console.log(dateRangeEnd._d);
 						if(startDate.isBefore(dateRangeEnd)) {
 							if(endDate.isBefore(dateRangeStart) || endDate.isSame(dateRangeStart)) {
 								i--;
@@ -175,6 +175,8 @@ exports.create = function(req, res) {
 						return prio;
 					}
 				});
+				
+				console.log(event.possDates);
 				
 				event.status = 'unschedulable';	
 				for(i=0; i<event.possDates.length; i++) {
@@ -271,17 +273,17 @@ exports.list = function(req, res) {
             	for(i=0; i<events.length;) {
             		//console.log('outer for loop');
             		var curEvent = events[i];
-            		console.log(i);
-            		if(events[i-1]) {
-            			console.log(events[i-1].name);
-                		console.log(events[i-1].sched);
-            		}
-            		console.log(curEvent.name);
-            		console.log(curEvent.sched);
-            		if(events[i+1]) {
-            			console.log(events[i+1].name);
-                		console.log(events[i+1].sched);
-            		}
+//            		console.log(i);
+//            		if(events[i-1]) {
+//            			console.log(events[i-1].name);
+//                		console.log(events[i-1].sched);
+//            		}
+//            		console.log(curEvent.name);
+//            		console.log(curEvent.sched);
+//            		if(events[i+1]) {
+//            			console.log(events[i+1].name);
+//                		console.log(events[i+1].sched);
+//            		}
             		
         			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
         			events.splice(i, 1);
@@ -389,7 +391,7 @@ exports.rsvp = function(req, res) {
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').populate('type','name').populate('location','name').exec(function(err, event) {
+	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;

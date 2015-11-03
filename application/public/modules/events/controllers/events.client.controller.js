@@ -32,7 +32,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-                  $scope.eventTypes = Events.getTypes();
+//                  $scope.eventTypes = Events.getTypes();
                                   
                   $scope.ok = function () {
                     modalInstance.close();
@@ -59,7 +59,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-event-type.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-                  $scope.eventTypes = Events.getTypes();                      
+//                  $scope.eventTypes = Events.getTypes();                      
                   
                   $scope.ok = function () {
                     modalInstance.close();
@@ -88,7 +88,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/events/views/create-pers-event.client.view.html',
               controller: function ($scope, $modalInstance, items) {
-                  $scope.eventTypes = Events.getTypes();                      
+//                  $scope.eventTypes = Events.getTypes();                      
                   
                   $scope.ok = function () {
                       //$scope.selected.event

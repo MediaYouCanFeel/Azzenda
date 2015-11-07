@@ -1,5 +1,5 @@
 <section data-ng-controller="ProjectsController" data-ng-init="findOne()">
-	<div class="row top-well">
+	<div class="col-md-12 top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/projects" class="btn btn-blue" style="margin-bottom: -20px;">
                 <i class="fa fa-paperclip"></i> &nbsp; All Projects
@@ -12,16 +12,18 @@
     </div>
     
     <!-- Top well (project name) -->
-    <div class="col-md-12 well">
-        <div class="col-md-8 project-name">
-            <i class="fa fa-paperclip"></i>
-            <span data-ng-bind="project.name"></span>
-        </div> 
-        <div class="col-md-4">
-        	<div class="pull-right project-type">
-        		<span data-ng-bind="project.type"></span>
-        	</div>
-        </div>  
+    <div class="col-md-12">
+	    <div class="col-md-12 well">
+	        <div class="col-md-8 project-name">
+	            <i class="fa fa-paperclip"></i>
+	            <span data-ng-bind="project.name"></span>
+	        </div> 
+	        <div class="col-md-4">
+	        	<div class="pull-right project-type">
+	        		<span data-ng-bind="project.type"></span>
+	        	</div>
+	        </div>  
+	    </div>
     </div>
         
     <div class="col-md-5 project-col-left">

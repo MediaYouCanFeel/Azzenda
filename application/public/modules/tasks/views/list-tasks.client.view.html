@@ -1,19 +1,22 @@
 <section data-ng-controller="TasksController" data-ng-init="find()">
-    <div class="well top-well">
-        <h1>Tasks</h1>
+    <div class="top-well well">
+            <h1>Tasks</h1>
+            <span class="pull-right">
+                <a id="newTaskButton" class="btn btn-yellow create-button" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Task</a>
+            </span>
     </div>
+    
     <div class="list-group">
         <a data-ng-repeat="task in tasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
 			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="task.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="task.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="task.name"></h4>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></div>
+				</div>
+			</div>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!tasks.$resolved || tasks.length">
-    	No Tasks yet, why don't you <a href="/#!/tasks/create">create one</a>?
+    	No Tasks yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
     </div>
 </section>

@@ -85,12 +85,17 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 			// Create new Task object
 			var task = new Tasks ({
 				name: this.name,
-				owners: this.owners,
+				owners: {
+					users: this.user_owner,
+					teams: this.team_owner					
+				},
 				workers: {
 					users: this.user_assigned, 
 					teams: this.team_assigned
 				},
-				project: this.project
+				project: this.project,
+				deadline: this.deadline,
+				parTask: null
 			});
 
 			// Redirect after save
@@ -164,6 +169,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             $scope.users= response;
         };
         
+        // Filters
         $scope.projectFilter = function(element) {
         	var filter = true;
         	if (element.project._id != $scope.project) {
@@ -204,6 +210,96 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	} 
         	return filter;
         }
+        
+        
+     // DATEPICKER CONFIG
+        $scope.datepickers = {
+            earliest: false,
+            latest: false
+        };
+        
+        $scope.today = function() {
+            $scope.dt = new Date();
+        };
+        
+        $scope.today();
+
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        $scope.toggleMin = function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        };
+        
+        $scope.toggleMin();
+        
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+        
+        $scope.open1 = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened1 = true;
+        };
+
+        $scope.openWhich = function($event, which) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            for(var datepicker in $scope.datepickers)
+            {
+                datepicker = false;
+            }
+            $scope.datepickers[which]= true;
+        };
+
+        
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 0,
+            showWeeks: false
+         };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[3];
+
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 2);
+        $scope.events =
+            [
+              {
+                date: tomorrow,
+                status: 'full'
+              },
+              {
+                date: afterTomorrow,
+                status: 'partially'
+              }
+            ];
+
+        $scope.getDayClass = function(date, mode) {
+            if (mode === 'day') {
+              var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+              for (var i=0;i<$scope.events.length;i++){
+                var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+                if (dayToCheck === currentDay) {
+                  return $scope.events[i].status;
+                }
+              }
+            }
+
+            return '';
+          };
         
 	}
 ]);

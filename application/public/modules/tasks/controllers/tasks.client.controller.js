@@ -10,12 +10,47 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             width: '100%'
         });
 			
-        //Open Modal window for creating events
+        //Open Modal window for creating tasks
         $scope.createModal = function (size) {
             
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/tasks/views/create-task.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        //Open Modal window for creating subtasks
+        $scope.createSubtaskModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/create-subtask.client.view.html',
               controller: function ($scope, $modalInstance, items) {
                   console.log('In Modal Controller');
                   
@@ -137,4 +172,16 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	return filter;
         }
 	}
-]);
+]).directive('toggle', function(){
+  return {
+	    restrict: 'A',
+	    link: function(scope, element, attrs){
+	      if (attrs.toggle=="tooltip"){
+	        $(element).tooltip();
+	      }
+	      if (attrs.toggle=="popover"){
+	        $(element).popover();
+	      }
+	    }
+	  };
+});

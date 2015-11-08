@@ -1,12 +1,12 @@
 <section data-ng-controller="TasksController" data-ng-init="findOne()">
 	 <div class="row top-well">
         <div class="col-md-8 event-back">
-            <a ng-href="/#!/events" class="btn btn-blue" style="margin-bottom: -20px;">
+            <a ng-href="/#!/tasks" class="btn btn-blue" style="margin-bottom: -20px;">
                 <i class="fa fa-calendar"></i> &nbsp; All Tasks
             </a>
         </div>
         <div class="pull-right">
-        	<strong class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Task</strong>
+        	<strong class="btn btn-yellow" ng-click="createSubtaskModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Subtask</strong>
         </div>
         
     </div>
@@ -64,4 +64,5 @@
 			<span data-ng-bind="task.user.displayName"></span>
 		</em>
 	</small>
+
 </section>

@@ -5,6 +5,10 @@ angular.module('tasks').config(['$stateProvider',
 	function($stateProvider) {
 		// Tasks state routing
 		$stateProvider.
+		state('create-subtask', {
+			url: '/create-subtask',
+			templateUrl: 'modules/tasks/views/create-subtask.client.view.html'
+		}).
 		state('listTasks', {
 			url: '/tasks',
 			templateUrl: 'modules/tasks/views/list-tasks.client.view.html'

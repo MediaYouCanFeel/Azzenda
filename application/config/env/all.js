@@ -16,6 +16,7 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
                 'public/lib/select2-4.0.0/dist/css/select2.css',
+                'public/lib/angular-tooltips/angular-tooltips.css',
                 'public/lib/jquery-ui/jquery-ui.css'
 			],
 			js: [
@@ -33,6 +34,7 @@ module.exports = {
                 'public/lib/jquery-ui/jquery-ui.js',
                 'public/lib/moment/moment.js',
 				'public/lib/angular-number-picker/angular-number-picker.js',
+				'public/lib/angular-tooltips/angular-tooltips.js',
                 'https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0'
 			]
 		},

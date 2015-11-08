@@ -171,17 +171,39 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	} 
         	return filter;
         }
+        
+        $scope.notOwnerUsers = function(element) {
+        	var filter = true;
+        	if (($scope.user_owner) && (-1 != $scope.user_owner.indexOf(element._id))) {
+        		filter = false;
+        	}
+        	return filter;
+        }
+
+        
+        $scope.notOwnerTeam = function(element) {
+        	var filter = true;
+        	if (element._id == $scope.team_owner) {
+        		filter = false;
+        	} 
+        	return filter;
+        }
+
+        $scope.notWorkerUsers = function(element) {
+        	var filter = true;
+        	if (($scope.user_assigned) && (-1 != $scope.user_assigned.indexOf(element._id))) {
+        		filter = false;
+        	}
+        	return filter;
+        }
+        
+        $scope.notWorkerTeam = function(element) {
+        	var filter = true;
+        	if (element._id == $scope.team_assigned) {
+        		filter = false;
+        	} 
+        	return filter;
+        }
+        
 	}
-]).directive('toggle', function(){
-  return {
-	    restrict: 'A',
-	    link: function(scope, element, attrs){
-	      if (attrs.toggle=="tooltip"){
-	        $(element).tooltip();
-	      }
-	      if (attrs.toggle=="popover"){
-	        $(element).popover();
-	      }
-	    }
-	  };
-});
+]);

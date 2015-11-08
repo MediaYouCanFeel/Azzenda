@@ -119,7 +119,7 @@ exports.list = function(req, res) {
  * Task middleware
  */
 exports.taskByID = function(req, res, next, id) { 
-	Task.findById(id).populate('owners.users', 'displayName').populate('owner.team').populate('workers.users', 'displayName').populate('workers.team').populate('path').populate('project').exec(function(err, task) {
+	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').exec(function(err, task) {
 		if (err) return next(err);
 		if (! task) return next(new Error('Failed to load Task ' + id));
 		Task.find({$and: [{'path' : id},{'path.length' : task.path.length+1}]}).exec(function(err,tasks) {

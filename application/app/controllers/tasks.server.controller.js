@@ -33,6 +33,7 @@ exports.create = function(req, res) {
 				});
 			} else {
 				task.path = parentTask.path.concat(parTask);
+				task.project = parentTask.project;
 				task.save(function(err) {
 					if (err) {
 						return res.status(400).send({

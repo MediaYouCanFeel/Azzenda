@@ -30,10 +30,6 @@ var ProjectSchema = new Schema({
         trim: true
     },
     type: String,
-    teams: [{
-    	type: Schema.ObjectId,
-    	ref: 'Team'
-    }],
     users: [{
     	type: Schema.ObjectId,
     	ref: 'User'

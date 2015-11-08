@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Project = mongoose.model('Project'),
 	Thread = mongoose.model('Thread'),
+	Team = mongoose.model('Team'),
 	_ = require('lodash');
 
 /**
@@ -101,11 +102,15 @@ exports.listTypes = function(req, res) {
  * Project middleware
  */
 exports.projectByID = function(req, res, next, id) { 
-	Project.findById(id).populate('owners').populate('teams').populate('users').populate('tasks').populate('thread').exec(function(err, project) {
+	Project.findById(id).populate('owners').populate('users').populate('thread').exec(function(err, project) {
 		if (err) return next(err);
 		if (! project) return next(new Error('Failed to load Project ' + id));
-		req.project = project ;
-		next();
+		Teams.find({'project' : id}).exec(function(err, teams) {
+			if(err) return next(err);
+			project.teams = teams;
+			req.project = project ;
+			next();
+		});
 	});
 };
 

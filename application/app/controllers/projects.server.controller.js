@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 	Project = mongoose.model('Project'),
 	Thread = mongoose.model('Thread'),
 	Team = mongoose.model('Team'),
+	Task = mongoose.model('Task'),
 	_ = require('lodash');
 
 /**
@@ -102,18 +103,15 @@ exports.listTypes = function(req, res) {
  * Project middleware
  */
 exports.projectByID = function(req, res, next, id) { 
-	Project.findById(id).populate('owners').populate('users').populate('thread').exec(function(err, project) {
+	Project.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('thread').lean().exec(function(err, project) {
 		if (err) return next(err);
 		if (! project) return next(new Error('Failed to load Project ' + id));
 		Team.find({'project' : id}).exec(function(err, teams) {
 			if(err) return next(err);
 			Task.find({'project' : id}).exec(function(err, tasks) {
 				if(err) return next(err);
-				console.log('Teams: ' + teams);
-				console.log('Tasks: ' + tasks);
 				project.teams = teams;
 				project.tasks = tasks;
-				console.log('Project: ' + project);
 				req.project = project ;
 				next();
 			});

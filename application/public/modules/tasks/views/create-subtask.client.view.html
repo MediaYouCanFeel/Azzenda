@@ -1,0 +1,73 @@
+<section data-ng-controller="TasksController">
+    <div class="col-md-12 modal-col well">
+        <span class="text-center">
+        	<h1><u>New SubTask</u></h1>
+        </span>
+        <form class="form-horizontal" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="name">Name</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                    </div>
+                    <div class="examples">
+                        Examples: "Bake the Pizza", "Make the Dough"
+                    </div>
+                </div>
+                
+                <!-- Project -->
+                <div class="form-group" data-ng-init="findProjects();">
+                    <label class="control-label" for="project">Project</label>
+                    <div class="fullWidth">
+                        <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="project" id="project">
+                            <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                        </select>
+                    </div>
+				</div> 
+                
+                <!-- Assignees -->
+                <div class="col-md-6">
+	                <div class="form-group">
+	                   <label class="control-label" for="team_assigned">Teams</label>
+	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="team_assigned" id="team_assigned" data-ng-init="findTeams()">
+	                       <option ng-repeat="team in teams | filter: projectFilter " data-ng-value="team._id">{{team.name}}</option>
+	                   </select>
+					</div> 
+				</div>
+                <div class="col-md-6">
+	                <div class="form-group">
+	                   <label class="control-label" for="user_assigned">Users</label>
+	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="user_assigned" id="user_assigned" data-ng-init="findUsers()">
+	                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+	                   </select>
+					</div> 
+				</div>
+                
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label class="control-label" for="description">Description</label>
+                    <div class="controls">
+                        <textarea data-ng-model="description" id="description" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+                    </div>
+                </div>
+                
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+               <div class="row modal-buttons">
+                    <div class="col-md-6">
+                        <div class="form-group pull-left">
+                            <button type="button" ng-click="ok()" class="btn btn-teal" value="">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group pull-right">
+                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Task">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

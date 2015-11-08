@@ -15,8 +15,8 @@
                     <a ng-href="/#!/events">Events</a>
                 </strong>
             </h2>
-            <div class="list-group" data-ng-init="findFutureEvents();">
-				<a ng-repeat="event in futureEvents | orderBy : 'sched.start' | limitTo: 3 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+            <div class="list-group" data-ng-init="findEvents()">
+				<a ng-repeat="event in events | orderBy : 'sched.start' | limitTo: 3 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>

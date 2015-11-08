@@ -50,7 +50,7 @@
                     <span>{{readableDate(event.sched.start)}}</span>
                     <div class="event-rep-date" data-ng-bind="printDate"></div>
                                   
-                   	<div  ng-hide="event.status == 'personal'" data-ng-bind="event.location.name"></div>
+                   	<div  ng-hide="event.status == 'personal'" data-ng-bind="event.location"></div>
                    
                    	<div class="row">
 				    	<div class="pull-right event-rep-proj">
@@ -62,8 +62,8 @@
 					    	<span ng-hide="event.status == 'personal'">
 						    	<strong data-ng-bind="event.proj.name"> </strong>
 						        
-						        <i ng-hide="event.proj.name == null || event.type.name == null" class="fa fa-ellipsis-v"></i>
-					        	<span data-ng-bind="event.type.name"></span>
+						        <i ng-hide="event.proj.name == null || event.type == null" class="fa fa-ellipsis-v"></i>
+					        	<span data-ng-bind="event.type"></span>
 				        	</span>
 		        		</div>
 	        		</div>

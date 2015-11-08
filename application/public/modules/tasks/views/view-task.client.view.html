@@ -1,7 +1,53 @@
 <section data-ng-controller="TasksController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="task.name"></h1>
+	 <div class="row top-well">
+        <div class="col-md-8 event-back">
+            <a ng-href="/#!/tasks" class="btn btn-blue" style="margin-bottom: -20px;">
+                <i class="fa fa-calendar"></i> &nbsp; All Tasks
+            </a>
+        </div>
+        <div class="pull-right">
+        	<strong class="btn btn-yellow" ng-click="createSubtaskModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Subtask</strong>
+        </div>
+        
+    </div>
+    
+    <!-- Top well (event name/RSVP) -->
+    <div class="row well">
+        <div class="col-md-9 event-name">
+				<span data-ng-bind="task.name"></span>
+        </div>
+    </div>
+	
+	<div class="row">
+		<div class="col-md-4 well">
+			Owners: <span data-ng-bind="task.owners"></span>
+		</div>
 	</div>
+	
+	<div class="row">
+		<div class="col-md-4 well">
+			Workers (Teams): 
+			<a ng-repeat="team in task.workers.teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
+				<span data-ng-bind="team.name"></span>
+			</a>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4 well">
+			Workers (Users): 
+			<a ng-repeat="user in task.workers.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+				<span data-ng-bind="user.displayName"></span>
+			</a>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4 well">
+			Project: <a class="list-group-item" data-ng-href="#!/projects/{{task.project._id}}" data-ng-bind="task.project.name"></a>
+		</div>
+	</div>
+	
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == task.user._id))">
 		<a class="btn btn-primary" href="/#!/tasks/{{task._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
@@ -18,4 +64,5 @@
 			<span data-ng-bind="task.user.displayName"></span>
 		</em>
 	</small>
+
 </section>

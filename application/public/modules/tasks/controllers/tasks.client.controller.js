@@ -1,15 +1,85 @@
 'use strict';
 
 // Tasks controller
-angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks',
-	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks) {
+angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks', '$modal', '$log',
+	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks, $modal, $log) {
 		$scope.authentication = Authentication;
 
 		//dropdown init
         angular.element('select').select2({ 
             width: '100%'
         });
-		
+			
+        //Open Modal window for creating tasks
+        $scope.createModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/create-task.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        //Open Modal window for creating subtasks
+        $scope.createSubtaskModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/create-subtask.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
 		// Create new Task
 		$scope.create = function() {
 			// Create new Task object
@@ -27,6 +97,8 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 			task.$save(function(response) {
 				$location.path('tasks/' + response._id);
 
+				$scope.ok();
+				
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {
@@ -100,4 +172,16 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	return filter;
         }
 	}
-]);
+]).directive('toggle', function(){
+  return {
+	    restrict: 'A',
+	    link: function(scope, element, attrs){
+	      if (attrs.toggle=="tooltip"){
+	        $(element).tooltip();
+	      }
+	      if (attrs.toggle=="popover"){
+	        $(element).popover();
+	      }
+	    }
+	  };
+});

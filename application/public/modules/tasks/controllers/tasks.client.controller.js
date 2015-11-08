@@ -5,6 +5,8 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks, $modal, $log) {
 		$scope.authentication = Authentication;
 
+		$scope.parentTask;
+		
 		//dropdown init
         angular.element('select').select2({ 
             width: '100%'
@@ -95,6 +97,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				},
 				project: this.project,
 				deadline: this.deadline,
+				description: this.description,
 				parTask: null
 			});
 
@@ -110,7 +113,44 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				$scope.error = errorResponse.data.message;
 			});
 		};
+		
+		// Create new Subtask
+		$scope.createSubtask = function() {
+			console.log("PARTASK: " + $scope.parentTask);
+			// Create new Task object
+			var task = new Tasks ({
+				name: this.name,
+				owners: {
+					users: this.user_owner,
+					teams: this.team_owner					
+				},
+				workers: {
+					users: this.user_assigned, 
+					teams: this.team_assigned
+				},
+				deadline: this.deadline,
+				description: this.description,
+				parTask: $scope.parentTask
+			});
 
+			// Redirect after save
+			task.$save(function(response) {
+				$location.path('tasks/' + response._id);
+
+				$scope.ok();
+				
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		$scope.updateParTask = function(element) {
+			console.log("NEW PARTASK: " + element._id);
+			$scope.parentTask = parTask;
+		}
+		
 		// Remove existing Task
 		$scope.remove = function(task) {
 			if ( task ) { 

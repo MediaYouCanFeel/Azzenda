@@ -13,14 +13,17 @@
     
     <!-- Top well (event name/RSVP) -->
     <div class="row well">
-        <div class="col-md-9 event-name">
+        <div class="col-md-9 event-name" data-ng-init="updateParTask()">
 				<span data-ng-bind="task.name"></span>
         </div>
     </div>
 	
 	<div class="row">
 		<div class="col-md-4 well">
-			Owners: <span data-ng-bind="task.owners"></span>
+			Owners:
+			<a ng-repeat="owner in task.owners.users" data-ng-href="#!/users/{{owner.user._id}}" class="list-group-item">
+				<span data-ng-bind="owner.user.displayName"></span>
+			</a>
 		</div>
 	</div>
 	
@@ -36,8 +39,8 @@
 	<div class="row">
 		<div class="col-md-4 well">
 			Workers (Users): 
-			<a ng-repeat="user in task.workers.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
-				<span data-ng-bind="user.displayName"></span>
+			<a ng-repeat="user in task.workers.users" data-ng-href="#!/users/{{user.user._id}}" class="list-group-item">
+				<span data-ng-bind="user.user.displayName"></span>
 			</a>
 		</div>
 	</div>

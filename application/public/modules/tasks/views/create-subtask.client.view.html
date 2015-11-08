@@ -1,7 +1,7 @@
 <section data-ng-controller="TasksController">
     <div class="col-md-12 modal-col well">
         <span class="text-center">
-        	<h1><u>New SubTask</u></h1>
+        	<h1><u>New Subtask</u></h1>
         </span>
         <form class="form-horizontal" novalidate>
             <fieldset>
@@ -15,34 +15,60 @@
                     </div>
                 </div>
                 
-                <!-- Project -->
-                <div class="form-group" data-ng-init="findProjects();">
-                    <label class="control-label" for="project">Project</label>
-                    <div class="fullWidth">
-                        <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="project" id="project">
-                            <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
-                        </select>
-                    </div>
-				</div> 
-                
-                <!-- Assignees -->
-                <div class="col-md-6">
+                <!-- Owners -->
+                <div class="row">
+                	<label class="control-label" for="team_assigned">Owners</label>
+                </div>
+                <div class="col-md-6" data-ng-init="findTeams(); findUsers()">
 	                <div class="form-group">
-	                   <label class="control-label" for="team_assigned">Teams</label>
-	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="team_assigned" id="team_assigned" data-ng-init="findTeams()">
-	                       <option ng-repeat="team in teams | filter: projectFilter " data-ng-value="team._id">{{team.name}}</option>
+	                   <label class="control-label" for="team_assigned">Team</label>
+	                   <select class="form-control js-example-basic" data-ng-model="team_owner" id="team_owner">
+	                       <option ng-repeat="team in teams | filter: projectFilter | filter: notWorkerTeam" data-ng-value="team._id">{{team.name}}</option>
 	                   </select>
 					</div> 
 				</div>
                 <div class="col-md-6">
 	                <div class="form-group">
 	                   <label class="control-label" for="user_assigned">Users</label>
-	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="user_assigned" id="user_assigned" data-ng-init="findUsers()">
-	                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="user_owner" id="user_owner">
+	                       <option ng-repeat="user in users | filter: notWorkerUsers" data-ng-value="user._id">{{user.displayName}}</option>
 	                   </select>
 					</div> 
 				</div>
                 
+                <!-- Workers -->
+                <div class="row">
+	                <label class="control-label" for="team_assigned">Workers</label>
+	            </div>
+                <div class="col-md-6">
+	                <div class="form-group">
+	                   <label class="control-label" for="team_assigned">Team</label>
+	                   <select class="form-control js-example-basic" data-ng-model="team_assigned" id="team_assigned">
+	                       <option ng-repeat="team in teams | filter: projectFilter | filter: notOwnerTeam " data-ng-value="team._id">{{team.name}}</option>
+	                   </select>
+					</div> 
+				</div>
+                <div class="col-md-6">
+	                <div class="form-group">
+	                   <label class="control-label" for="user_assigned">Users</label>
+	                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="user_assigned" id="user_assigned">
+	                       <option ng-repeat="user in users | filter: notOwnerUsers" data-ng-value="user._id">{{user.displayName}}</option>
+	                   </select>
+					</div> 
+				</div>
+                
+                <!-- Date -->
+                <div class="form-group">
+                    <label class="control-label text-center" for="deadline">Deadline</label>
+                    <div class="controls">
+                            <p class="input-group">
+                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="deadline" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                    </div>
+                </div>
                 
                 <!-- Description -->
                 <div class="form-group">
@@ -63,7 +89,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Task">
+                            <input id="create-group-button" type="submit" ng-click="createSubtask()" class="btn btn-yellow" value="Create Task">
                         </div>
                     </div>
                 </div>

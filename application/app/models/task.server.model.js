@@ -27,8 +27,14 @@ var TaskSchema = new Schema({
 	},
 	owners: {
 		users: [{
-			type: Schema.ObjectId,
-			ref: 'User'
+			user: {
+				type: Schema.ObjectId,
+				ref: 'User'
+			},
+			accepted: {
+				type: Boolean,
+				default: false
+			}
 		}],
 		team: {
 			type: Schema.ObjectId,
@@ -37,8 +43,14 @@ var TaskSchema = new Schema({
 	},
 	workers: {
 		users: [{
-			type: Schema.ObjectId,
-			ref: 'User'
+			user: {
+				type: Schema.ObjectId,
+				ref: 'User'
+			},
+			accepted: {
+				type: Boolean,
+				default: false
+			}
 		}],
 		team: {
 			type: Schema.ObjectId,

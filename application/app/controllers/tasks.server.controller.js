@@ -14,6 +14,16 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var parTask = req.body.parTask;
 	delete req.body.parTask;
+	for(var i=0; i<req.body.owners.users.length; i++) {
+		req.body.owners.users[i] = {
+				user: req.body.owners.users[i]
+		}
+	}
+	for(var i=0; i<req.body.workers.users.length; i++) {
+		req.body.workers.users[i] = {
+				user: req.body.workers.users[i]
+		}
+	}
 	var task = new Task(req.body);
 	if(parTask) {
 		Task.findById(parTask).exec(function(err, parentTask) {

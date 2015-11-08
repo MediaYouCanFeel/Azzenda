@@ -20,17 +20,36 @@ exports.create = function(req, res) {
 	delete req.body.parThread;
 	var thread = new Thread(req.body);
 	thread.owner = req.user;
-	thread.path.push(parThread);
-
-	thread.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(thread);
-		}
-	});
+	if(parThread) {
+		Thread.findById(parThread).exec(function(err, parentThread) {
+			if(err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				thread.path = parentThread.path.concat(parThread);
+				thread.save(function(err) {
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					} else {
+						res.jsonp(thread);
+					}
+				});
+			}
+		});
+	} else {
+		thread.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(thread);
+			}
+		});
+	}
 };
 
 /**

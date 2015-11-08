@@ -85,21 +85,6 @@ exports.list = function(req, res) {
 	});
 };
 
-/**
- * List of archived Projects
- */
-//exports.listArchived = function(req, res) {
-//    Project.find({archived: true}).sort('-created').populate('owners').populate('teams').populate('users').populate('tasks').populate('thread').exec(function(err, projects) {
-//		if (err) {
-//			return res.status(400).send({
-//				message: errorHandler.getErrorMessage(err)
-//			});
-//		} else {
-//			res.jsonp(projects);
-//		}
-//	});
-//};
-
 exports.listTypes = function(req, res) {
 	Project.find().distinct('type').exec(function(err, types) {
 		if(err) {

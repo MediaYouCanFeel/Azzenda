@@ -12,18 +12,39 @@ var mongoose = require('mongoose'),
  * Create a Task
  */
 exports.create = function(req, res) {
+	var parTask = req.body.parTask;
+	delete req.body.parTask;
 	var task = new Task(req.body);
-	//task.user = req.user;
-
-	task.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(task);
-		}
-	});
+	if(parTask) {
+		Task.findById(parTask).exec(function(err, parentTask) {
+			if(err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				task.path = parentTask.path.concat(parTask);
+				task.save(function(err) {
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					} else {
+						res.jsonp(task);
+					}
+				});
+			}
+		});
+	} else {
+		task.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.jsonp(task);
+			}
+		});
+	}
 };
 
 /**
@@ -73,7 +94,7 @@ exports.delete = function(req, res) {
  * List of Tasks
  */
 exports.list = function(req, res) { 
-	Task.find().sort('-created').populate('owners', 'displayName').populate('workers.users', 'displayName').populate('workers.teams').populate('parent').populate('project').populate('subtasks').exec(function(err, tasks) {
+	Task.find().sort('-created').populate('owners.users', 'displayName').populate('owner.team').populate('workers.users', 'displayName').populate('workers.team').populate('path').populate('project').exec(function(err, tasks) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -88,11 +109,15 @@ exports.list = function(req, res) {
  * Task middleware
  */
 exports.taskByID = function(req, res, next, id) { 
-	Task.findById(id).populate('owners', 'displayName').populate('workers.users', 'displayName').populate('workers.teams').populate('parent').populate('project').populate('subtasks').exec(function(err, task) {
+	Task.findById(id).populate('owners.users', 'displayName').populate('owner.team').populate('workers.users', 'displayName').populate('workers.team').populate('path').populate('project').exec(function(err, task) {
 		if (err) return next(err);
 		if (! task) return next(new Error('Failed to load Task ' + id));
-		req.task = task ;
-		next();
+		Task.find({$and: [{'path' : id},{'path.length' : task.path.length+1}]}).exec(function(err,tasks) {
+			if(err) return next(err);
+			task.subTasks = tasks;
+			req.task = task;
+			next();
+		});
 	});
 };
 

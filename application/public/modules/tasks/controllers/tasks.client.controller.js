@@ -4,8 +4,6 @@
 angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks', '$modal', '$log',
 	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks, $modal, $log) {
 		$scope.authentication = Authentication;
-
-		$scope.parentTask;
 		
 		//dropdown init
         angular.element('select').select2({ 
@@ -116,7 +114,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 		
 		// Create new Subtask
 		$scope.createSubtask = function() {
-			console.log("PARTASK: " + $scope.parentTask);
+			console.log("PARTASK: " + $stateParams.taskId);
 			// Create new Task object
 			var task = new Tasks ({
 				name: this.name,
@@ -130,7 +128,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				},
 				deadline: this.deadline,
 				description: this.description,
-				parTask: $scope.parentTask
+				parTask: $stateParams.taskId
 			});
 
 			// Redirect after save
@@ -146,9 +144,9 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 			});
 		};
 
-		$scope.updateParTask = function(element) {
-			console.log("NEW PARTASK: " + element._id);
-			$scope.parentTask = parTask;
+		$scope.updateParTask = function() {
+			$scope.parentTask = $scope.task._id;
+			console.log("$scope.parentTask: " + $scope.parentTask);
 		}
 		
 		// Remove existing Task

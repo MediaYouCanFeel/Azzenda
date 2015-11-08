@@ -1,4 +1,5 @@
 <section data-ng-controller="TasksController" data-ng-init="findOne()">
+	 
 	 <div class="row top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/tasks" class="btn btn-blue" style="margin-bottom: -20px;">
@@ -6,38 +7,42 @@
             </a>
         </div>
         <div class="pull-right">
-        	<strong class="btn btn-yellow" ng-click="createSubtaskModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Subtask</strong>
+        	<strong class="btn btn-yellow" ng-click="createSubtaskModal('md'); updateParTask()" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Subtask</strong>
         </div>
         
     </div>
     
+    
     <!-- Top well (event name/RSVP) -->
-    <div class="row well">
-        <div class="col-md-9 event-name" data-ng-init="updateParTask()">
-				<span data-ng-bind="task.name"></span>
-        </div>
+    <div class="col-md-12">
+	    <div class="col-md-12 well">
+	        <div class="col-md-9 event-name">
+					<span data-ng-bind="task.name"></span>
+	        </div>
+	    </div>
     </div>
 	
-	<div class="row">
-		<div class="col-md-4 well">
+	<!-- Left column -->
+	<div class="col-md-4">
+		<div class="col-md-12 well">
+			Project: <a class="list-group-item" data-ng-href="#!/projects/{{task.project._id}}" data-ng-bind="task.project.name"></a>
+		</div>
+		
+		<div class="col-md-12 well">
 			Owners:
 			<a ng-repeat="owner in task.owners.users" data-ng-href="#!/users/{{owner.user._id}}" class="list-group-item">
 				<span data-ng-bind="owner.user.displayName"></span>
 			</a>
 		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-md-4 well">
+		
+		<div class="col-md-12 well">
 			Workers (Teams): 
 			<a ng-repeat="team in task.workers.teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
 				<span data-ng-bind="team.name"></span>
 			</a>
 		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-md-4 well">
+		
+		<div class="col-md-12 well">
 			Workers (Users): 
 			<a ng-repeat="user in task.workers.users" data-ng-href="#!/users/{{user.user._id}}" class="list-group-item">
 				<span data-ng-bind="user.user.displayName"></span>
@@ -45,9 +50,27 @@
 		</div>
 	</div>
 	
-	<div class="row">
-		<div class="col-md-4 well">
-			Project: <a class="list-group-item" data-ng-href="#!/projects/{{task.project._id}}" data-ng-bind="task.project.name"></a>
+	<!-- Right column -->
+	<div class="col-md-8">
+		<div class="col-md-12 well">
+			Path: 
+			<span class="btn btn-teal btn-disabled" data-ng-bind="task.name"></span>
+			<span ng-if="task.path.length == 0">
+				(top-level task)
+			</span>
+			<span ng-repeat="parTask in task.path | orderBy:'-'" >
+				<span ng-if="$index == 0">
+					<i class="fa fa-arrow-left"></i>
+				</span>
+				<a class="btn btn-teal" data-ng-bind="parTask.name" data-ng-href="#!/tasks/{{parTask._id}}"></a>
+				<span ng-if="$index < task.path.length - 1">
+					<i class="fa fa-arrow-left"></i>
+				</span>
+			</span>
+		</div>
+		
+		<div class="col-md-12 well">
+			Description: <span data-ng-bind="task.description"></span>
 		</div>
 	</div>
 	
@@ -59,13 +82,5 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="task.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="task.user.displayName"></span>
-		</em>
-	</small>
-
+	
 </section>

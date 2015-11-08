@@ -107,9 +107,16 @@ exports.projectByID = function(req, res, next, id) {
 		if (! project) return next(new Error('Failed to load Project ' + id));
 		Team.find({'project' : id}).exec(function(err, teams) {
 			if(err) return next(err);
-			project.teams = teams;
-			req.project = project ;
-			next();
+			Task.find({'project' : id}).exec(function(err, tasks) {
+				if(err) return next(err);
+				console.log('Teams: ' + teams);
+				console.log('Tasks: ' + tasks);
+				project.teams = teams;
+				project.tasks = tasks;
+				console.log('Project: ' + project);
+				req.project = project ;
+				next();
+			});
 		});
 	});
 };

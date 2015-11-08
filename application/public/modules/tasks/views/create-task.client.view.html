@@ -67,6 +67,19 @@
 					</div> 
 				</div>
                 
+                <!-- Date -->
+                <div class="form-group">
+                    <label class="control-label text-center" for="deadline">Deadline</label>
+                    <div class="controls">
+                            <p class="input-group">
+                              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="deadline" is-open="opened" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-teal" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                    </div>
+                </div>
+                
                 <!-- Description -->
                 <div class="form-group">
                     <label class="control-label" for="description">Description</label>

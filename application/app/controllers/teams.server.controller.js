@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Team = mongoose.model('Team'),
-	Project = mongoose.model('Project'),
+	Task = mongoose.model('Task'),
 	_ = require('lodash');
 
 /**
@@ -21,24 +21,7 @@ exports.create = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Project.findById(team.project).exec(function(err, proj) {
-				if(err) {
-					return res.status(400).send({
-						message: errorHandler.getErrorMessage(err)
-					});
-				} else {
-					proj.teams.push(team);
-					proj.save(function(err) {
-						if(err) {
-							return res.status(400).send({
-								message: errorHandler.getErrorMessage(err)
-							});
-						} else {
-							res.jsonp(team);
-						}
-					});
-				}
-			});
+			res.jsonp(team);
 		}
 	});
 };
@@ -108,8 +91,16 @@ exports.teamByID = function(req, res, next, id) {
 	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));
-		req.team = team ;
-		next();
+		Task.find({'owners.team' : id}).exec(function(err, ownerTasks) {
+			if(err) return next(err);
+			team.ownerTasks = ownerTasks;
+			Task.find({'workers.team' : id}).exec(function(err, workerTasks) {
+				if(err) return next(err);
+				team.workerTasks = workerTasks;
+				req.team = team ;
+				next();
+			});
+		});
 	});
 };
 

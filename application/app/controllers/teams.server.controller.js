@@ -88,15 +88,15 @@ exports.list = function(req, res) {
  * Team middleware
  */
 exports.teamByID = function(req, res, next, id) { 
-	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').exec(function(err, team) {
+	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').lean().exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));
 		Task.find({'owners.team' : id}).exec(function(err, ownerTasks) {
 			if(err) return next(err);
-			team.ownerTasks = ownerTasks;
 			Task.find({'workers.team' : id}).exec(function(err, workerTasks) {
 				if(err) return next(err);
 				team.workerTasks = workerTasks;
+				team.ownerTasks = ownerTasks;
 				req.team = team ;
 				next();
 			});

@@ -105,7 +105,7 @@ exports.projectByID = function(req, res, next, id) {
 	Project.findById(id).populate('owners').populate('users').populate('thread').exec(function(err, project) {
 		if (err) return next(err);
 		if (! project) return next(new Error('Failed to load Project ' + id));
-		Teams.find({'project' : id}).exec(function(err, teams) {
+		Team.find({'project' : id}).exec(function(err, teams) {
 			if(err) return next(err);
 			project.teams = teams;
 			req.project = project ;

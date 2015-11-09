@@ -10,7 +10,7 @@ module.exports = function(app) {
 		.post(users.requiresLogin, tasks.create);
 
 	app.route('/tasks/:taskId')
-		.get(tasks.read)
+		.get(users.requiresLogin, tasks.read)
 		.put(users.requiresLogin, tasks.hasAuthorization, tasks.update)
 		.delete(users.requiresLogin, tasks.hasAuthorization, tasks.delete);
 

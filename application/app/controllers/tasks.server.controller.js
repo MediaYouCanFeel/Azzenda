@@ -123,17 +123,22 @@ exports.list = function(req, res) {
 /**
  * Task middleware
  */
-exports.taskByID = function(req, res, next, id) { 
-	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean().exec(function(err, task) {
+exports.taskByID = function(req, res, next, id) {
+	var reading = (req.originalMethod == 'GET');
+	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean(reading).exec(function(err, task) {
 		if (err) return next(err);
 		if (! task) return next(new Error('Failed to load Task ' + id));
-		//var pathIndex = 'path.' + (task.path.length || 0).toString();
-		Task.find({$and: [{'path' : id},{'path' : {$size: task.path.length+1}}]}).exec(function(err,tasks) {
-			if(err) return next(err);
-			task.subTasks = tasks;
+		if(reading) {
+			Task.find({$and: [{'path' : id},{'path' : {$size: task.path.length+1}}]}).exec(function(err,tasks) {
+				if(err) return next(err);
+				task.subTasks = tasks;
+				req.task = task;
+				next();
+			});
+		} else {
 			req.task = task;
 			next();
-		});
+		}
 	});
 };
 

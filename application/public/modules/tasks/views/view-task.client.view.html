@@ -1,4 +1,4 @@
-<section data-ng-controller="TasksController" data-ng-init="findOne()">
+<section data-ng-controller="TasksController" data-ng-init="findOne();">
 	 
 	 <div class="row top-well">
         <div class="col-md-8 event-back">
@@ -19,18 +19,9 @@
 					<span data-ng-bind="task.name"></span>
 	        </div>
 	        <div class="col-md-3">
-	        	<div ng-if="task.status == 'not started'">
-	        		NOT STARTED
-	        	</div>
-	        	<div ng-if="task.status == 'in progress'">
-	        		IN PROGRESS
-	        	</div>
-	        	<div ng-if="task.status == 'blocked'">
-	        		BLOCKED
-	        	</div>
-	        	<div ng-if="task.status == 'finished'">
-	        		FINISHED
-	        	</div>
+	        	<label>{{displayStatus}}</label>
+			    <progressbar class="progress active" value="dynamic" type="{{type}}"></progressbar>
+			    <strong class="btn btn-teal" ng-click="updateTaskStatus('sm')">Update</strong>
 	        </div>
 	    </div>
     </div>
@@ -41,21 +32,21 @@
 			Project: <a class="list-group-item" data-ng-href="#!/projects/{{task.project._id}}" data-ng-bind="task.project.name"></a>
 		</div>
 		
-		<div class="col-md-12 well">
+		<div class="col-md-12 well" ng-if="task.owners.users.length > 0">
 			Owners:
 			<a ng-repeat="owner in task.owners.users" data-ng-href="#!/users/{{owner.user._id}}" class="list-group-item">
 				<span data-ng-bind="owner.user.displayName"></span>
 			</a>
 		</div>
 		
-		<div class="col-md-12 well">
+		<div class="col-md-12 well" ng-if="task.workers.teams.length > 0">
 			Workers (Teams): 
 			<a ng-repeat="team in task.workers.teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
 				<span data-ng-bind="team.name"></span>
 			</a>
 		</div>
 		
-		<div class="col-md-12 well">
+		<div class="col-md-12 well" ng-if="task.workers.users.length > 0">
 			Workers (Users): 
 			<a ng-repeat="user in task.workers.users" data-ng-href="#!/users/{{user.user._id}}" class="list-group-item">
 				<span data-ng-bind="user.user.displayName"></span>
@@ -88,23 +79,11 @@
 		</div>
 		
 		<!-- Subtasks -->
-		<div class="col-md-12 well">
+		<div class="col-md-12 well" ng-if="task.subTasks.length > 0">
 			Subtasks:
 			<a ng-repeat="subtask in task.subTasks" data-ng-href="#!/tasks/{{subtask._id}}" class="list-group-item">
 				<span data-ng-bind="subtask.name"></span>
-				
-				<div ng-if="subtask.status == 'not started'">
-	        		NOT STARTED
-	        	</div>
-	        	<div ng-if="subtask.status == 'in progress'">
-	        		IN PROGRESS
-	        	</div>
-	        	<div ng-if="subtask.status == 'blocked'">
-	        		BLOCKED
-	        	</div>
-	        	<div ng-if="subtask.status == 'finished'">
-	        		FINISHED
-	        	</div>
+				<progressbar class="progress-detail active pull-right" value="getValue(subtask.status)" type="{{type}}"></progressbar>
 			</a>
 		</div>
 	</div>

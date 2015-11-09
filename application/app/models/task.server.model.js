@@ -67,12 +67,24 @@ var TaskSchema = new Schema({
 	}],
 	status: {
 		type: String,
-		enum: ['in progress','not started','finished'],
+		enum: ['in progress','not started','finished','blocked'],
 		default: 'not started'
 	},
 	deadline: {
 		type: Date
-	}
+	},
+	log: [{
+		user: {
+			type: Schema.ObjectId,
+			ref: 'User'
+		},
+		time: Number,
+		description: {
+			type: String,
+			default: '',
+			trim: true
+		}
+	}]
 });
 
 mongoose.model('Task', TaskSchema);

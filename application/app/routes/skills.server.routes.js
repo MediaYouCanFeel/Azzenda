@@ -10,7 +10,7 @@ module.exports = function(app) {
 		.post(users.requiresLogin, skills.create);
 
 	app.route('/skills/:skillId')
-		.get(skills.read)
+		.get(users.requiresLogin, skills.read)
 		.put(users.requiresLogin, skills.hasAuthorization, skills.update)
 		.delete(users.requiresLogin, skills.hasAuthorization, skills.delete);
 

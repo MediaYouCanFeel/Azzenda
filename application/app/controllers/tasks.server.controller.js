@@ -14,14 +14,18 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var parTask = req.body.parTask;
 	delete req.body.parTask;
-	for(var i=0; i<req.body.owners.users.length; i++) {
-		req.body.owners.users[i] = {
-				user: req.body.owners.users[i]
+	if(req.body.owners.users) {
+		for(var i=0; i<req.body.owners.users.length; i++) {
+			req.body.owners.users[i] = {
+					user: req.body.owners.users[i]
+			}
 		}
 	}
-	for(var i=0; i<req.body.workers.users.length; i++) {
-		req.body.workers.users[i] = {
-				user: req.body.workers.users[i]
+	if(req.body.workers.users) {
+		for(var i=0; i<req.body.workers.users.length; i++) {
+			req.body.workers.users[i] = {
+					user: req.body.workers.users[i]
+			}
 		}
 	}
 	var task = new Task(req.body);
@@ -119,16 +123,22 @@ exports.list = function(req, res) {
 /**
  * Task middleware
  */
-exports.taskByID = function(req, res, next, id) { 
-	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean().exec(function(err, task) {
+exports.taskByID = function(req, res, next, id) {
+	var reading = (req.originalMethod == 'GET');
+	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean(reading).exec(function(err, task) {
 		if (err) return next(err);
 		if (! task) return next(new Error('Failed to load Task ' + id));
-		Task.find({$and: [{'path' : id}]}).exec(function(err,tasks) {
-			if(err) return next(err);
-			task.subTasks = tasks;
+		if(reading) {
+			Task.find({$and: [{'path' : id},{'path' : {$size: task.path.length+1}}]}).exec(function(err,tasks) {
+				if(err) return next(err);
+				task.subTasks = tasks;
+				req.task = task;
+				next();
+			});
+		} else {
 			req.task = task;
 			next();
-		});
+		}
 	});
 };
 

@@ -1,8 +1,8 @@
 'use strict';
 
 // Tasks controller
-angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks', '$modal', '$log',
-	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks, $modal, $log) {
+angular.module('tasks').controller('TasksController', ['$scope', '$stateParams', 'Projects', 'Users', 'Teams', '$location', 'Authentication', 'Tasks', '$modal', '$log', '$state',
+	function($scope, $stateParams, Projects, Users, Teams, $location, Authentication, Tasks, $modal, $log, $state) {
 		$scope.authentication = Authentication;
 		
 		//dropdown init
@@ -440,6 +440,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	  		break;
         	  }
         	  console.log("$scope.displayStatus: " + $scope.displayStatus);
+        	  
           }
           
           $scope.sendUpateStatus = function(status) {
@@ -449,9 +450,14 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
   			});
   			
   			$scope.ok();
-  			
+  		
   			$scope.updateStatus();
+  			
+  			$state.go($state.current.name, $state.params, { reload: true });
+  			
   		};
+  		
+
   		
   		$scope.getValue = function(status) {
   			switch(status) {
@@ -466,5 +472,20 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 	     	}        	  
   		}
         
+  		$scope.getType = function(status) {
+  			console.log("status: " + status);
+  			switch(status) {
+	     	  	case "not started":
+	     	  		$scope.listType = "warning";
+	     	  	case "in progress":
+	     	  		$scope.listType = "info";
+	     	  	case "finished":
+	     	  		$scope.listType = "success";
+	     	  	case "blocked":
+	     	  		console.log("BLOCKED");
+	     	  		$scope.listType = "danger";
+	     	}        	  
+  		}
+  		
 	}
 ]);

@@ -40,7 +40,7 @@
     	</div>
     	
     	<div class="col-md-12 well">
-	    	<h1><u>Teams</u></h1>
+	    	<h1>Teams</h1>
 	    	<a ng-repeat="team in project.teams" ng-href="/#!/teams/{{team._id}}" class="list-group-item">
 	    		<div class="team-name" data-ng-bind="team.name"></div>
 	    		<span data-ng-bind="team.users.length"></span> members
@@ -50,8 +50,17 @@
     
     
     <div class="col-md-7 project-col-right">
-    	<div class="col-md-12 well">
-    		<h1>Tasks (To be implemented)</h1>
+    	<div class="col-md-12 well" data-ng-controller="TasksController">
+    		<h1>Tasks</h1>
+    		<a data-ng-repeat="task in project.tasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+			<div class="row">
+				<div class="col-md-12" data-ng-init="getType(task.status)">
+					<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
+					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
+				</div>
+			</div>
+        </a>
     	</div>
     </div>
    		

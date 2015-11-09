@@ -10,9 +10,9 @@
         <a data-ng-repeat="task in tasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
 			<small class="list-group-item-text">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12" data-ng-init="getType(task.status)">
 					<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
-					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{type}}"></progressbar>
+					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
 				</div>
 			</div>
         </a>

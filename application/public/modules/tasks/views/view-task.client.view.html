@@ -9,7 +9,6 @@
         <div class="pull-right">
         	<strong class="btn btn-yellow" ng-click="createSubtaskModal('md'); updateParTask()" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Subtask</strong>
         </div>
-        
     </div>
     
     
@@ -18,6 +17,20 @@
 	    <div class="col-md-12 well">
 	        <div class="col-md-9 event-name">
 					<span data-ng-bind="task.name"></span>
+	        </div>
+	        <div class="col-md-3">
+	        	<div ng-if="task.status == 'not started'">
+	        		NOT STARTED
+	        	</div>
+	        	<div ng-if="task.status == 'in progress'">
+	        		IN PROGRESS
+	        	</div>
+	        	<div ng-if="task.status == 'blocked'">
+	        		BLOCKED
+	        	</div>
+	        	<div ng-if="task.status == 'finished'">
+	        		FINISHED
+	        	</div>
 	        </div>
 	    </div>
     </div>
@@ -52,9 +65,9 @@
 	
 	<!-- Right column -->
 	<div class="col-md-8">
+		<!-- Path -->
 		<div class="col-md-12 well">
-			Path: 
-			<span class="btn btn-teal btn-disabled" data-ng-bind="task.name"></span>
+			<span class="btn btn-teal" data-ng-bind="task.name"></span>
 			<span ng-if="task.path.length == 0">
 				(top-level task)
 			</span>
@@ -69,8 +82,30 @@
 			</span>
 		</div>
 		
+		<!-- Description -->
 		<div class="col-md-12 well">
 			Description: <span data-ng-bind="task.description"></span>
+		</div>
+		
+		<!-- Subtasks -->
+		<div class="col-md-12 well">
+			Subtasks:
+			<a ng-repeat="subtask in task.subTasks" data-ng-href="#!/tasks/{{subtask._id}}" class="list-group-item">
+				<span data-ng-bind="subtask.name"></span>
+				
+				<div ng-if="subtask.status == 'not started'">
+	        		NOT STARTED
+	        	</div>
+	        	<div ng-if="subtask.status == 'in progress'">
+	        		IN PROGRESS
+	        	</div>
+	        	<div ng-if="subtask.status == 'blocked'">
+	        		BLOCKED
+	        	</div>
+	        	<div ng-if="subtask.status == 'finished'">
+	        		FINISHED
+	        	</div>
+			</a>
 		</div>
 	</div>
 	

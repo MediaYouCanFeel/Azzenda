@@ -19,7 +19,7 @@
 					<span data-ng-bind="task.name"></span>
 	        </div>
 	        <div class="col-md-3">
-	        	<label>{{displayStatus}}</label>
+	        	<label data-ng-bind="displayStatus"></label>
 			    <progressbar class="progress active" value="dynamic" type="{{type}}"></progressbar>
 			    <strong class="btn btn-teal" ng-click="updateTaskStatus('sm')">Update</strong>
 	        </div>

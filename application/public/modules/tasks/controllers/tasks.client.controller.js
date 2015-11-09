@@ -202,7 +202,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 		// Update existing Task
 		$scope.update = function() {
 			var task = $scope.task;
-
+			
 			task.$update(function() {
 				$location.path('tasks/' + task._id);
 			}, function(errorResponse) {
@@ -438,7 +438,8 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	  		$scope.dynamic = 50;
         	  		$scope.type = "danger";
         	  		break;
-        	  }        	  
+        	  }
+        	  console.log("$scope.displayStatus: " + $scope.displayStatus);
           }
           
           $scope.sendUpateStatus = function(status) {
@@ -446,6 +447,10 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
   					_id: $stateParams.taskId,
   					status: status
   			});
+  			
+  			$scope.ok();
+  			
+  			$scope.updateStatus();
   		};
   		
   		$scope.getValue = function(status) {

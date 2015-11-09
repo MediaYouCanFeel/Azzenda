@@ -30,7 +30,25 @@ exports.create = function(req, res) {
  * Show the current Team
  */
 exports.read = function(req, res) {
-	res.jsonp(req.team);
+	Task.find({'owners.team' : req.team._id}).exec(function(err, ownerTasks) {
+		if(err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			Task.find({'workers.team' : req.team._id}).exec(function(err, workerTasks) {
+				if(err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					req.team.workerTasks = workerTasks;
+					req.team.ownerTasks = ownerTasks;
+					res.jsonp(req.team);
+				}
+			});
+		}
+	});
 };
 
 /**
@@ -88,19 +106,11 @@ exports.list = function(req, res) {
  * Team middleware
  */
 exports.teamByID = function(req, res, next, id) { 
-	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').lean().exec(function(err, team) {
+	Team.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('project').populate('topics.rootThread').lean(req.originalMethod == 'GET').exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));
-		Task.find({'owners.team' : id}).exec(function(err, ownerTasks) {
-			if(err) return next(err);
-			Task.find({'workers.team' : id}).exec(function(err, workerTasks) {
-				if(err) return next(err);
-				team.workerTasks = workerTasks;
-				team.ownerTasks = ownerTasks;
-				req.team = team ;
-				next();
-			});
-		});
+		req.team = team ;
+		next();
 	});
 };
 

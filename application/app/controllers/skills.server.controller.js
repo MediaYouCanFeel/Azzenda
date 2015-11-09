@@ -5,102 +5,102 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Time = mongoose.model('Time'),
+	Skill = mongoose.model('Skill'),
 	_ = require('lodash');
 
 /**
- * Create a Time
+ * Create a Skill
  */
 exports.create = function(req, res) {
-	var time = new Time(req.body);
-	time.user = req.user;
+	var skill = new Skill(req.body);
+	skill.user = req.user;
 
-	time.save(function(err) {
+	skill.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(time);
+			res.jsonp(skill);
 		}
 	});
 };
 
 /**
- * Show the current Time
+ * Show the current Skill
  */
 exports.read = function(req, res) {
-	res.jsonp(req.time);
+	res.jsonp(req.skill);
 };
 
 /**
- * Update a Time
+ * Update a Skill
  */
 exports.update = function(req, res) {
-	var time = req.time ;
+	var skill = req.skill ;
 
-	time = _.extend(time , req.body);
+	skill = _.extend(skill , req.body);
 
-	time.save(function(err) {
+	skill.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(time);
+			res.jsonp(skill);
 		}
 	});
 };
 
 /**
- * Delete an Time
+ * Delete an Skill
  */
 exports.delete = function(req, res) {
-	var time = req.time ;
+	var skill = req.skill ;
 
-	time.remove(function(err) {
+	skill.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(time);
+			res.jsonp(skill);
 		}
 	});
 };
 
 /**
- * List of Times
+ * List of Skills
  */
 exports.list = function(req, res) { 
-	Time.find().sort('-created').populate('user', 'displayName').exec(function(err, times) {
+	Skill.find().sort('-created').populate('owner', 'displayName').exec(function(err, skills) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(times);
+			res.jsonp(skills);
 		}
 	});
 };
 
 /**
- * Time middleware
+ * Skill middleware
  */
-exports.timeByID = function(req, res, next, id) { 
-	Time.findById(id).populate('user', 'displayName').exec(function(err, time) {
+exports.skillByID = function(req, res, next, id) { 
+	Skill.findById(id).populate('user', 'displayName').exec(function(err, skill) {
 		if (err) return next(err);
-		if (! time) return next(new Error('Failed to load Time ' + id));
-		req.time = time ;
+		if (! skill) return next(new Error('Failed to load Skill ' + id));
+		req.skill = skill ;
 		next();
 	});
 };
 
 /**
- * Time authorization middleware
+ * Skill authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.time.user.id !== req.user.id) {
+	if (req.skill.user.id !== req.user.id) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();

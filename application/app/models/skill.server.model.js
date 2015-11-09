@@ -7,23 +7,34 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * Time Schema
+ * Task Schema
  */
-var TimeSchema = new Schema({
+var SkillSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Time name',
+		required: 'Please fill Skill name',
 		trim: true
 	},
 	created: {
 		type: Date,
 		default: Date.now
 	},
-	user: {
+	owner: {
 		type: Schema.ObjectId,
 		ref: 'User'
-	}
+	},
+	customParams: [{
+		name: String,
+		type: String
+	}],
+	users: [{
+		user: {
+			type: Schema.ObjectId,
+			ref: 'User'
+		},
+		params: {}
+	}]
 });
 
-mongoose.model('Time', TimeSchema);
+mongoose.model('Skill', SkillSchema);

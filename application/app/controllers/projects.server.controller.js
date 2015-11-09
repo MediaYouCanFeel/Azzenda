@@ -33,7 +33,26 @@ exports.create = function(req, res) {
  * Show the current Project
  */
 exports.read = function(req, res) {
-	res.jsonp(req.project);
+	Team.find({'project' : req.project._id}).exec(function(err, teams) {
+		if(err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			Task.find({'project' : req.project._id}).exec(function(err, tasks) {
+				if(err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					req.project.teams = teams;
+					req.project.tasks = tasks;
+					res.jsonp(req.project);
+				}
+			});
+		}
+	});
+	
 };
 
 /**
@@ -103,19 +122,11 @@ exports.listTypes = function(req, res) {
  * Project middleware
  */
 exports.projectByID = function(req, res, next, id) { 
-	Project.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('thread').lean().exec(function(err, project) {
+	Project.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('thread').lean(req.originalMethod == 'GET').exec(function(err, project) {
 		if (err) return next(err);
 		if (! project) return next(new Error('Failed to load Project ' + id));
-		Team.find({'project' : id}).exec(function(err, teams) {
-			if(err) return next(err);
-			Task.find({'project' : id}).exec(function(err, tasks) {
-				if(err) return next(err);
-				project.teams = teams;
-				project.tasks = tasks;
-				req.project = project ;
-				next();
-			});
-		});
+		req.project = project ;
+		next();
 	});
 };
 

@@ -6,10 +6,6 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.authentication = Authentication;
         
-        //$scope.events = Events.query();
-        
-        //$scope.eventTypes = Events.getTypes();
-        
         $scope.personal = false;
         
         $scope.showPers;

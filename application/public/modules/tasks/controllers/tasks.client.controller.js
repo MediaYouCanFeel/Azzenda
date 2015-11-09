@@ -80,6 +80,41 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             });
         };
         
+      //Open Modal window for updating status of a Task
+        $scope.updateTaskStatus = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/update-status.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
 		// Create new Task
 		$scope.create = function() {
 			// Create new Task object
@@ -114,7 +149,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 		
 		// Create new Subtask
 		$scope.createSubtask = function() {
-			console.log("PARTASK: " + $stateParams.taskId);
 			// Create new Task object
 			var task = new Tasks ({
 				name: this.name,
@@ -146,7 +180,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
 		$scope.updateParTask = function() {
 			$scope.parentTask = $scope.task._id;
-			console.log("$scope.parentTask: " + $scope.parentTask);
 		}
 		
 		// Remove existing Task
@@ -186,10 +219,14 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 		$scope.findOne = function() {
 			$scope.task = Tasks.get({ 
 				taskId: $stateParams.taskId
-			});
+			}, $scope.initStuff);
 		};
 		
-		//Find a list of Projects
+		$scope.initStuff = function() {
+			$scope.updateStatus();
+		}
+		
+ 		//Find a list of Projects
         $scope.findProjects = function() {
             var response = Projects.query();
             $scope.projects = response;
@@ -224,7 +261,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	return filter;
         }
 
-        
         $scope.notOwnerTeam = function(element) {
         	var filter = true;
         	if (element._id == $scope.team_owner) {
@@ -249,8 +285,7 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	return filter;
         }
         
-        
-     // DATEPICKER CONFIG
+        // DATEPICKER CONFIG
         $scope.datepickers = {
             earliest: false,
             latest: false
@@ -338,6 +373,93 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 
             return '';
           };
+          
+          //Progress Bar
+          $scope.max = 100;
+
+          
+          $scope.random = function() {
+            var value = Math.floor((Math.random() * 100) + 1);
+            var type;
+
+            if (value < 25) {
+              type = 'success';
+            } else if (value < 50) {
+              type = 'info';
+            } else if (value < 75) {
+              type = 'warning';
+            } else {
+              type = 'danger';
+            }
+
+            $scope.showWarning = (type === 'danger' || type === 'warning');
+
+            $scope.dynamic = value;
+            $scope.type = type;
+          };
+          //$scope.random();
+
+          $scope.randomStacked = function() {
+            $scope.stacked = [];
+            var types = ['success', 'info', 'warning', 'danger'];
+
+            for (var i = 0, n = Math.floor((Math.random() * 4) + 1); i < n; i++) {
+                var index = Math.floor((Math.random() * 4));
+                $scope.stacked.push({
+                  value: Math.floor((Math.random() * 30) + 1),
+                  type: types[index]
+                });
+            }
+          };
+          $scope.randomStacked();
+          
+          $scope.displayStatus;
+          
+          $scope.updateStatus = function() {
+        	  console.log("STATUS TEST: " + $scope.task.status);
+        	  switch($scope.task.status) {
+        	  	case "not started":
+        	  		$scope.displayStatus = "Not Started";
+        	  		$scope.dynamic = 0;
+        	  		$scope.type = "warning";
+        	  		break;
+        	  	case "in progress":
+        	  		$scope.displayStatus = "In Progress";
+        	  		$scope.dynamic = 50;
+        	  		$scope.type = "info";
+        	  		break;
+        	  	case "finished":
+        	  		$scope.displayStatus = "Finished";
+        	  		$scope.dynamic = 100;
+        	  		$scope.type = "success";
+        	  		break;
+        	  	case "blocked":
+        	  		$scope.displayStatus = "Blocked";
+        	  		$scope.dynamic = 50;
+        	  		$scope.type = "danger";
+        	  		break;
+        	  }        	  
+          }
+          
+          $scope.sendUpateStatus = function(status) {
+  			$scope.task = Tasks.update({
+  					_id: $stateParams.taskId,
+  					status: status
+  			});
+  		};
+  		
+  		$scope.getValue = function(status) {
+  			switch(status) {
+	     	  	case "not started":
+	     	  		return 0;
+	     	  	case "in progress":
+	     	  		return 50;
+	     	  	case "finished":
+	     	  		return 100;
+	     	  	case "blocked":
+	     	  		return 50;
+	     	}        	  
+  		}
         
 	}
 ]);

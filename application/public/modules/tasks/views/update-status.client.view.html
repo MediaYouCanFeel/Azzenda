@@ -1,0 +1,36 @@
+<section data-ng-controller="TasksController">
+    <div class="col-md-12 modal-col well">
+        <form class="form-horizontal" novalidate>
+            <fieldset>
+                <!-- New Status -->
+                <div class="form-group">
+                    <label class="control-label" for="newStatus">Update Status To:</label>
+                    <div class="fullWidth">
+                        <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="newStatus" id="newStatus">
+                            <option data-ng-value="'not started'">Not Started</option>
+                            <option data-ng-value="'in progress'">In Progress</option>
+                            <option data-ng-value="'blocked'">Blocked</option>
+                            <option data-ng-value="'finished'">Finished</option>
+                        </select>
+                    </div>
+				</div> 
+                
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+               <div class="row modal-buttons">
+                    <div class="col-md-6">
+                        <div class="form-group pull-left">
+                            <button type="button" ng-click="ok()" class="btn btn-teal" value="">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group pull-right">
+                            <input id="create-group-button" type="submit" ng-click="sendUpateStatus(newStatus)" class="btn btn-yellow" value="Update">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</section>

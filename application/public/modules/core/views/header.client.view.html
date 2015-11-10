@@ -3,80 +3,56 @@
 	<div class="navbar-header">
 		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
 			<span class="sr-only">Toggle navigation</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
 		</button>
 		<a href="/#!/" class="navbar-brand azzenda-font">Azzenda</a>
-        <div ng-href="/#!/" class="navbar">Build 0.10</div>
 	</div>
+	
 	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
 		
         <ul class="nav navbar-nav" data-ng-if="menu.shouldRender(authentication.user);">
-			<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
-				
-					                    
-                    <!--<a class="btn btn-bar" href="/#!/articles">
-                        <i class="fa fa-calendar fa-2x"></i>
-                        <div>Events</div>
-                    </a>-->
-                    
-                    
-				
-				<ul ng-switch-when="dropdown" class="dropdown-menu">
-					<li data-ng-repeat="subitem in item.items | orderBy: 'position'" data-ng-if="subitem.shouldRender(authentication.user);" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
-						<a href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
-					</li>
-				</ul>
-				<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
-			</li>
-            <div class="btn-bar-div">
-            
-            <a class="btn btn-bar azzenda-font" href="/#!/splashes">
-                <i class="fa fa-tachometer fa-2x"></i>
-                <div class="btn-bar-div">Dash</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/events">
-                <i class="fa fa-calendar fa-2x"></i>
-                <div class="btn-bar-div">Events</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/users">
-                <i class="fa fa-user fa-2x"></i>
-                <div class="btn-bar-div">Roster</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/messages">
-                <i class="fa fa-envelope-o fa-2x"></i>
-                <div class="btn-bar-div">Messages</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/projects">
-                <i class="fa fa-paperclip fa-2x"></i>
-                <div class="btn-bar-div">Projects</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/teams">
-                <i class="fa fa-users fa-2x"></i>
-                <div class="btn-bar-div">Teams</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/inventories">
-                <i class="fa fa-archive fa-2x"></i>
-                <div class="btn-bar-div">Inventory</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/finances">
-                <i class="fa fa-usd fa-2x"></i>
-                <div class="btn-bar-div">Finances</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/tasks">
-                <i class="fa fa-check fa-2x"></i>
-                <div class="btn-bar-div">Tasks</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/times">
-                <i class="fa fa-clock-o fa-2x"></i>
-                <div class="btn-bar-div">Time</div>
-            </a>
-            <a class="btn btn-bar azzenda-font" href="/#!/settings">
-                <i class="fa fa-cogs fa-2x"></i>
-                <div class="btn-bar-div">Settings</div>
-            </a>
-        </div>
+			
+            <li ng-click="activate('dash')"> 
+            	<a ng-class="{'top-menu-active': isActive('/splashes'), 'top-menu': !isActive('/splashes'), 'azzenda-font': true}" href="/#!/splashes">
+	                <i class="fa fa-tachometer fa"></i>
+					Dash
+				</a>
+            </li>
+            <li ng-click="activate('events')">
+	            <a ng-class="{'top-menu-active': isActive('/events'), 'top-menu': !isActive('/events'), 'azzenda-font': true}" href="/#!/events">
+	                <i class="fa fa-calendar"></i>
+	                Events
+	            </a>
+            </li>
+            <li>
+	            <a ng-class="{'top-menu-active': isActive('/users'), 'top-menu': !isActive('/users'), 'azzenda-font': true}" href="/#!/users">
+	                <i class="fa fa-user fa"></i>
+	                Roster
+	            </a>
+            </li>
+            <li>
+	            <a ng-class="{'top-menu-active': isActive('/projects'), 'top-menu': !isActive('/projects'), 'azzenda-font': true}" href="/#!/projects">
+	                <i class="fa fa-paperclip"></i>
+	                Projects
+	            </a>
+            </li>
+            <li>
+	            <a ng-class="{'top-menu-active': isActive('/teams'), 'top-menu': !isActive('/teams'), 'azzenda-font': true}" href="/#!/teams">
+	                <i class="fa fa-users"></i>
+	                Teams
+	            </a>
+            </li>
+            <li>
+	            <a ng-class="{'top-menu-active': isActive('/tasks'), 'top-menu': !isActive('/tasks'), 'azzenda-font': true}" href="/#!/tasks">
+	                <i class="fa fa-check"></i>
+	                Tasks
+	            </a>
+	        </li>
+	        <li>
+	            <a ng-class="{'top-menu-active': isActive('/settings'), 'top-menu': !isActive('/settings'), 'azzenda-font': true}" href="/#!/settings">
+	                <i class="fa fa-cogs"></i>
+	                Settings
+	            </a>
+            </li>
             
 		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
@@ -91,7 +67,7 @@
 		<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.user">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					<span id="header-username" data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
+					<span class="top-menu" id="header-username" data-ng-bind="authentication.user.displayName"></span> <b class="caret top-menu"></b>
 				</a>
 				<ul class="dropdown-menu">
 					<li>

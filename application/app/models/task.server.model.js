@@ -73,6 +73,10 @@ var TaskSchema = new Schema({
 	deadline: {
 		type: Date
 	},
+	threads: [{
+		type: Schema.ObjectId,
+		ref: 'Thread'
+	}],
 	log: [{
 		user: {
 			type: Schema.ObjectId,

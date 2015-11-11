@@ -12,10 +12,6 @@ var mongoose = require('mongoose'),
  * Create a Thread
  */
 exports.create = function(req, res) {
-	//pass back
-	//text
-	//path
-	//parThread = _id
 	var parThread = req.body.parThread;
 	delete req.body.parThread;
 	var thread = new Thread(req.body);
@@ -56,7 +52,9 @@ exports.create = function(req, res) {
  * Show the current Thread
  */
 exports.read = function(req, res) {
-	res.jsonp(req.thread);
+	exports.popThreads([req.thread], function(threads) {
+		res.jsonp(threads[0]);
+	});
 };
 
 /**
@@ -96,19 +94,34 @@ exports.delete = function(req, res) {
 };
 
 /**
- * populate Thread
+ * fully populate a Thread
  */
-var popThread = function(parThread, threads) {
-	childArray = [];
-	for(var thread in threads) {
-		if(thread.path[thread.path.length-1] == parThread._id) {
-			childArray.push(exports.popThread(thread, threads));
+exports.popThreads = function(rootThreads, callback) {
+	var rootIds = rootThreads.map(function(a) {
+		return a._id;
+	});
+	Thread.find({'path': {$in: rootIds}}).lean().exec(function(err, threads) {
+		if(err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			threads = threads.sort(function(a, b) {
+				return a.path.length - b.path.length;
+			});
+			var map = {};
+			rootThreads.forEach(function(rootThread) {
+				rootThread.subThreads = [];
+				map[rootThread._id] = rootThread;
+			});
+			threads.forEach(function(thread) {
+				map[thread._id] = thread;
+				thread.subThreads = [];
+				map[thread.path[thread.path.length-1]].subThreads.push(thread);
+			});
+			callback();
 		}
-	}
-	return {
-		thread: parThread,
-		children: childArray
-	};
+	});
 }
 
 /**
@@ -130,16 +143,11 @@ exports.list = function(req, res) {
  * Thread middleware
  */
 exports.threadByID = function(req, res, next, id) { 
-	Thread.findById(id).populate('owner', 'displayName').exec(function(err, thread) {
+	Thread.findById(id).populate('owner', 'displayName').lean(req.originalMethod == 'GET').exec(function(err, thread) {
 		if (err) return next(err);
 		if (! thread) return next(new Error('Failed to load Thread ' + id));
-		Thread.find({'path': id}).populate('owner', 'displayName').sort('created').exec(function(err, threads) {
-			if(err) {
-				return next(err);
-			}
-			req.thread = popThread(thread, threads);
-			next();
-		});
+		req.thread = thread;
+		next();
 	});
 };
 
@@ -149,7 +157,7 @@ exports.threadByID = function(req, res, next, id) {
 exports.hasAuthorization = function(req, res, next) {
 //	if(req.thread.owner.id === req.user.id) {
 		next();
-		return;
+		//return;
 //	}
 //	return res.status(403).send('User is not authorized');
 };

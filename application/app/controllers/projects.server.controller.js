@@ -108,7 +108,10 @@ exports.list = function(req, res) {
 					});
 				} else {
 					for(var i=0, j=0; i<projects.length; i++) {
-						if(projects[i]._id.equals(projTeams[j]._id)) {
+						if(j >= projTeams.length) {
+							projects[i].teams = [];
+						}
+						else if(projects[i]._id.equals(projTeams[j]._id)) {
 							projects[i].teams = projTeams[j++].teams;
 						} else {
 							projects[i].teams = [];

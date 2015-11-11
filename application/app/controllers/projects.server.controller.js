@@ -38,7 +38,7 @@ exports.read = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Task.find({$and: [{'project' : req.project._id},{'path': {$size: 0}}]}).lean().exec(function(err, tasks) {
+			Task.find({$and: [{'project' : req.project._id},{'path': {$size: 0}}]}).populate('owners.users.user', 'displayName').populate('owners.team', 'name').populate('workers.users.user','displayName').populate('workers.team','name').lean().exec(function(err, tasks) {
 				if(err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)

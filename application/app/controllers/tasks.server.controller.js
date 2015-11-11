@@ -15,18 +15,20 @@ exports.create = function(req, res) {
 	var parTask = req.body.parTask;
 	delete req.body.parTask;
 	if(req.body.owners.users) {
-		for(var i=0; i<req.body.owners.users.length; i++) {
-			req.body.owners.users[i] = {
-					user: req.body.owners.users[i]
-			}
-		}
+		console.log(req.body.owners.users);
+		req.body.owners.users = req.body.owners.users.map(function(usr) {
+			return {
+				user: usr
+			};
+		});
+		console.log(req.body.owners.users);
 	}
 	if(req.body.workers.users) {
-		for(var i=0; i<req.body.workers.users.length; i++) {
-			req.body.workers.users[i] = {
-					user: req.body.workers.users[i]
-			}
-		}
+		req.body.workers.users = req.body.workers.users.map(function(usr) {
+			return {
+				user: usr
+			};
+		});
 	}
 	var task = new Task(req.body);
 	if(parTask) {
@@ -69,7 +71,7 @@ exports.popTasks = function(rootTasks, callback) {
 	var rootIds = rootTasks.map(function(a) {
 		return a._id;
 	});
-	Task.find({'path': {$in: rootIds}}).lean().exec(function(err, tasks) {
+	Task.find({'path': {$in: rootIds}}).populate('owners.users.user', 'displayName').populate('owners.team','name').populate('workers.users.user', 'displayName').populate('workers.team','name').lean().exec(function(err, tasks) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

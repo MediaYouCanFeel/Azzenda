@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 	Thread = mongoose.model('Thread'),
 	Team = mongoose.model('Team'),
 	Task = mongoose.model('Task'),
+	TaskCtrl = require('../../app/controllers/tasks.server.controller'),
 	_ = require('lodash');
 
 /**
@@ -16,8 +17,6 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var project = new Project(req.body);
-	//project.owners.push(req.user);
-	project.thread = new Thread();
 	project.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -39,20 +38,21 @@ exports.read = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Task.find({'project' : req.project._id}).exec(function(err, tasks) {
+			Task.find({$and: [{'project' : req.project._id},{'path': {$size: 0}}]}).lean().exec(function(err, tasks) {
 				if(err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)
 					});
 				} else {
-					req.project.teams = teams;
-					req.project.tasks = tasks;
-					res.jsonp(req.project);
+					TaskCtrl.popTasks.call(this, tasks, function() {
+						req.project.teams = teams;
+						req.project.tasks = tasks;
+						res.jsonp(req.project);
+					});
 				}
 			});
 		}
 	});
-	
 };
 
 /**
@@ -95,13 +95,28 @@ exports.delete = function(req, res) {
  * List projects
  */
 exports.list = function(req, res) {
-	Project.find({archived: (req.query.archived || false)}).populate('owners','displayName').populate('teams').populate('users','displayName').populate('tasks').populate('thread').exec(function(err, projects) {
+	Project.find({archived: (req.query.archived || false)}).sort('_id').populate('owners','displayName').populate('users','displayName').populate('thread').lean().exec(function(err, projects) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(projects);
+			Team.aggregate([{$group: {_id: '$project', teams: {$push: '$$ROOT'}}}]).sort('_id').exec(function(err, projTeams) {
+				if(err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					for(var i=0, j=0; i<projects.length; i++) {
+						if(projects[i]._id.equals(projTeams[j]._id)) {
+							projects[i].teams = projTeams[j++].teams;
+						} else {
+							projects[i].teams = [];
+						}
+					}
+					res.jsonp(projects);
+				}
+			});
 		}
 	});
 };

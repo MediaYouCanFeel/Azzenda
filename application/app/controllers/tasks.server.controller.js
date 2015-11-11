@@ -63,19 +63,43 @@ exports.create = function(req, res) {
 };
 
 /**
- * Show the current Task
+ * populate Thread
  */
-exports.read = function(req, res) {
-	Task.find({$and: [{'path' : req.task._id},{'path' : {$size: req.task.path.length+1}}]}).exec(function(err,tasks) {
+exports.popTasks = function(rootTasks, callback) {
+	var rootIds = rootTasks.map(function(a) {
+		return a._id;
+	});
+	Task.find({'path': {$in: rootIds}}).lean().exec(function(err, tasks) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			req.task.subTasks = tasks;
-			res.jsonp(req.task);
+			tasks = tasks.sort(function(a, b) {
+				return a.path.length - b.path.length;
+			});
+			var map = {};
+			rootTasks.forEach(function(rootTask) {
+				rootTask.subTasks = [];
+				map[rootTask._id] = rootTask;
+			});
+			tasks.forEach(function(task) {
+				map[task._id] = task;
+				task.subTasks = [];
+				map[task.path[task.path.length-1]].subTasks.push(task);
+			});
+			callback();
 		}
 	});
+}
+
+/**
+ * Show the current Task
+ */
+exports.read = function(req, res) {
+	exports.popTasks([req.task], function(tasks) {
+		res.jsonp(tasks[0]);
+	})
 };
 
 /**

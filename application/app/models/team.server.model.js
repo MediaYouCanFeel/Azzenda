@@ -37,22 +37,9 @@ var TeamSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Project',
 	},
-	topics: [{
-		name: {
-			type: String,
-			default: '',
-			required: 'Please enter a thread name',
-			trim: true
-		},
-		description: {
-			type: String,
-			default: '',
-			trim: true
-		},
-		rootThread: {
-			type: Schema.ObjectId,
-			ref: 'Thread'
-		}
+	threads: [{
+		type: Schema.ObjectId,
+		ref: 'Thread'
 	}],
 	gdocs: [{
 		type: String

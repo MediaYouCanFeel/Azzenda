@@ -34,10 +34,10 @@ var ProjectSchema = new Schema({
     	type: Schema.ObjectId,
     	ref: 'User'
     }],
-    thread: {
+    threads: [{
     	type: Schema.ObjectId,
     	ref: 'Thread'
-    },
+    }],
     archived: {
         type: Boolean,
         default: false

@@ -15,11 +15,13 @@ exports.create = function(req, res) {
 	var parTask = req.body.parTask;
 	delete req.body.parTask;
 	if(req.body.owners.users) {
+		console.log(req.body.owners.users);
 		req.body.owners.users = req.body.owners.users.map(function(usr) {
 			return {
 				user: usr
 			};
 		});
+		console.log(req.body.owners.users);
 	}
 	if(req.body.workers.users) {
 		req.body.workers.users = req.body.workers.users.map(function(usr) {
@@ -97,8 +99,8 @@ exports.popTasks = function(rootTasks, callback) {
  * Show the current Task
  */
 exports.read = function(req, res) {
-	exports.popTasks([req.task], function(tasks) {
-		res.jsonp(tasks[0]);
+	exports.popTasks([req.task], function() {
+		res.jsonp(req.task);
 	})
 };
 

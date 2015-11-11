@@ -27,6 +27,7 @@ var TaskSchema = new Schema({
 	},
 	owners: {
 		users: [{
+			_id: false,
 			user: {
 				type: Schema.ObjectId,
 				ref: 'User'

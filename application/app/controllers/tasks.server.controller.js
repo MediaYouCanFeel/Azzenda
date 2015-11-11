@@ -97,8 +97,8 @@ exports.popTasks = function(rootTasks, callback) {
  * Show the current Task
  */
 exports.read = function(req, res) {
-	exports.popTasks([req.task], function(tasks) {
-		res.jsonp(tasks[0]);
+	exports.popTasks([req.task], function() {
+		res.jsonp(req.task);
 	})
 };
 

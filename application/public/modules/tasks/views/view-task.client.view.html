@@ -1,4 +1,12 @@
 <section data-ng-controller="TasksController" data-ng-init="findOne();">
+	<script type="text/ng-template" id="taskTree">
+		<span data-ng-bind="task.name"></span>
+		<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
+        <ul ng-if="task.subTasks">
+            <li ng-repeat="task in task.subTasks" ng-include="'taskTree'" data-ng-href="#!/tasks/{{subtask._id}}" class="list-group-item">           
+			</li>
+        </ul>
+    </script>
 	 
 	 <div class="row top-well">
         <div class="col-md-8 event-back">
@@ -33,16 +41,23 @@
 		</div>
 		
 		<div class="col-md-12 well" ng-if="task.owners.users.length > 0">
-			Owners:
+			Owners (Users):
 			<a ng-repeat="owner in task.owners.users" data-ng-href="#!/users/{{owner.user._id}}" class="list-group-item">
 				<span data-ng-bind="owner.user.displayName"></span>
 			</a>
 		</div>
 		
+		<div class="col-md-12 well" ng-if="task.owners.team">
+			Owners (Teams):
+			<a data-ng-href="#!/teams/{{task.owners.team._id}}" class="list-group-item">
+				<span data-ng-bind="task.owners.team.name"></span>
+			</a>
+		</div>
+		
 		<div class="col-md-12 well" ng-if="task.workers.teams.length > 0">
 			Workers (Teams): 
-			<a ng-repeat="team in task.workers.teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
-				<span data-ng-bind="team.name"></span>
+			<a data-ng-href="#!/teams/{{task.workers.team._id}}" class="list-group-item">
+				<span data-ng-bind="task.workers.team.name"></span>
 			</a>
 		</div>
 		
@@ -79,11 +94,10 @@
 		</div>
 		
 		<!-- Subtasks -->
+		
 		<div class="col-md-12 well" ng-if="task.subTasks.length > 0">
 			Subtasks:
-			<a ng-repeat="subtask in task.subTasks" data-ng-href="#!/tasks/{{subtask._id}}" class="list-group-item">
-				<span data-ng-bind="subtask.name"></span>
-				<progressbar class="progress-detail active pull-right" value="getValue(subtask.status)" type="{{getType(subtask.status)}}"></progressbar>
+			<a ng-repeat="task in task.subTasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item" ng-include="'taskTree'">
 			</a>
 		</div>
 	</div>

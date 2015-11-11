@@ -122,11 +122,11 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				name: this.name,
 				owners: {
 					users: this.user_owner,
-					teams: this.team_owner					
+					team: this.team_owner					
 				},
 				workers: {
 					users: this.user_assigned, 
-					teams: this.team_assigned
+					team: this.team_assigned
 				},
 				project: this.project,
 				deadline: this.deadline,
@@ -154,11 +154,11 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 				name: this.name,
 				owners: {
 					users: this.user_owner,
-					teams: this.team_owner					
+					team: this.team_owner					
 				},
 				workers: {
 					users: this.user_assigned, 
-					teams: this.team_assigned
+					team: this.team_assigned
 				},
 				deadline: this.deadline,
 				description: this.description,
@@ -243,6 +243,16 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             var response = Users.query();
             $scope.users= response;
         };
+        
+        $scope.setProject = function() {
+        	$scope.task = Tasks.get({ 
+				taskId: $stateParams.taskId
+			}, $scope.setProject2);
+        }
+        
+        $scope.setProject2 = function() {
+        	$scope.project = $scope.task.project._id;
+        }
         
         // Filters
         $scope.projectFilter = function(element) {
@@ -416,7 +426,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
           $scope.displayStatus;
           
           $scope.updateStatus = function() {
-        	  console.log("STATUS TEST: " + $scope.task.status);
         	  switch($scope.task.status) {
         	  	case "not started":
         	  		$scope.displayStatus = "Not Started";
@@ -439,8 +448,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	  		$scope.type = "danger";
         	  		break;
         	  }
-        	  console.log("$scope.displayStatus: " + $scope.displayStatus);
-        	  
           }
           
           $scope.sendUpateStatus = function(status) {
@@ -473,19 +480,14 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
   		}
         
   		$scope.getType = function(status) {
-  			console.log("status: " + status);
   			switch(status) {
 	     	  	case "not started":
-	     	  		console.log("NOT STARTED");
 	     	  		return "warning";
 	     	  	case "in progress":
-	     	  		console.log("IN PROGRESS");
 	     	  		return "info";
 	     	  	case "finished":
-	     	  		console.log("FINISHED");
 	     	  		return "success";
 	     	  	case "blocked":
-	     	  		console.log("BLOCKED");
 	     	  		return "danger";
 	     	}
   			

@@ -1,4 +1,37 @@
 <section data-ng-controller="ProjectsController" data-ng-init="findOne()">
+	<script type="text/ng-template" id="taskTree">
+		<div class="col-md-12" data-ng-init="getType(task.status)" data-ng-controller="TasksController">
+			<accordion close-others="false">
+				<accordion-group is-disabled="status.isFirstDisabled">
+      				<accordion-heading>
+      					<span class="project-rep-name list-group-item-heading">
+							<span data-ng-bind="task.name"></span>
+							<span style="font-size: 12px" ng-if="task.subTasks.length > 0"> + <span data-ng-bind="task.subTasks.length"></span> more </span>
+						</span>
+      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
+      				</accordion-heading>
+					
+					<div>
+						<span data-ng-bind="task.description"></span>
+					</div>
+
+					<div>
+						Owners: <a ng-repeat="userOwner in task.owners.users" data-ng-href="#!/users/{{userOwner.user}}">
+							<span data-ng-bind="userOwner.user"></span>
+						</a> 
+					</div>     				
+
+					<a data-ng-href="#!/tasks/{{task._id}}">See more...</a>
+      				
+					<span ng-repeat="task in task.subTasks" ng-include="'taskTree'" data-ng-href="#!/tasks/{{task._id}}">           
+					</span>
+    			</accordion-group>
+			</accordion>
+		</div>
+        <ul ng-if="task.subTasks">
+        </ul>
+    </script>
+	
 	<div class="col-md-12 top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/projects" class="btn btn-blue" style="margin-bottom: -20px;">
@@ -53,23 +86,11 @@
     	<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h1>Tasks</h1>
     		<div data-ng-repeat="task in project.tasks">
-			<small class="list-group-item-text">
-			<div class="row">
 				<div class="col-md-12" data-ng-init="getType(task.status)">
-					<accordion close-others="false">
-						<accordion-group is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
-      						<accordion-heading>
-      							<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
-      							<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
-      						</accordion-heading>
-      						<a data-ng-href="#!/tasks/{{task._id}}">Link</a>
-      						<p>Subtasks here!</p>
-    					</accordion-group>
-					</accordion>
-				</div>
+					<span ng-include="'taskTree'"></span>
+				</div>	
 			</div>
-       		</div>
-    	</div>
+   		</div>
     	
     	<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4>Threads</h4>

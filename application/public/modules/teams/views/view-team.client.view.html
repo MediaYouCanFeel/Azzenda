@@ -11,24 +11,52 @@
         
     </div>
 	
-	<div class="col-md-12 well">
-		<h1>
-			<i class="fa fa-users"></i>
-			<span data-ng-bind="team.name"></span>
-		</h1>
+	<div class="col-md-12">
+		<div class="col-md-12 well">
+			<h1>
+				<i class="fa fa-users"></i>
+				<span data-ng-bind="team.name"></span>
+			</h1>
+		</div>
 	</div>
 
-	<div class="col-md-12 well">
-		<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong> project team.
+	<div class="col-md-12">
+		<div class="col-md-12 well">
+			<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong> project team.
+		</div>
 	</div>
 	
 	<!-- List of members -->
-	<div class="col-md-4 well">
-		<h3>Members</h3>
-		<a ng-repeat="user in team.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
-			<img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture">
-			&nbsp; <span class="display-name" data-ng-bind="user.displayName"></span>
-		</a>
+	<div class="col-md-4">
+		<div class="col-md-12 well">
+			<h4>Members</h4>
+			<a ng-repeat="user in team.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+				<img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture">
+				&nbsp; <span class="display-name" data-ng-bind="user.displayName"></span>
+			</a>
+		</div>
+	</div>
+	
+	<div class="col-md-8">
+		<div class="col-md-12 well" data-ng-controller="ThreadsController">
+			<h4>Threads</h4>
+			
+			
+			<form class="form-horizontal" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="text">New Thread</label>
+                    <div class="controls">
+                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+            <div class="form-group pull-right">
+				<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
+            </div>
+			
+		</div>
 	</div>
 	
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == team.user._id))">

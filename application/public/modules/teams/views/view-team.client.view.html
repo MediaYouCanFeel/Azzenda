@@ -1,4 +1,57 @@
 <section data-ng-controller="TeamsController" data-ng-init="findOne()">
+	<script type="text/ng-template" id="taskTree">
+		<div class="col-md-12" data-ng-init="getType(task.status)" data-ng-controller="TasksController">
+			<accordion close-others="false">
+				<accordion-group is-disabled="status.isFirstDisabled">
+      				<accordion-heading>
+      					<span class="project-rep-name list-group-item-heading">
+							<span data-ng-bind="task.name"></span>
+							<span style="font-size: 12px" ng-if="task.subTasks.length > 0"> + <span data-ng-bind="task.subTasks.length"></span> more </span>
+						</span>
+      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
+      				</accordion-heading>
+					
+					<div>
+						<span data-ng-bind="task.description"></span>
+					</div>
+
+					<!-- Owner(s) -->
+					<div ng-if="task.owners.team || task.owners.users">
+						Owner(s): 
+						<!-- User(s) -->
+						<span ng-repeat="userOwner in task.owners.users">
+							<strong><a data-ng-bind="userOwner.user.displayName" data-ng-href="#!/users/{{userOwner.user._id}}"></a></strong> <span ng-if="$index < task.owners.users.length - 1 || task.owners.team">, </span>
+						</span>
+						
+						<!-- Team -->
+						<strong><a data-ng-bind="task.owners.team.name" data-ng-href="#!/teams/{{task.owners.team._id}}"></a></strong>
+					</div>     				
+
+					
+					<!-- Worker(s) -->
+					<div ng-if="task.workers.team || task.workers.users">
+						Worker(s): 
+						<!-- User(s) -->
+						<span ng-repeat="userWorker in task.workers.users">
+							<strong><a data-ng-bind="userWorker.user.displayName" data-ng-href="#!/users/{{userWorker.user._id}}"></a></strong> <span ng-if="$index < task.workers.users.length - 1 || task.workers.team">, </span>
+						</span>
+						
+						<!-- Team -->
+						<strong><a data-ng-bind="task.workers.team.name" data-ng-href="#!/teams/{{task.workers.team._id}}"></a></strong>
+					</div>     		
+
+					<a data-ng-href="#!/tasks/{{task._id}}">See more...</a>
+      				
+					<span ng-repeat="task in task.subTasks" ng-include="'taskTree'" data-ng-href="#!/tasks/{{task._id}}">           
+					</span>
+
+    			</accordion-group>
+			</accordion>
+		</div>
+        <ul ng-if="task.subTasks">
+        </ul>
+    </script>
+	
 	<div class="row top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/teams" class="btn btn-blue" style="margin-bottom: -20px;">

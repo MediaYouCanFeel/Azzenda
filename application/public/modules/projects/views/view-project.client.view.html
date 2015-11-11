@@ -15,11 +15,30 @@
 						<span data-ng-bind="task.description"></span>
 					</div>
 
-					<div>
-						Owners: <a ng-repeat="userOwner in task.owners.users" data-ng-href="#!/users/{{userOwner.user}}">
-							<span data-ng-bind="userOwner.user"></span>
-						</a> 
+					<!-- Owner(s) -->
+					<div ng-if="task.owners.team || task.owners.users">
+						Owner(s): 
+						<!-- User(s) -->
+						<span ng-repeat="userOwner in task.owners.users">
+							<strong><a data-ng-bind="userOwner.user.displayName" data-ng-href="#!/users/{{userOwner.user._id}}"></a></strong> <span ng-if="$index < task.owners.users.length - 1 || task.owners.team">, </span>
+						</span>
+						
+						<!-- Team -->
+						<strong><a data-ng-bind="task.owners.team.name" data-ng-href="#!/teams/{{task.owners.team._id}}"></a></strong>
 					</div>     				
+
+					
+					<!-- Worker(s) -->
+					<div ng-if="task.workers.team || task.workers.users">
+						Worker(s): 
+						<!-- User(s) -->
+						<span ng-repeat="userWorker in task.workers.users">
+							<strong><a data-ng-bind="userWorker.user.displayName" data-ng-href="#!/users/{{userWorker.user._id}}"></a></strong> <span ng-if="$index < task.workers.users.length - 1 || task.workers.team">, </span>
+						</span>
+						
+						<!-- Team -->
+						<strong><a data-ng-bind="task.workers.team.name" data-ng-href="#!/teams/{{task.workers.team._id}}"></a></strong>
+					</div>     		
 
 					<a data-ng-href="#!/tasks/{{task._id}}">See more...</a>
       				

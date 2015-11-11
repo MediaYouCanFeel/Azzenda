@@ -476,15 +476,19 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
   			console.log("status: " + status);
   			switch(status) {
 	     	  	case "not started":
-	     	  		$scope.listType = "warning";
+	     	  		console.log("NOT STARTED");
+	     	  		return "warning";
 	     	  	case "in progress":
-	     	  		$scope.listType = "info";
+	     	  		console.log("IN PROGRESS");
+	     	  		return "info";
 	     	  	case "finished":
-	     	  		$scope.listType = "success";
+	     	  		console.log("FINISHED");
+	     	  		return "success";
 	     	  	case "blocked":
 	     	  		console.log("BLOCKED");
-	     	  		$scope.listType = "danger";
-	     	}        	  
+	     	  		return "danger";
+	     	}
+  			
   		}
   		
 	}

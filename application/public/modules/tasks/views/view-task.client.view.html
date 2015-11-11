@@ -83,7 +83,7 @@
 			Subtasks:
 			<a ng-repeat="subtask in task.subTasks" data-ng-href="#!/tasks/{{subtask._id}}" class="list-group-item">
 				<span data-ng-bind="subtask.name"></span>
-				<progressbar class="progress-detail active pull-right" value="getValue(subtask.status)" type="{{type}}"></progressbar>
+				<progressbar class="progress-detail active pull-right" value="getValue(subtask.status)" type="{{getType(subtask.status)}}"></progressbar>
 			</a>
 		</div>
 	</div>

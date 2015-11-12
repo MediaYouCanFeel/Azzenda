@@ -1,6 +1,6 @@
 <section data-ng-controller="TeamsController" data-ng-init="findOne()">
 	<script type="text/ng-template" id="taskTree">
-		<div class="col-md-12" data-ng-init="getType(task.status)" data-ng-controller="TasksController">
+		<div data-ng-init="getType(task.status)" data-ng-controller="TasksController">
 			<accordion close-others="false">
 				<accordion-group is-disabled="status.isFirstDisabled">
       				<accordion-heading>
@@ -8,12 +8,15 @@
 							<span data-ng-bind="task.name"></span>
 							<span style="font-size: 12px" ng-if="task.subTasks.length > 0"> + <span data-ng-bind="task.subTasks.length"></span> more </span>
 						</span>
-      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
+      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
       				</accordion-heading>
 					
 					<div>
-						<span data-ng-bind="task.description"></span>
+						<i><small data-ng-bind="task.description"></small></i>
 					</div>
+
+					<!-- Deadline -->
+					<div> Deadline: <span data-ng-bind="task.deadline"></span> </div>
 
 					<!-- Owner(s) -->
 					<div ng-if="task.owners.team || task.owners.users">
@@ -65,7 +68,7 @@
     </div>
 	
 	<div class="col-md-12">
-		<div class="col-md-12 well">
+		<div class="well">
 			<h1>
 				<i class="fa fa-users"></i>
 				<span data-ng-bind="team.name"></span>
@@ -79,8 +82,9 @@
 		</div>
 	</div>
 	
-	<!-- List of members -->
+	
 	<div class="col-md-4">
+		<!-- List of members -->
 		<div class="col-md-12 well">
 			<h4>Members</h4>
 			<a ng-repeat="user in team.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
@@ -91,6 +95,24 @@
 	</div>
 	
 	<div class="col-md-8">
+		
+		<!-- Tasks -->		
+		<div class="col-md-12 well" data-ng-controller="TasksController">
+    		<h1>Tasks</h1>
+    		<div data-ng-repeat="task in team.ownerTasks | orderBy: 'deadline'">
+				<div class="col-md-12">
+					<span ng-include="'taskTree'"></span>
+				</div>	
+			</div>
+			
+			<div data-ng-repeat="task in team.workerTasks | orderBy: 'deadline'">
+				<div class="col-md-12">
+					<span ng-include="'taskTree'"></span>
+				</div>	
+			</div>
+   		</div>
+	
+		<!-- Threads -->
 		<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4>Threads</h4>
 			<form class="form-horizontal" novalidate>

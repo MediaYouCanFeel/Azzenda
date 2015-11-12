@@ -8,13 +8,16 @@
 							<span data-ng-bind="task.name"></span>
 							<span style="font-size: 12px" ng-if="task.subTasks.length > 0"> + <span data-ng-bind="task.subTasks.length"></span> more </span>
 						</span>
-      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="listType"></progressbar>
+      					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
       				</accordion-heading>
 					
 					<div>
-						<span data-ng-bind="task.description"></span>
+						<i><small data-ng-bind="task.description"></small></i>
 					</div>
 
+					<!-- Deadline -->
+					<div> Deadline: <span data-ng-bind="task.deadline"></span> </div>
+					
 					<!-- Owner(s) -->
 					<div ng-if="task.owners.team || task.owners.users">
 						Owner(s): 
@@ -105,7 +108,7 @@
     <div class="col-md-7 project-col-right">
     	<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h1>Tasks</h1>
-    		<div data-ng-repeat="task in project.tasks">
+    		<div data-ng-repeat="task in project.tasks | orderBy: 'deadline'">
 				<div class="col-md-12" data-ng-init="getType(task.status)">
 					<span ng-include="'taskTree'"></span>
 				</div>	

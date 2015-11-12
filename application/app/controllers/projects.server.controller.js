@@ -117,7 +117,36 @@ exports.list = function(req, res) {
 							projects[i].teams = [];
 						}
 					}
-					res.jsonp(projects);
+					Task.aggregate([{$match: {'path': {$size: 0}}},{$group: {_id: '$project', tasks: {$push: '$$ROOT'}}}]).sort('_id').exec(function(err, projTasks) {
+						if(err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						} else {
+							var allRootTasks = [];
+							for(var i=0, j=0; i<projects.length; i++) {
+								if(j >= projTasks.length) {
+									projects[i].tasks = [];
+								} else if(projects[i]._id.equals(projTasks[j]._id)) {
+									projects[i].tasks = projTasks[j++].tasks;
+									allRootTasks = allRootTasks.concat(projects[i].tasks);
+								} else {
+									projects[i].tasks = [];
+								}
+							}
+							
+//							var opts = [{'path': 'owners.users.user', 'select': 'displayName'}];
+//					        Task.populate(allRootTasks, opts, function(err,results) {
+//					            if (err) throw err;
+//					            console.log(results);
+//					            allRootTasks = results;
+//					            console.log(allRootTasks);
+					            TaskCtrl.popTasks.call(this, allRootTasks, function() {
+									res.jsonp(projects);
+								});
+//					        });
+						}
+					});
 				}
 			});
 		}

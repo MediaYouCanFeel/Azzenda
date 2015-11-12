@@ -144,13 +144,15 @@ exports.delete = function(req, res) {
  * List of Tasks
  */
 exports.list = function(req, res) { 
-	Task.find().sort('-created').populate('owners.users.user', 'displayName').populate('owner.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').exec(function(err, tasks) {
+	Task.find().populate('owners.users.user', 'displayName').populate('owner.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean().exec(function(err, tasks) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(tasks);
+			exports.popTasks(tasks, function() {
+				res.jsonp(tasks);
+			});
 		}
 	});
 };

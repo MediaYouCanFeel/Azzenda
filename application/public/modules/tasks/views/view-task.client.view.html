@@ -54,7 +54,7 @@
 			</a>
 		</div>
 		
-		<div class="col-md-12 well" ng-if="task.workers.teams.length > 0">
+		<div class="col-md-12 well" ng-if="task.workers.team">
 			Workers (Teams): 
 			<a data-ng-href="#!/teams/{{task.workers.team._id}}" class="list-group-item">
 				<span data-ng-bind="task.workers.team.name"></span>

@@ -17,7 +17,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
                 'public/lib/select2-4.0.0/dist/css/select2.css',
                 'public/lib/angular-tooltips/angular-tooltips.css',
-                'public/lib/jquery-ui/jquery-ui.css'
+                'public/lib/jquery-ui/jquery-ui.css',
+                'public/lib/ngImgCrop/compile/minified/ng-img-crop.css'
 			],
 			js: [
                 'public/lib/jquery/dist/jquery.js',
@@ -35,7 +36,11 @@ module.exports = {
                 'public/lib/moment/moment.js',
 				'public/lib/angular-number-picker/angular-number-picker.js',
 				'public/lib/angular-tooltips/angular-tooltips.js',
-                'https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0'
+                'https://maps.googleapis.com/maps/api/js?v=3&libraries=places&key=AIzaSyAb8G8uuxD1Pqilz6CEUIRccSsmu78yaf0',
+                'public/lib/ng-file-upload/FileAPI.min.js',
+                'public/lib/ng-file-upload/ng-file-upload-shim.min.js',
+                'public/lib/ng-file-upload/ng-file-upload.min.js',
+                'public/lib/ngImgCrop/compile/minified/ng-img-crop.js'
 			]
 		},
 		css: [

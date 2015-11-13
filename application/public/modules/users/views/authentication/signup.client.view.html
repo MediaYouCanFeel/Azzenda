@@ -19,7 +19,7 @@
 	</div>
 	<h3 class="col-md-12 text-center">Or with your email</h3>
 	<div class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-		<form name="userForm" data-ng-submit="signup()" class="signin form-horizontal" novalidate autocomplete="off">
+		<form name="userForm" data-ng-submit="signup(croppedDataUrl)" class="signin form-horizontal" novalidate autocomplete="off">
 			<fieldset>
 				<div class="form-group">
 					<label for="firstName">First Name</label>
@@ -37,6 +37,25 @@
 					<label for="password">Password</label>
 					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
 				</div>
+				
+				<div class="form-group">
+	                <label class="control-label" for="profileimage">Profile Picture</label>
+	                <div class="controls">
+	                    <input id="profileimage" type="button" class="btn btn-default" ngf-select="picSelected($files)" ng-model="profpic" name="profpic" value="Select Picture" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="10MB">
+	                    <div ngf-drop ng-model="profpic" ngf-pattern="image/*" class="cropArea" style="background:#E4E4E4;overflow:hidden;width:500px;height:350px">
+				            <img-crop image="profpic  | ngfDataUrl" result-image-format="image/jpeg" area-type="square" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+				        </div>
+				        <div>
+				        	<label class="control-label" for="croppedimage">Cropped Profile Picture</label>
+				        	<div>
+				            	<img id="croppedimage" ng-src="{{croppedDataUrl}}" />
+				            </div>
+				        </div>
+	                    <span class="progress" ng-show="progress >= 0">      
+	                        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+	                    </span>
+	                </div>
+	            </div>
                 
 				<div class="text-center form-group sign-in-button">
 					<button id="sign-up-button" type="submit" class="btn btn-large btn-primary">Sign up</button>&nbsp; or&nbsp;

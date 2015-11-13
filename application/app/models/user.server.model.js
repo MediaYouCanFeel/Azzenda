@@ -51,6 +51,10 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true
 	},
+	profpic: {
+		type: String,
+		default: ''
+	},
     username: {
         type: String,
         unique: 'This email is already in use',

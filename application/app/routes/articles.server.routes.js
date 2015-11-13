@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 var users = require('../../app/controllers/users.server.controller'),
+	multiparty = require('connect-multiparty'),
+	multipartyMiddleware = multiparty(),
 	articles = require('../../app/controllers/articles.server.controller');
 
 module.exports = function(app) {
@@ -16,6 +18,9 @@ module.exports = function(app) {
 		.get(articles.read)
 		.put(users.requiresLogin, articles.hasAuthorization, articles.update)
 		.delete(users.requiresLogin, articles.hasAuthorization, articles.delete);
+	
+	app.route('/articleupload')
+		.post(users.requiresLogin, multipartyMiddleware, articles.createWithUpload);
 
 	// Finish by binding the article middleware
 	app.param('articleId', articles.articleByID);

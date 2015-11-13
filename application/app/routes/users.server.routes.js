@@ -7,14 +7,16 @@ var passport = require('passport');
 
 module.exports = function(app) {
 	// User Routes
-	var users = require('../../app/controllers/users.server.controller');
+	var users = require('../../app/controllers/users.server.controller'),
+	multiparty = require('connect-multiparty'),
+	multipartyMiddleware = multiparty();
 
     
     
 	// Setting up the users profile api
-	app.route('/users/me').get(users.me);
-    app.route('/users/:userId').get(users.read);
-	app.route('/users').put(users.update).get(users.list).post(users.createUser);
+	app.route('/users/me').get(users.requiresLogin, users.me);
+    app.route('/users/:userId').put(users.requiresLogin, users.hasAuthorization, users.update).get(users.requiresLogin, users.hasAuthorization, users.read);
+	app.route('/users').get(users.requiresLogin, users.list).post(users.requiresLogin, users.hasAuthorization, multipartyMiddleware, users.createUser);
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 
 	// Setting up the users password api
@@ -24,7 +26,7 @@ module.exports = function(app) {
 	app.route('/auth/reset/:token').post(users.reset);
 
 	// Setting up the users authentication api
-	app.route('/auth/signup').post(users.signup);
+	app.route('/auth/signup').post(multipartyMiddleware, users.signup);
 	app.route('/auth/signin').post(users.signin);
 	app.route('/auth/signout').get(users.signout);
 

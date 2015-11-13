@@ -26,14 +26,18 @@ var SkillSchema = new Schema({
 	},
 	customParams: [{
 		name: String,
-		type: String
+		type: String,
+		defaul: String
 	}],
-	users: [{
+	data: [{
 		user: {
 			type: Schema.ObjectId,
 			ref: 'User'
 		},
-		params: {}
+		params: [{
+			name: String,
+			value: String
+		}]
 	}]
 });
 

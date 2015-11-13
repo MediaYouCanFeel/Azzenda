@@ -1,29 +1,50 @@
 <section data-ng-controller="ArticlesController">
-	<div class="page-header">
-		<h1>New Article</h1>
-	</div>
-	<div class="col-md-12">
-		<form name="articleForm" class="form-horizontal" data-ng-submit="create()" novalidate>
-			<fieldset>
-				<div class="form-group" ng-class="{ 'has-error': articleForm.title.$dirty && articleForm.title.$invalid }">
-					<label class="control-label" for="title">Title</label>
-					<div class="controls">
-						<input name="title" type="text" data-ng-model="title" id="title" class="form-control" placeholder="Title" required>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label" for="content">Content</label>
-					<div class="controls">
-						<textarea name="content" data-ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
-					</div>
-				</div>
-				<div class="form-group">
-					<input type="submit" class="btn btn-default">
-				</div>
-				<div data-ng-show="error" class="text-danger">
-					<strong data-ng-bind="error"></strong>
-				</div>
-			</fieldset>
-		</form>
-	</div>
+<div class="page-header">
+    <h1>New Article</h1>
+</div>
+<div class="col-md-12">
+    <form name="articleForm" class="form-horizontal" data-ng-submit="create(file, croppedDataUrl)" novalidate>
+        <fieldset>
+            <div class="form-group" ng-class="{ 'has-error':   articleForm.title.$dirty && articleForm.title.$invalid }">
+                <label class="control-label" for="title">Title</label>
+                <div class="controls">
+                    <input name="title" type="text" data-ng-model="title" id="title" class="form-control" placeholder="Title" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="content">Content</label>
+                <div class="controls">
+                    <textarea name="content" data-ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="articleimage">Article Picture</label>
+                <div class="controls">
+                    <input id="articleimage" type="button" class="btn btn-default" ngf-select ng-model="file" name="file" value="Select Picture" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="10MB">
+                    <div ngf-drop ng-model="file" ngf-pattern="image/*" class="cropArea" style="background:#E4E4E4;overflow:hidden;width:500px;height:350px">
+			            <img-crop image="file  | ngfDataUrl" result-image-format="image/jpeg" area-type="square" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+			        </div>
+			        <div>
+			        	<label class="control-label" for="croppedimage">Cropped Picture</label>
+			        	<div>
+			            	<img id="croppedimage" ng-src="{{croppedDataUrl}}" />
+			            </div>
+			        </div>
+                    <!-- <img ng-show="file != null" ngf-src="file || '/thumb.jpg'">-->
+                    <span class="progress" ng-show="progress >= 0">      
+                        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                    </span> 
+                    <span ng-show="result">Upload Successful</span>
+                    <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default">
+            </div> 
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </fieldset>
+    </form>
+</div>
 </section>

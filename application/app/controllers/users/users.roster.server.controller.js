@@ -7,36 +7,74 @@ var mongoose = require('mongoose'),
 	errorHandler = require('../errors.server.controller'),
     ObjectId = require('mongoose').Types.ObjectId,
 	User = mongoose.model('User'),
+	fs = require('fs'),
 	_ = require('lodash');
 
 exports.createUser = function(req, res) {
-    //req.body.username = req.body.email;
-    
     // Init Variables
-	var user = new User(req.body);
-    //var creator = req.user;
+	var user = new User(req.body.credentials);
+	var file = req.files.file;
             
     // Add missing user fields
     user.provider = 'local';
     user.displayName = user.firstName + ' ' + user.lastName;
-    //user.username = user.email;
-
-    // Then save the user 
-    user.save(function(err) {
-        if (err) {
-            var msg = errorHandler.getErrorMessage(err);
-            msg = msg.replace(/username/g, "email");
-            msg = msg.replace(/Username/g, "Email");
-            return res.status(400).send({
-                message: msg
-            });
-        } else {
-            // Remove sensitive data before login
-            user.password = undefined;
-            user.salt = undefined;
-            res.json(user);
-        }
-    });
+    if(req.body.activeImg == true) {
+    	console.log('test');
+	    fs.readFile(file.path, function (err,original_data) {
+	    	 if (err) {
+	    	      return res.status(400).send({
+	    	            message: errorHandler.getErrorMessage(err)
+	    	        });
+	    	  }  else {
+	    		  // save image in db as base64 encoded - this limits the image size
+	    		  // to there should be size checks here and in client
+		    	  var base64Image = original_data.toString('base64');
+		    	  fs.unlink(file.path, function (err) {
+		    	      if (err)
+		    	      { 
+		    	          console.log('failed to delete ' + file.path);
+		    	      }
+		    	      else{
+		    	        console.log('successfully deleted ' + file.path);
+		    	      }
+		    	  });
+		    	  user.profpic = base64Image;
+		
+		    	  // Then save the user 
+		    	  user.save(function(err) {
+		    		  if (err) {
+		    			  var msg = errorHandler.getErrorMessage(err);
+		    			  msg = msg.replace(/username/g, "email");
+		    			  msg = msg.replace(/Username/g, "Email");
+		    			  return res.status(400).send({
+		    				  message: msg
+		    			  });
+		    	        } else {
+		    	        	// Remove sensitive data before login
+		    	        	user.password = undefined;
+		    	        	user.salt = undefined;
+		    	        	res.json(user);
+		    	        }
+		    	  });
+	    	  }
+	    });
+    } else {
+    	user.save(function(err) {
+  		  if (err) {
+  			  var msg = errorHandler.getErrorMessage(err);
+  			  msg = msg.replace(/username/g, "email");
+  			  msg = msg.replace(/Username/g, "Email");
+  			  return res.status(400).send({
+  				  message: msg
+  			  });
+  	        } else {
+  	        	// Remove sensitive data before login
+  	        	user.password = undefined;
+  	        	user.salt = undefined;
+  	        	res.json(user);
+  	        }
+  	  });
+    }
 };
 
 /**
@@ -85,7 +123,7 @@ exports.delete = function(req, res) {
  * List of Users
  */
 exports.list = function(req, res) { 
-    User.aggregate([{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1}}],function(err, users) {
+    User.aggregate([{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1, profpic: 1}}],function(err, users) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -111,7 +149,7 @@ exports.list = function(req, res) {
  * User middleware
  */
 exports.userByID = function(req, res, next, id) {
-    User.aggregate([{$match: {_id: ObjectId(id)}},{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1}}],function(err, users) {
+    User.aggregate([{$match: {_id: ObjectId(id)}},{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1, profpic: 1}}],function(err, users) {
         console.log(users.length);
         var user = users[0];
         if (err) return next(err);

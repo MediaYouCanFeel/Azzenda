@@ -25,7 +25,11 @@ var ArticleSchema = new Schema({
 		default: '',
 		trim: true
 	},
-	user: {
+	image: {
+		type: String,
+		default: ''
+	},
+	owner: {
 		type: Schema.ObjectId,
 		ref: 'User'
 	}

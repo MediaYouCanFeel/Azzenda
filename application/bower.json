@@ -15,6 +15,9 @@
     "angular-ui-utils": "~0.1.1",
     "angular-ui-router": "~0.2.11",
     "angular-number-picker": "~1.2.2",
-    "angular-tooltips": "~0.1.25"
+    "angular-tooltips": "~0.1.25",
+    "ng-file-upload": "~10.0.2",
+    "ng-file-upload-shim": "~10.0.2",
+    "ngImgCrop": "~0.3.2"
   }
 }

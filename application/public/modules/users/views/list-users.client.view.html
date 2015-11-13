@@ -12,7 +12,8 @@
 			<!-- Last, First -->
             <div class="row">
            		<div class="col-md-1">
-           			<img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture">
+           			<img class="prof-pic" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+           			<img class="prof-pic" ng-show="user.profpic==''" src="lib/pictures/pizza.jpg" alt="Profile Picture">
            		</div>
            		<div class="col-md-11">
                 	<span class="display-name" data-ng-bind="user.displayName"></span>

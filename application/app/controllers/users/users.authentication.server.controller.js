@@ -7,6 +7,7 @@ var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+	fs = require('fs'),
 	User = mongoose.model('User');
 
 /**
@@ -18,12 +19,15 @@ exports.signup = function(req, res) {
 
     //req.body.username = req.body.email;
     // Init Variables
-	var user = new User(req.body);
+	var user = new User(req.body.credentials);
     //var creator = req.user;
+	var file = req.files.file;
     
     User.find({roles: 'admin'}).exec(function(err,users) {
         if(err) {
-         //do something   
+        	return res.status(400).send({
+    			message: msg
+    		});
         } else {
             if(!users.length) {
                 user.roles = ['admin'];
@@ -38,30 +42,62 @@ exports.signup = function(req, res) {
             user.displayName = user.firstName + ' ' + user.lastName;
             //user.username = user.email;
             
-            
-            // Then save the user 
-            user.save(function(err) {
-                if (err) {
-                    var msg = errorHandler.getErrorMessage(err);
-                    msg = msg.replace(/username/g, "email");
-                    msg = msg.replace(/Username/g, "Email");
-                    return res.status(400).send({
-                        message: msg
-                    });
-                } else {
-                    // Remove sensitive data before login
-                    user.password = undefined;
-                    user.salt = undefined;
-
-                    req.login(user, function(err) {
-                        if (err) {
-                            res.status(400).send(err);
-                        } else {
-                            res.json(user);
-                        }
-                    });
-                }
-            });
+            if(req.body.activeImg) {
+	            fs.readFile(file.path, function (err,original_data) {
+	            	if (err) {
+	            		return res.status(400).send({
+	            			message: msg
+	            		});
+	            	}  else {
+	           		  // save image in db as base64 encoded - this limits the image size
+	           		  // to there should be size checks here and in client
+	       	    	  var base64Image = original_data.toString('base64');
+	       	    	  fs.unlink(file.path, function (err) {
+	       	    	      if (err)
+	       	    	      { 
+	       	    	          console.log('failed to delete ' + file.path);
+	       	    	      }
+	       	    	      else{
+	       	    	        console.log('successfully deleted ' + file.path);
+	       	    	      }
+	       	    	  });
+	       	    	  user.profpic = base64Image;
+	       	
+	       	    	  // Then save the user 
+	       	    	  user.save(function(err) {
+	       	    		  if (err) {
+	       	    			  var msg = errorHandler.getErrorMessage(err);
+	       	    			  msg = msg.replace(/username/g, "email");
+	       	    			  msg = msg.replace(/Username/g, "Email");
+	       	    			  return res.status(400).send({
+	       	    				  message: msg
+	       	    			  });
+	       	    		  } else {
+	       	    			  // Remove sensitive data before login
+	       	    			  user.password = undefined;
+	       	    			  user.salt = undefined;
+	       	    			  res.json(user);
+	       	    		  }
+	       	    	  });
+	            	}
+	            });
+            } else {
+            	user.save(function(err) {
+            		if (err) {
+            			var msg = errorHandler.getErrorMessage(err);
+            			msg = msg.replace(/username/g, "email");
+            			msg = msg.replace(/Username/g, "Email");
+            			return res.status(400).send({
+            				message: msg
+            			});
+            		} else {
+            			// Remove sensitive data before login
+            			user.password = undefined;
+            			user.salt = undefined;
+            			res.json(user);
+            		}
+            	});
+            }
         }
     });
 };

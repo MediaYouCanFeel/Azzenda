@@ -95,7 +95,7 @@ exports.delete = function(req, res) {
  * List of Teams
  */
 exports.list = function(req, res) { 
-	Team.find().populate('owners', 'displayName').populate('users', 'displayName').populate('project').lean().exec(function(err, teams) {
+	Team.find().populate('owners', 'displayName profpic firstName lastName').populate('users', 'displayName profpic firstName lastName').populate('project').lean().exec(function(err, teams) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

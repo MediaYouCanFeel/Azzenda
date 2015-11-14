@@ -8,7 +8,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		if ($scope.authentication.user) $location.path('/');
 
         //dropdown init
-//        angular.element('select').select2({ width: '100%' });
+        angular.element('select').select2({ width: '100%' });
         
         $scope.picSelected = function(files) {
 			if(files && (files.length > 0)) {
@@ -31,8 +31,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			}).success(function (response, status) {
 				// If successful we assign the response to the global user model
 				$scope.authentication.user = response;
-				// And redirect to the index page
-				$location.path('/splashes');
+
+				$scope.signin();
 			}).error(function (err) {
 				$scope.error = err.message;
 			});

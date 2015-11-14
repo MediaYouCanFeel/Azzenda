@@ -55,7 +55,7 @@
         </ul>
     </script>
 	
-	<div class="row top-well">
+	<div class="col-md-12 top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/teams" class="btn btn-blue" style="margin-bottom: -20px;">
                 <i class="fa fa-users"></i> &nbsp; All Teams
@@ -87,10 +87,45 @@
 		<!-- List of members -->
 		<div class="col-md-12 well">
 			<h4>Members</h4>
-			<a ng-repeat="user in team.users" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
-				<img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture">
-				&nbsp; <span class="display-name" data-ng-bind="user.displayName"></span>
+			<a ng-repeat="user in team.users | limitTo: 4" data-ng-href="#!/users/{{user._id}}">
+				<img class="prof-pic" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+				<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
 			</a>
+			
+			<!-- More than 3 users -->
+			<span ng-if="team.users.length > 3" data-ng-init="setDynamicPopover()">
+				<div>
+					<span ng-repeat="user in team.users | limitTo: 3">
+						<a class="display-name" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName"></a><span ng-if="$index < 3">,</span> 
+					</span>
+					and <a popover-placement="bottom" popover="{{dynamicPopover}}" popover-trigger="mouseenter"><span data-ng-bind="team.users.length - 3"></span> others.</a>
+				</div>
+			</span>
+
+			<!-- Exactly 3 users -->			
+			<span ng-if="team.users.length == 3">
+				<div>
+					<span ng-repeat="user in team.users">
+						<a class="display-name" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName"></a><span ng-if="$index < 2">,
+						</span><span ng-if="$index == 1"> and 
+						</span><span ng-if="$index == team.users.length-1">.</span> 
+					</span>
+				</div>
+			</span>
+			
+			<button popover-placement="top" popover="On the Top!" popover-trigger="mouseenter" type="button" class="btn btn-default">Top</button>
+			
+			<!-- Less than 3 users -->
+			<span ng-if="team.users.length < 3">
+				<div>
+					<span ng-repeat="user in team.users">
+						<a class="display-name" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+						</a><span ng-if="$index == 0 && team.users.length > 0"> and 
+						</span><span ng-if="$index == team.users.length-1">.</span> 
+					</span>
+				</div>
+			</span>
+			
 		</div>
 	</div>
 	

@@ -5,6 +5,10 @@ angular.module('teams').config(['$stateProvider',
 	function($stateProvider) {
 		// Teams state routing
 		$stateProvider.
+		state('create-team-proj', {
+			url: '/create-team-proj',
+			templateUrl: 'modules/teams/views/create-team-proj.client.view.html'
+		}).
 		state('listTeams', {
 			url: '/teams',
 			templateUrl: 'modules/teams/views/list-teams.client.view.html'

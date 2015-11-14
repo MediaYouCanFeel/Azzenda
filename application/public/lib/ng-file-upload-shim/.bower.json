@@ -21,6 +21,10 @@
   },
   "_source": "git://github.com/danialfarid/angular-file-upload-shim-bower.git",
   "_target": "~10.0.2",
+<<<<<<< HEAD
   "_originalSource": "ng-file-upload-shim",
   "_direct": true
+=======
+  "_originalSource": "ng-file-upload-shim"
+>>>>>>> branch 'master' of git@github.com:MediaYouCanFeel/Azzenda.git
 }

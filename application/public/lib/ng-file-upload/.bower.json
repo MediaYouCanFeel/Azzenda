@@ -20,6 +20,10 @@
   },
   "_source": "git://github.com/danialfarid/angular-file-upload-bower.git",
   "_target": "~10.0.2",
+<<<<<<< HEAD
   "_originalSource": "ng-file-upload",
   "_direct": true
+=======
+  "_originalSource": "ng-file-upload"
+>>>>>>> branch 'master' of git@github.com:MediaYouCanFeel/Azzenda.git
 }

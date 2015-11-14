@@ -185,7 +185,13 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
         };
         
         $scope.setDynamicPopover = function() {
-			$scope.dynamicPopover = $scope.name;
+			
+        	$scope.dynamicPopover = "";
+			
+			for (var user in $scope.team.users) {
+				console.log("$scope: " + user)
+				$scope.dynamicPopover += user.displayName + "\n";
+			}
         }
 	}
 ]);

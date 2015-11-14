@@ -169,7 +169,7 @@ exports.listTypes = function(req, res) {
  * Project middleware
  */
 exports.projectByID = function(req, res, next, id) { 
-	Project.findById(id).populate('owners', 'displayName').populate('users', 'displayName').populate('thread').lean(req.originalMethod == 'GET').exec(function(err, project) {
+	Project.findById(id).populate('owners', 'displayName profpic').populate('users', 'displayName profpic').populate('thread').lean(req.originalMethod == 'GET').exec(function(err, project) {
 		if (err) return next(err);
 		if (! project) return next(new Error('Failed to load Project ' + id));
 		req.project = project ;

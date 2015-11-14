@@ -188,10 +188,10 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 			
         	$scope.dynamicPopover = "";
 			
-			for (var user in $scope.team.users) {
-				console.log("$scope: " + user)
+        	$scope.team.users.forEach(function(user) {
+        		console.log("$scope: " + user)
 				$scope.dynamicPopover += user.displayName + "\n";
-			}
+        	});
         }
 	}
 ]);

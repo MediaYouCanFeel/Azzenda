@@ -148,7 +148,7 @@ exports.list = function(req, res) {
  * Team middleware
  */
 exports.teamByID = function(req, res, next, id) { 
-	Team.findById(id).populate('owners', 'displayName profpic').populate('users', 'displayName profpic').populate('project').lean(req.originalMethod == 'GET').exec(function(err, team) {
+	Team.findById(id).populate('owners', 'displayName profpic firstName lastName').populate('users', 'displayName profpic firstName lastName').populate('project').lean(req.originalMethod == 'GET').exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));
 		req.team = team ;

@@ -37,3 +37,7 @@
 .li-menu {
     display:inline-block;
 }
+
+.tooltip-inner {
+    white-space:pre-wrap;
+}

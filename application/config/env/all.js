@@ -41,6 +41,7 @@ module.exports = {
                 'public/lib/ng-file-upload/ng-file-upload-shim.min.js',
                 'public/lib/ng-file-upload/ng-file-upload.min.js',
                 'public/lib/ngImgCrop/compile/minified/ng-img-crop.js'
+                
 			]
 		},
 		css: [

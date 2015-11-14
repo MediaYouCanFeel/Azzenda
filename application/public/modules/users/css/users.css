@@ -18,6 +18,11 @@
 	height: 64px;
 }
 
+.prof-pic-fit {
+	width: 100%;
+}
+
+
 .display-name {
-	font-size: 16px;
+	font-size: 12px;
 }

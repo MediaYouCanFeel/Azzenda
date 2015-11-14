@@ -42,7 +42,7 @@ exports.signup = function(req, res) {
             user.displayName = user.firstName + ' ' + user.lastName;
             //user.username = user.email;
             
-            if(req.body.activeImg) {
+            if(req.body.activeImg == 'true') {
 	            fs.readFile(file.path, function (err,original_data) {
 	            	if (err) {
 	            		return res.status(400).send({

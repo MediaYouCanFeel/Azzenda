@@ -18,7 +18,7 @@ exports.createUser = function(req, res) {
     // Add missing user fields
     user.provider = 'local';
     user.displayName = user.firstName + ' ' + user.lastName;
-    if(req.body.activeImg == true) {
+    if(req.body.activeImg == 'true') {
     	console.log('test');
 	    fs.readFile(file.path, function (err,original_data) {
 	    	 if (err) {

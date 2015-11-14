@@ -1,7 +1,17 @@
 <section data-ng-controller="UsersController" data-ng-init="findOne()">
-	<div class="well top-well">
-		<h1>{{user.firstName}} {{user.lastName}}</h1>
+	<div class="col-md-12">
+		<div class="well top-well">
+			<h1>{{user.firstName}} {{user.lastName}}</h1>
+		</div>
 	</div>
+	
+	<div class="col-md-12">
+		<div class="col-md-3 well">
+			<img class="prof-pic-fit" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+		</div>
+	</div>
+	
+	
 	<div class="pull-right" data-ng-show="((authentication.user))">
 		<a class="btn btn-primary" href="/#!/users/{{user._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
@@ -10,12 +20,4 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="user.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="user.displayName"></span>
-		</em>
-	</small>
 </section>

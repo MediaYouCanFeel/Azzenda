@@ -44,6 +44,38 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
         };
         
         
+        $scope.createForProjectModal = function (size) {
+        	var modalInstance = $modal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: 'modules/teams/views/create-team-proj.client.view.html',
+                controller: function ($scope, $modalInstance, items) {
+                    console.log('In Modal Controller');
+                                      
+                    $scope.ok = function () {
+                        //$scope.selected.event
+                      modalInstance.close();
+                    };
+
+                    $scope.cancel = function () {
+                      $modalInstance.dismiss('cancel');
+                    };
+                },
+                size: size,
+                resolve: {
+                  items: function () {
+                  }
+                }
+              });
+              
+              //modalInstance.opened.then($scope.initModal);
+              
+              modalInstance.result.then(function (selectedEvent) {
+                $scope.selected = selectedEvent;
+              }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+              });
+        }
+        
 		// Create new Team
 		$scope.create = function() {
 			// Create new Team object
@@ -67,6 +99,36 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 			});
 		};
 
+		// Create new Team for current Project
+		$scope.createProjTeam = function() {
+			
+			$scope.project = Projects.get({ 
+				projectId: $stateParams.projectId
+			});
+			
+			console.log("$scope.project = " + $scope.project + "\projectId: " + $stateParams.projectId);
+			
+			// Create new Team object
+			var team = new Teams ({
+				name: this.name,
+				project: $stateParams.projectId,
+				description: this.description,
+				users: this.members
+			});
+
+			// Redirect after save
+			team.$save(function(response) {
+				$location.path('teams/' + response._id);
+
+                $scope.ok();
+                
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+		
 		// Remove existing Team
 		$scope.remove = function(team) {
 			if ( team ) { 
@@ -121,5 +183,9 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
         	var response = Projects.query();
         	$scope.projects = response;
         };
+        
+        $scope.setDynamicPopover = function() {
+			$scope.dynamicPopover = $scope.name;
+        }
 	}
 ]);

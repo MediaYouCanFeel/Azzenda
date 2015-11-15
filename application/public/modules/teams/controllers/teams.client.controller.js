@@ -134,12 +134,6 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		// Create new Team for current Project
 		$scope.createProjTeam = function() {
 			
-			$scope.project = Projects.get({ 
-				projectId: $stateParams.projectId
-			});
-			
-			console.log("$scope.project = " + $scope.project + "\projectId: " + $stateParams.projectId);
-			
 			// Create new Team object
 			var team = new Teams ({
 				name: this.name,

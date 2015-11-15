@@ -109,11 +109,11 @@
 			<!-- More than 3 users -->
 			<div>
 				<span ng-repeat="user in team.users | limitTo: 3" data-ng-init="setDynamicPopover()">
-					<a class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
-					</a><span ng-if="$index < team.users.length - 1 && team.users.length > 2">,
-					</span><span ng-if="$index == team.users.length - 2"> and 
+					<a ng-if="team.users.length <= 3 || $index < 2" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><span ng-if="team.users.length > 2 && $index < 2">,
+					</span><span ng-if="$index == 0 && team.users.length == 2 || team.users.length > 2 && $index == 1"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
-					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a></span>
+					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 2"></span> others.</a></span>
 					
 				</span>
 				<!--  --> 

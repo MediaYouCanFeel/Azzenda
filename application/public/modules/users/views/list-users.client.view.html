@@ -6,9 +6,19 @@
             </span>
     </div>
     
-    List of users:
-    <div class="list-group well">
-        <a data-ng-repeat="user in users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+    <div class="well">
+		<div class="row searchBar">
+			<div class="col-md-4">
+		    	<form>
+			    	<label for="searchText">Search by name</label>
+			    	<input class="form-control" id="searchText" type="text" data-ng-model="searchText">
+		    	</form>
+	    	</div>
+	    	<div class="pull-right searchResults">
+		    	<p>Displaying {{(users | filter:search).length}} of {{ users.length }} users.</p>
+	    	</div>
+    	</div>
+        <a data-ng-repeat="user in users | orderBy:'lastName' | filter:search" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
 			<!-- Last, First -->
             <div class="row">
            		<div class="col-md-1">

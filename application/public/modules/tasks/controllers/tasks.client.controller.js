@@ -45,6 +45,41 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             });
         };
         
+      //Open Modal window for creating tasks
+        $scope.taskForProjectModal = function (size) {
+            
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/create-task-proj.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
         //Open Modal window for creating subtasks
         $scope.createSubtaskModal = function (size) {
             
@@ -178,6 +213,39 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 			});
 		};
 
+		// Create new Task for current Project
+		$scope.createProjTask = function() {
+			
+			// Create new Task object
+			var task = new Tasks ({
+				name: this.name,
+				owners: {
+					users: this.user_owner,
+					team: this.team_owner					
+				},
+				workers: {
+					users: this.user_assigned, 
+					team: this.team_assigned
+				},
+				project:  $stateParams.projectId,
+				deadline: this.deadline,
+				description: this.description,
+				parTask: null
+			});
+
+			// Redirect after save
+			task.$save(function(response) {
+				$location.path('tasks/' + response._id);
+
+				$scope.ok();
+				
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+		
 		$scope.updateParTask = function() {
 			$scope.parentTask = $scope.task._id;
 		}
@@ -248,6 +316,10 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         	$scope.task = Tasks.get({ 
 				taskId: $stateParams.taskId
 			}, $scope.setProject2);
+        }
+        
+        $scope.setProjectFromProject = function() {
+        	$scope.project = $stateParams.projectId;
         }
         
         $scope.setProject2 = function() {

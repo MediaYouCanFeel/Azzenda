@@ -1,3 +1,21 @@
 .team-name {
 	font-size: 20px;
 }
+
+.extraPics {
+	display: inline-block;
+	height: 64px;
+	width: 64px;
+	border: solid;
+	font-size: 20px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #ccc;
+	border-color: #555;
+	color: #555;
+}
+
+.extraNums {
+	display: inline-block;
+	margin-top: 15px;
+}

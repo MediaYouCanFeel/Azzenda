@@ -87,43 +87,37 @@
 		<!-- List of members -->
 		<div class="col-md-12 well">
 			<h4>Members</h4>
-			<a ng-repeat="user in team.users | limitTo: 4" data-ng-href="#!/users/{{user._id}}">
-				<img class="prof-pic" popover-placement="top" popover="{{user.displayName}}" popover-trigger="mouseenter" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
-				<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
-			</a>
+			<!-- Pics -->
+			<!-- 4 or less users (all pics shown) -->
+			<span ng-if="team.users.length <= 4">
+				<a ng-repeat="user in team.users | limitTo: 4" data-ng-href="#!/users/{{user._id}}">
+					<img class="prof-pic" popover-placement="top" popover="{{user.displayName}}" popover-trigger="mouseenter" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+					<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
+				</a>
+			</span>
 			
+			<!-- More than 4 users (some pics shown) -->
+			<span ng-if="team.users.length > 4">
+				<a ng-repeat="user in team.users | limitTo: 3" data-ng-href="#!/users/{{user._id}}">
+					<img class="prof-pic" popover-placement="top" popover="{{user.displayName}}" popover-trigger="mouseenter" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+					<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
+				</a>
+				<span class="extraPics" ng-click="wholeTeam('md')"> <span class="extraNums" data-ng-bind="getString(team.users.length - 3)"></span></span>
+			</span>
+			
+			<!-- Text -->
 			<!-- More than 3 users -->
-			<span ng-if="team.users.length > 3" data-ng-init="setDynamicPopover()">
-				<div>
-					<span ng-repeat="user in team.users | limitTo: 3">
-						<a class="display-name" popover-placement="bottom" popover="{{user.displayName}}" popover-trigger="mouseenter" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName"></a><span ng-if="$index < 3">,</span> 
-					</span>
-					and <a popover-placement="bottom" popover="{{dynamicPopover}}" popover-trigger="mouseenter"><span data-ng-bind="team.users.length - 3"></span> others.</a>
-				</div>
-			</span>
-
-			<!-- Exactly 3 users -->			
-			<span ng-if="team.users.length == 3">
-				<div>
-					<span ng-repeat="user in team.users">
-						<a class="display-name" popover-placement="bottom" popover="{{user.displayName}}" popover-trigger="mouseenter" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName"></a><span ng-if="$index < 2">,
-						</span><span ng-if="$index == 1"> and 
-						</span><span ng-if="$index == team.users.length-1">.</span> 
-					</span>
-				</div>
-			</span>
-			
-			<!-- Less than 3 users -->
-			<span ng-if="team.users.length < 3">
-				<div>
-					<span ng-repeat="user in team.users">
-						<a class="display-name" popover-placement="bottom" popover="{{user.displayName}}" popover-trigger="mouseenter" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
-						</a><span ng-if="$index == 0 && team.users.length > 0"> and 
-						</span><span ng-if="$index == team.users.length-1">.</span> 
-					</span>
-				</div>
-			</span>
-			
+			<div>
+				<span ng-repeat="user in team.users | limitTo: 3" data-ng-init="setDynamicPopover()">
+					<a class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><span ng-if="$index < team.users.length - 1 && team.users.length > 2">,
+					</span><span ng-if="$index == team.users.length - 2"> and 
+					</span><span ng-if="$index == team.users.length - 1">.
+					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a></span>
+					
+				</span>
+				<!--  --> 
+			</div>			
 		</div>
 	</div>
 	

@@ -16,14 +16,25 @@ var mongoose = require('mongoose'),
 exports.create = function(req, res) {
 	var team = new Team(req.body);
 
-	team.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(team);
-		}
+	Project.findById(team.project).exec(function(err, project) {
+		project.users = _.union(project.users,team.users);
+		project.save(function(err) {
+			if(err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				team.save(function(err) {
+					if (err) {
+						return res.status(400).send({
+							message: errorHandler.getErrorMessage(err)
+						});
+					} else {
+						res.jsonp(team);
+					}
+				});
+			}
+		});
 	});
 };
 

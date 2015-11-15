@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('../errors.server.controller'),
     ObjectId = require('mongoose').Types.ObjectId,
 	User = mongoose.model('User'),
+	Project = mongoose.model('Project'),
 	fs = require('fs'),
 	_ = require('lodash');
 
@@ -80,8 +81,32 @@ exports.createUser = function(req, res) {
 /**
  * Show the current User
  */
-exports.read = function(req, res) {
-	res.jsonp(req.otherUser);
+exports.read = function(req, res) {	
+	var user = req.otherUser;
+	var obId = ObjectId(user._id);
+	user.password = undefined;
+    user.salt = undefined;
+    user.providerData = undefined;
+    user.email = user.username;
+    user.ownerProjects = [];
+    user.memberProjects = [];
+    Project.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, projects: {$push: '$$ROOT'}}}]).exec(function(err, projects) {
+    	if (err) {
+    		console.log(err);
+    		return res.status(400).send({
+				  message: err.msg
+			});
+    	} else {
+	    	projects.forEach(function(projectArray) {
+	    		if(projectArray._id) {
+	    			user.ownerProjects = projectArray.projects;
+	    		} else {
+	    			user.memberProjects = projectArray.projects;
+	    		}
+	    	});
+	    	res.jsonp(req.otherUser);
+    	}
+    });
 };
 
 /**
@@ -149,9 +174,7 @@ exports.list = function(req, res) {
  * User middleware
  */
 exports.userByID = function(req, res, next, id) {
-    User.aggregate([{$match: {_id: ObjectId(id)}},{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1, profpic: 1}}],function(err, users) {
-        console.log(users.length);
-        var user = users[0];
+	User.findById(id).lean(req.originalMethod == 'GET').exec(function(err, user) {
         if (err) return next(err);
         if (! user) return next(new Error('Failed to load User ' + id));
         req.otherUser = user;

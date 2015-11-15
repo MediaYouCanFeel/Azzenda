@@ -32,13 +32,13 @@ exports.create = function(req, res) {
  * Show the current Project
  */
 exports.read = function(req, res) {
-	Team.find({'project' : req.project._id}).exec(function(err, teams) {
+	Team.find({'project' : req.project._id}).populate('owners.users.user', 'displayName profpic').populate('workers.users.user', 'displayName profpic').exec(function(err, teams) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Task.find({$and: [{'project' : req.project._id},{'path': {$size: 0}}]}).populate('owners.users.user', 'displayName').populate('owners.team', 'name').populate('workers.users.user','displayName').populate('workers.team','name').lean().exec(function(err, tasks) {
+			Task.find({$and: [{'project' : req.project._id},{'path': {$size: 0}}]}).populate('owners.users.user', 'displayName profpic').populate('owners.team', 'name').populate('workers.users.user','displayName profpic').populate('workers.team','name').lean().exec(function(err, tasks) {
 				if(err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)
@@ -95,7 +95,7 @@ exports.delete = function(req, res) {
  * List projects
  */
 exports.list = function(req, res) {
-	Project.find({archived: (req.query.archived || false)}).sort('_id').populate('owners','displayName').populate('users','displayName').populate('thread').lean().exec(function(err, projects) {
+	Project.find({archived: (req.query.archived || false)}).sort('_id').populate('owners','displayName profpic').populate('users','displayName profpic').lean().exec(function(err, projects) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

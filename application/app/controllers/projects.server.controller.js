@@ -32,7 +32,7 @@ exports.create = function(req, res) {
  * Show the current Project
  */
 exports.read = function(req, res) {
-	Team.find({'project' : req.project._id}).populate('owners.users.user', 'displayName profpic').populate('workers.users.user', 'displayName profpic').exec(function(err, teams) {
+	Team.find({'project' : req.project._id}).populate('owners', 'displayName profpic').populate('users', 'displayName profpic').exec(function(err, teams) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

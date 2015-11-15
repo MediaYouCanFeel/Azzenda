@@ -8,6 +8,9 @@ var mongoose = require('mongoose'),
     ObjectId = require('mongoose').Types.ObjectId,
 	User = mongoose.model('User'),
 	Project = mongoose.model('Project'),
+	Team = mongoose.model('Team'),
+	Task = mongoose.model('Task'),
+	Event = mongoose.model('Event'),
 	fs = require('fs'),
 	_ = require('lodash');
 
@@ -90,6 +93,10 @@ exports.read = function(req, res) {
     user.email = user.username;
     user.ownerProjects = [];
     user.memberProjects = [];
+    user.ownerTeams = [];
+    user.memberTeams = [];
+    user.ownerTasks = [];
+    user.workerTasks = [];
     Project.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, projects: {$push: '$$ROOT'}}}]).exec(function(err, projects) {
     	if (err) {
     		console.log(err);
@@ -104,7 +111,39 @@ exports.read = function(req, res) {
 	    			user.memberProjects = projectArray.projects;
 	    		}
 	    	});
-	    	res.jsonp(req.otherUser);
+	    	Team.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, teams: {$push: '$$ROOT'}}}]).exec(function(err, teams) {
+	        	if (err) {
+	        		console.log(err);
+	        		return res.status(400).send({
+	    				  message: err.msg
+	    			});
+	        	} else {
+	    	    	teams.forEach(function(teamArray) {
+	    	    		if(teamArray._id) {
+	    	    			user.ownerTeams = teamArray.teams;
+	    	    		} else {
+	    	    			user.memberTeams = teamArray.teams;
+	    	    		}
+	    	    	});
+	    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners.users.user']}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
+	    	        	if (err) {
+	    	        		console.log(err);
+	    	        		return res.status(400).send({
+	    	    				  message: err.msg
+	    	    			});
+	    	        	} else {
+	    	    	    	tasks.forEach(function(taskArray) {
+	    	    	    		if(taskArray._id) {
+	    	    	    			user.ownerTasks = taskArray.tasks;
+	    	    	    		} else {
+	    	    	    			user.workerTasks = taskArray.tasks;
+	    	    	    		}
+	    	    	    	}); 	
+	    	    	    	res.jsonp(req.otherUser);
+	    	        	}
+	    	        });
+	        	}
+	        });
     	}
     });
 };

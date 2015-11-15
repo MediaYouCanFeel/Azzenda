@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Team = mongoose.model('Team'),
 	Task = mongoose.model('Task'),
+	Project = mongoose.model('Project'),
 	TaskCtrl = require('../../app/controllers/tasks.server.controller'),
 	_ = require('lodash');
 
@@ -17,24 +18,40 @@ exports.create = function(req, res) {
 	var team = new Team(req.body);
 
 	Project.findById(team.project).exec(function(err, project) {
-		project.users = _.union(project.users,team.users);
-		project.save(function(err) {
-			if(err) {
-				return res.status(400).send({
-					message: errorHandler.getErrorMessage(err)
-				});
-			} else {
-				team.save(function(err) {
-					if (err) {
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
-					} else {
-						res.jsonp(team);
-					}
-				});
-			}
-		});
+		if(err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			project.users = _.union(project.users.map(function(doc) {
+				return String(doc);
+			}),
+			team.users.map(function(doc) {
+				return String(doc);
+			}),
+			team.owners.map(function(doc) {
+				return String(doc);
+			}));
+			team.save(function(err) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					project.save(function(err) {
+						if(err) {
+							team.remove(function(errr) {
+								return res.status(400).send({
+									message: errorHandler.getErrorMessage(err)
+								});
+							});
+						} else {
+							res.jsonp(team);
+						}
+					});
+				}
+			});
+		}
 	});
 };
 

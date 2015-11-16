@@ -87,9 +87,6 @@ exports.createUser = function(req, res) {
 exports.read = function(req, res) {	
 	var user = req.otherUser;
 	var obId = ObjectId(user._id);
-	user.password = undefined;
-    user.salt = undefined;
-    user.providerData = undefined;
     user.email = user.username;
     user.ownerProjects = [];
     user.memberProjects = [];
@@ -187,13 +184,70 @@ exports.delete = function(req, res) {
  * List of Users
  */
 exports.list = function(req, res) { 
-    User.aggregate([{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1, profpic: 1}}],function(err, users) {
+    User.aggregate([{$project: {firstName: 1, lastName: 1, displayName: 1, email: '$username', roles: 1, updated: 1, created: 1, groups: 1, profpic: 1}},{$sort: {_id: 1}}],function(err, users) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(users);
+			Project.aggregate([{$project: {name: 1, owners: 1, users: 1, allUsers: {$setUnion: ['$owners','$users']}}},{$unwind: '$allUsers'},{$group: {_id: {userId: '$allUsers', isOwner: {$anyElementTrue: {$map: {'input': '$owners', 'as': 'ownrs', 'in': {$eq: ['$allUsers','$$ownrs']}}}}}, projects: {$push: '$$ROOT'}}},{$group: {_id: '$_id.userId', projs: {$push: {isOwner: '$_id.isOwner', projectArray: '$projects'}}}},{$sort: {_id: 1}}]).exec(function(err, userProjs) {
+		    	if (err) {
+		    		console.log(err);
+		    		return res.status(400).send({
+						  message: err.msg
+					});
+		    	} else {
+		    		for(var i=0, j=0; i<users.length; i++) {
+		    			users[i].memberProjects = [];
+		    			users[i].ownerProjects = [];
+						if((j < userProjs.length) && (users[i]._id.equals(userProjs[j]._id))) {
+							for(var k=0; k<userProjs[j].projs.length; k++) {
+								if(userProjs[j].projs[k].isOwner) {
+									users[i].ownerProjects = userProjs[j].projs[k].projectArray;
+								} else {
+									users[i].memberProjects = userProjs[j].projs[k].projectArray;
+								}
+							}
+							j++;
+						}
+					}
+		    		res.jsonp(users);
+		    		
+//			    	Team.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, teams: {$push: '$$ROOT'}}}]).exec(function(err, teams) {
+//			        	if (err) {
+//			        		console.log(err);
+//			        		return res.status(400).send({
+//			    				  message: err.msg
+//			    			});
+//			        	} else {
+//			    	    	teams.forEach(function(teamArray) {
+//			    	    		if(teamArray._id) {
+//			    	    			user.ownerTeams = teamArray.teams;
+//			    	    		} else {
+//			    	    			user.memberTeams = teamArray.teams;
+//			    	    		}
+//			    	    	});
+//			    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners.users.user']}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
+//			    	        	if (err) {
+//			    	        		console.log(err);
+//			    	        		return res.status(400).send({
+//			    	    				  message: err.msg
+//			    	    			});
+//			    	        	} else {
+//			    	    	    	tasks.forEach(function(taskArray) {
+//			    	    	    		if(taskArray._id) {
+//			    	    	    			user.ownerTasks = taskArray.tasks;
+//			    	    	    		} else {
+//			    	    	    			user.workerTasks = taskArray.tasks;
+//			    	    	    		}
+//			    	    	    	}); 	
+//			    	    	    	res.jsonp(req.otherUser);
+//			    	        	}
+//			    	        });
+//			        	}
+//			        });
+		    	}
+		    });
 		}
 	});
     /*
@@ -216,6 +270,9 @@ exports.userByID = function(req, res, next, id) {
 	User.findById(id).lean(req.originalMethod == 'GET').exec(function(err, user) {
         if (err) return next(err);
         if (! user) return next(new Error('Failed to load User ' + id));
+        user.password = undefined;
+        user.salt = undefined;
+        user.providerData = undefined;
         req.otherUser = user;
         next();
     });

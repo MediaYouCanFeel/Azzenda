@@ -52,8 +52,8 @@ exports.create = function(req, res) {
  * Show the current Thread
  */
 exports.read = function(req, res) {
-	exports.popThreads([req.thread], function(threads) {
-		res.jsonp(threads[0]);
+	exports.popThreads([req.thread], function() {
+		res.jsonp(req.thread);
 	});
 };
 

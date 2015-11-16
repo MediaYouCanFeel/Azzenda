@@ -15,7 +15,29 @@
 	color: #555;
 }
 
+.extraPics-40 {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
+	border: solid;
+	font-size: 12px;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #ccc;
+	border-color: #555;
+	color: #555;	
+}
+
 .extraNums {
 	display: inline-block;
 	margin-top: 15px;
+}
+
+.extraNums-40 {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+.team-list {
+	height: 64px;
 }

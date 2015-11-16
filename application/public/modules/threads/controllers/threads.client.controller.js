@@ -1,8 +1,8 @@
 'use strict';
 
 // Threads controller
-angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Threads', '$modal',
-	function($scope, $stateParams, $location, Authentication, Threads, $modal) {
+angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Threads', 'Teams', '$modal',
+	function($scope, $stateParams, $location, Authentication, Threads, Teams, $modal) {
 		$scope.authentication = Authentication;
 
 		
@@ -50,8 +50,17 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 
 			// Redirect after save
 			thread.$save(function(response) {
-//				$location.path('threads/' + response._id);
-
+				//Send update to Project, Team, etc.
+				
+				console.log("response._id: " + response._id + "\n$stateParams.threads: " + $stateParams.threads);
+				
+				// Add this code here
+				Teams.update({
+						_id: $stateParams.teamId,
+						threads: $stateParams.threads.concat(response._id)
+				});
+				
+				
 				// Clear form fields
 				$scope.name = '';
 			}, function(errorResponse) {

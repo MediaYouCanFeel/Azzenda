@@ -9,6 +9,8 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
             width: '100%'
         });
 		
+		$scope.usersForSearch = [];
+		
         //Open Modal window for creating events
         $scope.createModal = function (size) {
             
@@ -134,12 +136,6 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		// Create new Team for current Project
 		$scope.createProjTeam = function() {
 			
-			$scope.project = Projects.get({ 
-				projectId: $stateParams.projectId
-			});
-			
-			console.log("$scope.project = " + $scope.project + "\projectId: " + $stateParams.projectId);
-			
 			// Create new Team object
 			var team = new Teams ({
 				name: this.name,
@@ -228,6 +224,63 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
         
         $scope.getString = function(number) {
         	return ("+" + number);
+        }
+        
+        
+        //FILTERS
+        $scope.userSearch = function(element) {
+        	if ($scope.usersForSearch.length > 0) {
+        	
+				for (var j = 0; j < $scope.usersForSearch.length; j++) {
+					if (!$scope.checkMembership($scope.usersForSearch[j], element)) {
+						return false;
+					}
+				}
+
+				return true;
+				
+        	} else {
+        		
+        		//Search box is empty
+        		return true;
+        		
+        	}
+        	
+        }
+        
+        $scope.searchNameText = function(element) {
+			if ($scope.nameSearchText == "" || !$scope.nameSearchText) {
+				return true;
+			} else if (element.name.toLowerCase().contains($scope.nameSearchText.toLowerCase())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+        
+        $scope.searchProject = function(element) {
+        	if (!$scope.projectForSearch || element.project._id == $scope.projectForSearch) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+        
+        $scope.checkMembership = function(userId, team) {
+        	for (var i = 0; i < team.users.length; i++) {
+        		//If user is found on the team, we're good
+        		if (team.users[i]._id == userId) {
+        			return "notFalse";
+        		}
+        	}
+        	
+        	//A user was not found on a team, stop
+        	return false;
+        }
+        
+        $scope.setThreads = function() {
+        	console.log("$scope.team.threads: " + $scope.team.threads);
+        	$stateParams.threads = [];
         }
 	}
 ]);

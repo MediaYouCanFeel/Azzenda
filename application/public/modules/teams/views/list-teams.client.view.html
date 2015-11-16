@@ -7,12 +7,58 @@
     </div>
     
     <div class="col-md-12 well">
+    
+    	<div class="row searchBar">
+			<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Team Name</label>
+                   	<input class="form-control" id="nameSearchText" type="text" data-ng-model="nameSearchText">
+		    	</form>
+	    	</div>
+	    	
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">User(s)</label>
+                   	<select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="usersForSearch" id="members" data-ng-init="findUsers()">
+                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                    </select>
+		    	</form>
+	    	</div>
+	    	
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Project</label>
+                   	<select class="form-control js-example-basic" data-ng-model="projectForSearch" id="members" data-ng-init="findProjects()">
+                       <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                    </select>
+		    	</form>
+	    	</div>
+	    	
+    	</div>
+    	
 	    <div class="list-group">
-	        <a data-ng-repeat="team in teams" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
-				<h4 class="list-group-item-heading" data-ng-bind="team.name"></h4>
-				<span data-ng-bind="team.users.length"></span> members
+	        <a data-ng-repeat="team in teams | filter: userSearch | filter: searchNameText | filter: searchProject" data-ng-href="#!/teams/{{team._id}}" class="list-group-item team-list">
+				<span class="">
+					<span class="col-md-5">
+						<h4 class="list-group-item-heading"><span data-ng-bind="team.name"></span> (<span data-ng-bind="team.project.name"></span>)</h4>
+						<span data-ng-bind="team.users.length"></span> members
+					</span>
+					<span class="pull-right">
+						<span ng-repeat="user in team.users | limitTo: 10">
+							<img ng-if="$index != 9" class="prof-pic-40" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+						</span>
+						<span ng-if="team.users.length > 10">
+							<span class="extraPics-40"> <span class="extraNums-40" data-ng-bind="getString(team.users.length - 9)"></span></span>
+						</span>
+					</span>
+				</span>
 	        </a>
 	    </div>
+	    
+	    <div class="pull-right">
+	    	<p>Displaying {{(teams | filter: userSearch | filter: searchNameText | filter: searchProject).length}} of {{ teams.length }} teams.</p>
+	   	</div>
+	    
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!teams.$resolved || teams.length">
     	No Teams yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?

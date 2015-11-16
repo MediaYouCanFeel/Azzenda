@@ -1,4 +1,4 @@
-<section data-ng-controller="TeamsController" data-ng-init="findOne()">
+<section data-ng-controller="TeamsController" data-ng-init="findOne(); setThreads()">
 	<script type="text/ng-template" id="taskTree">
 		<div data-ng-init="getType(task.status)" data-ng-controller="TasksController">
 			<accordion close-others="false">
@@ -61,8 +61,10 @@
                 <i class="fa fa-users"></i> &nbsp; All Teams
             </a>
         </div>
-        <div class="pull-right">
-        	<strong class="btn btn-yellow" ng-click="createModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Team</strong>
+        <div data-ng-controller="TasksController" class="pull-right">
+        	<span data-ng-init="setProjectId()">
+        		<strong  class="btn btn-yellow" ng-click="taskForTeamModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Task</strong>
+        	</span>
         </div>
         
     </div>
@@ -109,11 +111,11 @@
 			<!-- More than 3 users -->
 			<div>
 				<span ng-repeat="user in team.users | limitTo: 3" data-ng-init="setDynamicPopover()">
-					<a class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
-					</a><span ng-if="$index < team.users.length - 1 && team.users.length > 2">,
-					</span><span ng-if="$index == team.users.length - 2"> and 
+					<a ng-if="team.users.length <= 3 || $index < 2" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><span ng-if="team.users.length > 2 && $index < 2">,
+					</span><span ng-if="$index == 0 && team.users.length == 2 || team.users.length > 2 && $index == 1"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
-					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a></span>
+					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 2"></span> others.</a></span>
 					
 				</span>
 				<!--  --> 
@@ -142,6 +144,10 @@
 		<!-- Threads -->
 		<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4>Threads</h4>
+			<a data-ng-repeat="thread in team.threads" data-ng-href="#!/threads/{{thread}}" class="list-group-item">
+				<span data-ng-bind="thread"></span>
+			</a>
+			
 			<form class="form-horizontal" novalidate>
             <fieldset>
                 <div class="form-group">

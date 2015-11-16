@@ -45,9 +45,48 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
             });
         };
         
-      //Open Modal window for creating tasks
+        //Open Modal window for creating tasks
         $scope.taskForProjectModal = function (size) {
             
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/tasks/views/create-task-proj.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                  
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                  //return $scope.events;
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        //Open Modal window for creating tasks
+        $scope.taskForTeamModal = function (size) {
+            
+        	$stateParams.projectId = $scope.team.project._id;
+        	
+        	console.log("Proj ID: " + $scope.project);
+        	
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'modules/tasks/views/create-task-proj.client.view.html',
@@ -319,7 +358,14 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         }
         
         $scope.setProjectFromProject = function() {
+        	console.log("PROJECT: " + $stateParams.projectId);
         	$scope.project = $stateParams.projectId;
+        	
+        	//If currently on a Team page
+        	if ($stateParams.teamId) {
+	        	$scope.stateTeamId = $stateParams.teamId;
+	    		console.log("StateTeamId: " + $scope.stateTeamId);
+        	}
         }
         
         $scope.setProject2 = function() {

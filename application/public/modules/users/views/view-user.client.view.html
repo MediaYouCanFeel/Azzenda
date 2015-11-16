@@ -5,9 +5,51 @@
 		</div>
 	</div>
 	
-	<div class="col-md-12">
-		<div class="col-md-3 well">
-			<img class="prof-pic-fit" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+	<!-- Left column -->
+	<div class="col-md-3">
+		<!-- Pic + Blurb -->
+		<div class="col-md-12 well">
+			<img class="prof-pic-fit" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture"></img>
+			<p></p>
+			
+			<!-- Projects Owned -->
+			<span ng-if="user.ownerProjects.length > 0">
+				<hr>
+				<div style="padding-top:5px;">
+					Owner of  
+					<a ng-repeat="proj in user.ownerProjects" data-ng-href="#!/projects/{{proj._id}}">
+						<strong><span data-ng-bind="proj.name">
+						</span></strong><span ng-if="$index < user.ownerProjects.length-1 && user.ownerProjects.length > 2">,
+						</span><span ng-if="$index == user.ownerProjects.length-2 && user.ownerProjects.length > 1"> and 
+						</span><span ng-if="$index == user.ownerProjects.length-1">.</span>
+					</a>
+				</div>
+			</span>
+			
+			<!-- Num of Teams -->
+			<span ng-if="user.memberTeams.length > 0">
+				<hr>
+				<div style="padding-top:5px;">
+					Member of 
+					<span data-ng-bind="user.memberTeams.length"></span>
+					<a data-ng-href="#!/teams">
+						<strong> team<span ng-if="user.memberTeams.length != 1">s
+						</span></strong>.
+					</a>
+				</div>
+			</span>
+			
+		</div>
+		
+		<div class="col-md-12 well">
+			
+		</div>
+	</div>
+	
+	<!-- Right column -->
+	<div class="col-md-9">
+		<div class="col-md-12 well">
+		
 		</div>
 	</div>
 	

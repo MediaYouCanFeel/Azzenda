@@ -59,13 +59,13 @@ exports.create = function(req, res) {
  * Show the current Team
  */
 exports.read = function(req, res) {
-	Task.find({'owners.team' : req.team._id}).populate('owners.users.user', 'displayName').populate('owner.team').populate('workers.users.user', 'displayName').populate('workers.team').lean().exec(function(err, ownerTasks) {
+	Task.find({'owners.team' : req.team._id}).populate('owners.users.user', 'displayName profpic').populate('owners.team', 'name').populate('workers.users.user', 'displayName profpic').populate('workers.team', 'name').lean().exec(function(err, ownerTasks) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Task.find({'workers.team' : req.team._id}).populate('owners.users.user', 'displayName').populate('owner.team').populate('workers.users.user', 'displayName').populate('workers.team').lean().exec(function(err, workerTasks) {
+			Task.find({'workers.team' : req.team._id}).populate('owners.users.user', 'displayName profpic').populate('owners.team', 'name').populate('workers.users.user', 'displayName profpic').populate('workers.team', 'name').lean().exec(function(err, workerTasks) {
 				if(err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)

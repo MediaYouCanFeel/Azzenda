@@ -122,7 +122,7 @@ exports.read = function(req, res) {
 	    	    			user.memberTeams = teamArray.teams;
 	    	    		}
 	    	    	});
-	    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners.users.user']}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
+	    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$project: {task: '$$ROOT', allUsers: {$setUnion: ['$owners.users','$workers.users']}}},{$unwind: '$allUsers'},{$match: {'allUsers.user': user._id}},{$project: {_id: 0, task: 1, status: '$allUsers.status'}},{$group: {_id: {'isOwner': {$setIsSubset: [[obId], '$task.owners.users.user']}}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
 	    	        	if (err) {
 	    	        		console.log(err);
 	    	        		return res.status(400).send({
@@ -130,7 +130,7 @@ exports.read = function(req, res) {
 	    	    			});
 	    	        	} else {
 	    	    	    	tasks.forEach(function(taskArray) {
-	    	    	    		if(taskArray._id) {
+	    	    	    		if(taskArray._id.isOwner) {
 	    	    	    			user.ownerTasks = taskArray.tasks;
 	    	    	    		} else {
 	    	    	    			user.workerTasks = taskArray.tasks;
@@ -190,77 +190,74 @@ exports.list = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			Project.aggregate([{$project: {name: 1, owners: 1, users: 1, allUsers: {$setUnion: ['$owners','$users']}}},{$unwind: '$allUsers'},{$group: {_id: {userId: '$allUsers', isOwner: {$anyElementTrue: {$map: {'input': '$owners', 'as': 'ownrs', 'in': {$eq: ['$allUsers','$$ownrs']}}}}}, projects: {$push: '$$ROOT'}}},{$group: {_id: '$_id.userId', projs: {$push: {isOwner: '$_id.isOwner', projectArray: '$projects'}}}},{$sort: {_id: 1}}]).exec(function(err, userProjs) {
+			Project.aggregate([{$project: {name: 1, owners: 1, users: 1, allUsers: {$setUnion: ['$owners','$users']}}},{$unwind: '$allUsers'},{$group: {_id: {userId: '$allUsers', isOwner: {$anyElementTrue: {$map: {'input': '$owners', 'as': 'ownr', 'in': {$eq: ['$allUsers','$$ownr']}}}}}, projects: {$push: '$$ROOT'}}},{$group: {_id: '$_id.userId', projs: {$push: {isOwner: '$_id.isOwner', projectArray: '$projects'}}}},{$sort: {_id: 1}}]).exec(function(err, userProjs) {
 		    	if (err) {
 		    		console.log(err);
 		    		return res.status(400).send({
 						  message: err.msg
 					});
 		    	} else {
-		    		for(var i=0, j=0; i<users.length; i++) {
-		    			users[i].memberProjects = [];
-		    			users[i].ownerProjects = [];
-						if((j < userProjs.length) && (users[i]._id.equals(userProjs[j]._id))) {
-							for(var k=0; k<userProjs[j].projs.length; k++) {
-								if(userProjs[j].projs[k].isOwner) {
-									users[i].ownerProjects = userProjs[j].projs[k].projectArray;
-								} else {
-									users[i].memberProjects = userProjs[j].projs[k].projectArray;
-								}
-							}
-							j++;
-						}
-					}
-		    		res.jsonp(users);
-		    		
-//			    	Team.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, teams: {$push: '$$ROOT'}}}]).exec(function(err, teams) {
-//			        	if (err) {
-//			        		console.log(err);
-//			        		return res.status(400).send({
-//			    				  message: err.msg
-//			    			});
-//			        	} else {
-//			    	    	teams.forEach(function(teamArray) {
-//			    	    		if(teamArray._id) {
-//			    	    			user.ownerTeams = teamArray.teams;
-//			    	    		} else {
-//			    	    			user.memberTeams = teamArray.teams;
-//			    	    		}
-//			    	    	});
-//			    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners.users.user']}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
-//			    	        	if (err) {
-//			    	        		console.log(err);
-//			    	        		return res.status(400).send({
-//			    	    				  message: err.msg
-//			    	    			});
-//			    	        	} else {
-//			    	    	    	tasks.forEach(function(taskArray) {
-//			    	    	    		if(taskArray._id) {
-//			    	    	    			user.ownerTasks = taskArray.tasks;
-//			    	    	    		} else {
-//			    	    	    			user.workerTasks = taskArray.tasks;
-//			    	    	    		}
-//			    	    	    	}); 	
-//			    	    	    	res.jsonp(req.otherUser);
-//			    	        	}
-//			    	        });
-//			        	}
-//			        });
+		    		Team.aggregate([{$project: {name: 1, owners: 1, users: 1, allUsers: {$setUnion: ['$owners','$users']}}},{$unwind: '$allUsers'},{$group: {_id: {userId: '$allUsers', isOwner: {$anyElementTrue: {$map: {'input': '$owners', 'as': 'ownr', 'in': {$eq: ['$allUsers','$$ownr']}}}}}, teams: {$push: '$$ROOT'}}},{$group: {_id: '$_id.userId', tems: {$push: {isOwner: '$_id.isOwner', teamArray: '$teams'}}}},{$sort: {_id: 1}}]).exec(function(err, userTeams) {
+		    			if(err) {
+		    				console.log(err);
+				    		return res.status(400).send({
+								  message: err.msg
+							});
+		    			} else {
+		    				Task.aggregate([{$project: {name: 1, owners: '$owners.users.user', users: '$workers.users', allUsers: {$setUnion: ['$owners.users.user','$workers.users.user']}}},{$unwind: '$allUsers'},{$group: {_id: {userId: '$allUsers', isOwner: {$anyElementTrue: {$map: {'input': '$owners', 'as': 'ownr', 'in': {$eq: ['$allUsers','$$ownr']}}}}}, tasks: {$push: '$$ROOT'}}},{$group: {_id: '$_id.userId', taks: {$push: {isOwner: '$_id.isOwner', taskArray: '$tasks'}}}},{$sort: {_id: 1}}]).exec(function(err, userTasks) {
+		    					if(err) {
+		    						console.log(err);
+						    		return res.status(400).send({
+										  message: err.msg
+									});
+		    					} else {
+		    						for(var i=0, j=0, l=0, m=0; i<users.length; i++) {
+		    			    			users[i].memberProjects = [];
+		    			    			users[i].ownerProjects = [];
+		    			    			users[i].memberTeams = [];
+		    			    			users[i].ownerTeams = [];
+		    			    			users[i].workerTasks = [];
+		    			    			users[i].ownerTasks = [];
+		    							if((j < userProjs.length) && (users[i]._id.equals(userProjs[j]._id))) {
+		    								for(var k=0; k<userProjs[j].projs.length; k++) {
+		    									if(userProjs[j].projs[k].isOwner) {
+		    										users[i].ownerProjects = userProjs[j].projs[k].projectArray;
+		    									} else {
+		    										users[i].memberProjects = userProjs[j].projs[k].projectArray;
+		    									}
+		    								}
+		    								j++;
+		    							}
+		    							if((l < userTeams.length) && (users[i]._id.equals(userTeams[l]._id))) {
+		    								for(var k=0; k<userTeams[l].tems.length; k++) {
+		    									if(userTeams[l].tems[k].isOwner) {
+		    										users[i].ownerTeams = userTeams[l].tems[k].teamArray;
+		    									} else {
+		    										users[i].memberTeams = userTeams[l].tems[k].teamArray;
+		    									}
+		    								}
+		    								l++;
+		    							}
+		    							if((m < userTasks.length) && (users[i]._id.equals(userTasks[m]._id))) {
+		    								for(var k=0; k<userTasks[m].taks.length; k++) {
+		    									if(userTasks[m].taks[k].isOwner) {
+		    										users[i].ownerTasks = userTasks[m].taks[k].taskArray;
+		    									} else {
+		    										users[i].workerTasks = userTasks[m].taks[k].taskArray;
+		    									}
+		    								}
+		    								m++;
+		    							}
+		    						}
+		    			    		res.jsonp(users);
+		    					}
+		    				});
+		    			}
+		    		});
 		    	}
 		    });
 		}
 	});
-    /*
-	User.find({},{password: false, salt: false, providerData: false}).sort('-created').aggregate({$project: {email: "$username", document: "$$ROOT"}}).exec(function(err, users) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-            
-			res.jsonp(users);
-		}
-	});*/
 };
 
 /**

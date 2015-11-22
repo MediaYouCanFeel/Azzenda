@@ -32,9 +32,10 @@ var TaskSchema = new Schema({
 				type: Schema.ObjectId,
 				ref: 'User'
 			},
-			accepted: {
-				type: Boolean,
-				default: false
+			status: {
+				type: String,
+				enum: ['Pending','Rejected','Accepted'],
+				default: 'Pending'
 			}
 		}],
 		team: {
@@ -48,9 +49,10 @@ var TaskSchema = new Schema({
 				type: Schema.ObjectId,
 				ref: 'User'
 			},
-			accepted: {
-				type: Boolean,
-				default: false
+			status: {
+				type: String,
+				enum: ['Pending','Rejected','Accepted'],
+				default: 'Pending'
 			}
 		}],
 		team: {

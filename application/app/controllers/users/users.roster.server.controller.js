@@ -92,10 +92,8 @@ exports.read = function(req, res) {
     user.memberProjects = [];
     user.ownerTeams = [];
     user.memberTeams = [];
-    user.ownerTasksUnaccepted = [];
-    user.ownerTasksAccepted = [];
-    user.workerTasksUnaccepted = [];
-    user.workerTasksAccepted = [];
+    user.ownerTasks = [];
+    user.workerTasks = [];
     Project.aggregate([{$match: {$or: [{'owners': obId},{'users': obId}]}},{$group: {_id: {$setIsSubset: [[obId], '$owners']}, projects: {$push: '$$ROOT'}}}]).exec(function(err, projects) {
     	if (err) {
     		console.log(err);
@@ -124,7 +122,7 @@ exports.read = function(req, res) {
 	    	    			user.memberTeams = teamArray.teams;
 	    	    		}
 	    	    	});
-	    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$group: {_id: {'isOwner': {$setIsSubset: [[obId], '$owners.users.user']}, 'isAccepted': {$anyElementTrue: {$map: {'input': {$setUnion: ['$owners.users','$workers.users']}, 'as': 'usr', 'in': {$and: [{$eq: [user._id,'$$usr.user']}, '$$usr.accepted']}}}}}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
+	    	    	Task.aggregate([{$match: {$or: [{'owners.users.user': obId},{'workers.users.user': obId}]}},{$project: {task: '$$ROOT', allUsers: {$setUnion: ['$owners.users','$workers.users']}}},{$unwind: '$allUsers'},{$match: {'allUsers.user': user._id}},{$project: {_id: 0, task: 1, status: '$allUsers.status'}},{$group: {_id: {'isOwner': {$setIsSubset: [[obId], '$task.owners.users.user']}}, tasks: {$push: '$$ROOT'}}}]).exec(function(err, tasks) {
 	    	        	if (err) {
 	    	        		console.log(err);
 	    	        		return res.status(400).send({
@@ -133,17 +131,9 @@ exports.read = function(req, res) {
 	    	        	} else {
 	    	    	    	tasks.forEach(function(taskArray) {
 	    	    	    		if(taskArray._id.isOwner) {
-	    	    	    			if(taskArray._id.isAccepted) {
-	    	    	    				user.ownerTasksAccepted = taskArray.tasks;
-	    	    	    			} else {
-	    	    	    				user.ownerTasksUnaccepted = taskArray.tasks;
-	    	    	    			}
+	    	    	    			user.ownerTasks = taskArray.tasks;
 	    	    	    		} else {
-	    	    	    			if(taskArray._id.isAccepted) {
-	    	    	    				user.workerTasksAccepted = taskArray.tasks;
-	    	    	    			} else {
-	    	    	    				user.workerTasksUnaccepted = taskArray.tasks;
-	    	    	    			}
+	    	    	    			user.workerTasks = taskArray.tasks;
 	    	    	    		}
 	    	    	    	}); 	
 	    	    	    	res.jsonp(req.otherUser);

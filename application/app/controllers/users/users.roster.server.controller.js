@@ -23,7 +23,6 @@ exports.createUser = function(req, res) {
     user.provider = 'local';
     user.displayName = user.firstName + ' ' + user.lastName;
     if(req.body.activeImg == 'true') {
-    	console.log('test');
 	    fs.readFile(file.path, function (err,original_data) {
 	    	 if (err) {
 	    	      return res.status(400).send({

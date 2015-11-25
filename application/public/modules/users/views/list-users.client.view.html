@@ -25,13 +25,32 @@
            			<img class="prof-pic" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
            			<img class="prof-pic" ng-show="user.profpic==''" src="lib/pictures/pizza.jpg" alt="Profile Picture">
            		</div>
-           		<div class="col-md-11">
-                	<span class="display-name" data-ng-bind="user.displayName"></span>
-                 	<!-- Email -->
-            		<div data-ng-bind="user.email"></div>
-                </div>
+           		<div class="roster-stats">
+	           		<div class="col-md-2">
+	                	<span class="display-name-roster" data-ng-bind="user.displayName"></span>
+	                 	<!-- Email -->
+	            		<div data-ng-bind="user.email"></div>
+	                </div>
+					
+					<!-- Projects -->
+	                <div class="col-md-1" style="text-align:center">
+	                	<span class="display-name-roster" data-ng-bind="user.ownerProjects.length + user.memberProjects.length"></span>
+	            		<div>project<span ng-if="(user.ownerProjects.length + user.memberProjects.length) != 1">s</span></div>
+	                </div>
+	                
+	                <!-- Teams -->
+	                <div class="col-md-1" style="text-align:center">
+	                	<span class="display-name-roster" data-ng-bind="user.memberTeams.length + user.ownerTeams.length"></span>
+	            		<div>team<span ng-if="(user.memberTeams.length + user.ownerTeams.length) != 1">s</span></div>
+	                </div>
+	                
+	                <!-- Tasks -->
+	                <div class="col-md-1" style="text-align:center">
+	                	<span class="display-name-roster" data-ng-bind="user.workerTasks.length + user.ownerTasks.length"></span>
+	            		<div>task<span ng-if="(user.workerTasks.length + user.ownerTasks.length) != 1">s</span></div>
+	                </div>
+	            </div>
             </div>
-            
            
         </a>
     </div>

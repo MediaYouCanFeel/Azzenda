@@ -38,23 +38,17 @@
 					<input type="password" id="password" name="password" class="form-control" data-ng-model="credentials.password" placeholder="Password">
 				</div>
 				
-				<div class="form-group">
+				<div class="form-group" data-ng-controller="CreateUsersController">
 	                <label class="control-label" for="profileimage">Profile Picture</label>
-	                <div class="controls">
-	                    <input id="profileimage" type="button" class="btn btn-default" ngf-select="picSelected($files)" ng-model="profpic" name="profpic" value="Select Picture" ngf-pattern="'image/*'" accept="image/*" ngf-max-size="10MB">
-	                    <div ngf-drop ng-model="profpic" ngf-pattern="image/*" class="cropArea" style="background:#E4E4E4;overflow:hidden;width:500px;height:350px">
-				            <img-crop image="profpic  | ngfDataUrl" result-image-format="image/jpeg" area-type="square" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
-				        </div>
-				        <div>
-				        	<label class="control-label" for="croppedimage">Cropped Profile Picture</label>
-				        	<div>
-				            	<img id="croppedimage" ng-src="{{croppedDataUrl}}" />
-				            </div>
-				        </div>
-	                    <span class="progress" ng-show="progress >= 0">      
-	                        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-	                    </span>
-	                </div>
+		                
+		                
+		                <div style="text-align:center;">
+		                	<input type="button" ng-click="uploadProfPicModal('md');" class="btn btn-default" value="Upload Picture">
+		                </div>
+		                
+		                <div ng-if="url" style="margin-top:10px;">
+							<img class="prof-pic-128" ng-src="{{url}}" alt="Profile Picture">
+						</div>
 	            </div>
                 
 				<div class="text-center form-group sign-in-button">

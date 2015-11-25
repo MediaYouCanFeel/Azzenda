@@ -9,28 +9,20 @@
 	    
 	    <!-- Search Bar -->
 	    <div class="row searchBar">
+	    	<!-- Name of project -->
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Project Name</label>
+                   	<input class="form-control" id="nameSearchText" type="text" data-ng-model="nameSearchText">
+		    	</form>
+	    	</div>
+	    	
 	    	<!-- Users attached to project -->
 	    	<div class="col-md-3">
 		    	<form>
 			    	<label for="searchText">User(s)</label>
-                   	<select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="usersForSearch" id="members" data-ng-init="findUsers()">
+                   	<select id="userSearchBox" class="form-control js-example-basic-multiple"  multiple="multiple" data-ng-model="usersForSearch" id="members" data-ng-init="findUsers()">
                        <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
-                    </select>
-		    	</form>
-	    	</div>
-			
-			<div class="col-md-3">
-		    	<form>
-			    	<label for="searchText">Team Name</label>
-                   	<input class="form-control" id="nameSearchText" type="text" data-ng-model="nameSearchText">
-		    	</form>
-	    	</div>
-	    		    	
-	    	<div class="col-md-3">
-		    	<form>
-			    	<label for="searchText">Project</label>
-                   	<select class="form-control js-example-basic" data-ng-model="projectForSearch" id="members" data-ng-init="findProjects()">
-                       <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
                     </select>
 		    	</form>
 	    	</div>
@@ -39,11 +31,11 @@
 	    
 	    <!-- Projects -->
 	    <div class="list-group">
-	        <a data-ng-repeat="project in projects | orderBy: 'name' | filter: userSearch" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+	        <a data-ng-repeat="project in projects | orderBy: 'name' | filter: userSearch | filter: searchNameText" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="project-rep-name list-group-item-heading" data-ng-bind="project.name"></div>
-						<span data-ng-bind="project.teams.length"></span> team<span ng-if="project.teams.length != 1">s</span>, <span data-ng-bind="getTotalUsers(project.teams)"></span> member<span ng-if="getTotalUsers(project.teams) != 1">s</span>
+						<span data-ng-bind="project.teams.length"></span> team<span ng-if="project.teams.length != 1">s</span>, <span data-ng-bind="project.users.length"></span> member<span ng-if="project.users.length != 1">s</span>
 					</div>
 					<div class="col-md-6 project-rep-type">
 						<div class="pull-right" data-ng-bind="project.type"></div>
@@ -51,6 +43,11 @@
 				</div>
 	        </a>
 	    </div>
+	    
+	    <div class="pull-right">
+	    	<p>Displaying {{(projects | filter: userSearch | filter: searchNameText).length}} of {{ projects.length }} projects.</p>
+	   	</div>
+	    
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!projects.$resolved || projects.length">
     	No Projects yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?

@@ -6,17 +6,73 @@
             </span>
     </div>
     
-    <div class="list-group">
-        <a data-ng-repeat="task in tasks" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-			<div class="row">
-				<div class="col-md-12" data-ng-init="getType(task.status)">
-					<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
-					<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
+    <div class="well col-md-12">
+    
+    	 <!-- Search Bar -->
+	    <div class="row searchBar">
+	    	<!-- Name of project -->
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Task Name</label>
+                   	<input class="form-control" id="nameSearchText" type="text" data-ng-model="nameSearchText">
+		    	</form>
+	    	</div>
+	    	
+	    	<!-- Users attached to project -->
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">User(s)</label>
+                   	<select id="userSearchBox" class="form-control js-example-basic-multiple"  multiple="multiple" data-ng-model="usersForSearch" id="members" data-ng-init="findUsers()">
+                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                    </select>
+		    	</form>
+	    	</div>
+	    	
+	    	<!-- Project -->
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Project</label>
+                   	<select id="userSearchBox" class="form-control js-example-basic"  data-ng-model="projectForSearch" id="members" data-ng-init="findProjects()">
+                       <option value="Any">Any Project</option>
+                       <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
+                    </select>
+		    	</form>
+	    	</div>
+	    	
+	    	<!-- Something else -->
+	    	<div class="col-md-3">
+		    	<form>
+			    	<label for="searchText">Status</label>
+                   	<select id="userSearchBox" class="form-control js-example-basic"  data-ng-model="statusForSearch" id="members">
+                       <option value="Any">Any Status</option>
+                       <option value="not started">Not Started</option>
+                       <option value="in progress">In Progress</option>
+                       <option value="blocked">Blocked</option>
+                       <option value="completed">Completed</option>
+                    </select>
+		    	</form>
+	    	</div>
+    	</div>
+    
+    	<!-- Tasks -->
+    	<div class="list-group">
+	        <a data-ng-repeat="task in tasks | filter: userSearch | filter: searchNameText | filter: projectSearch | filter: statusSearch" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
+				<small class="list-group-item-text">
+				<div class="row">
+					<div class="col-md-12" data-ng-init="getType(task.status)">
+						<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
+						<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
+					</div>
 				</div>
-			</div>
-        </a>
+	        </a>
+	    </div>
+	    
+	    <div class="pull-right">
+	    	<p>Displaying {{(tasks | filter: userSearch | filter: searchNameText | filter: projectSearch | filter: statusSearch).length}} of {{ tasks.length }} tasks.</p>
+	   	</div>
+	    
     </div>
+    
     <div class="alert alert-warning text-center" data-ng-hide="!tasks.$resolved || tasks.length">
     	No Tasks yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
     </div>

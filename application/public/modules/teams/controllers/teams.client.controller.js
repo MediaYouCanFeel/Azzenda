@@ -226,26 +226,25 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
         	return ("+" + number);
         }
         
+        $scope.clearFilters = function() {
+            $scope.projectForSearch = '';
+        	
+//        	$scope.usersForSearch = [];
+        }
         
         //FILTERS
         $scope.userSearch = function(element) {
         	if ($scope.usersForSearch.length > 0) {
-        	
 				for (var j = 0; j < $scope.usersForSearch.length; j++) {
 					if (!$scope.checkMembership($scope.usersForSearch[j], element)) {
 						return false;
 					}
 				}
-
 				return true;
-				
         	} else {
-        		
         		//Search box is empty
         		return true;
-        		
         	}
-        	
         }
         
         $scope.searchNameText = function(element) {
@@ -259,7 +258,7 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		}
         
         $scope.searchProject = function(element) {
-        	if (!$scope.projectForSearch || element.project._id == $scope.projectForSearch) {
+        	if (!$scope.projectForSearch || element.project._id == $scope.projectForSearch || $scope.projectForSearch == "Any") {
         		return true;
         	} else {
         		return false;

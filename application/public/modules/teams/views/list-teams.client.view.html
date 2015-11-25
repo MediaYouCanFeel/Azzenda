@@ -10,6 +10,7 @@
     
     	<!-- Search Bar -->
     	<div class="row searchBar">
+			<!-- Team Name -->
 			<div class="col-md-3">
 		    	<form>
 			    	<label for="searchText">Team Name</label>
@@ -17,6 +18,7 @@
 		    	</form>
 	    	</div>
 	    	
+	    	<!-- User(s) -->
 	    	<div class="col-md-3">
 		    	<form>
 			    	<label for="searchText">User(s)</label>
@@ -26,10 +28,12 @@
 		    	</form>
 	    	</div>
 	    	
+	    	<!-- Project -->
 	    	<div class="col-md-3">
 		    	<form>
 			    	<label for="searchText">Project</label>
-                   	<select class="form-control js-example-basic" data-ng-model="projectForSearch" id="members" data-ng-init="findProjects()">
+                   	<select class="form-control js-example-basic select2-allowClear" data-ng-model="projectForSearch" id="members" data-ng-init="findProjects()">
+                       <option value="Any">Any Project</option>
                        <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
                     </select>
 		    	</form>

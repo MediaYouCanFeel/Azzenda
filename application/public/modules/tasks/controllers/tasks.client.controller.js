@@ -9,7 +9,9 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
         angular.element('select').select2({ 
             width: '100%'
         });
-			
+		
+        $scope.usersForSearch = [];
+        
         //Open Modal window for creating tasks
         $scope.createModal = function (size) {
             
@@ -610,6 +612,65 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
 	     	}
   			
   		}
+  		
+  		
+  		//FILTERS
+        $scope.userSearch = function(element) {
+        	if ($scope.usersForSearch.length > 0) {
+				for (var j = 0; j < $scope.usersForSearch.length; j++) {
+					if (!($scope.checkMembership($scope.usersForSearch[j], element.owners.users) || 
+						  $scope.checkMembership($scope.usersForSearch[j], element.workers.users))) {
+						return false;
+					}
+				}
+				return true;
+        	} else {
+        		//Search box is empty
+        		return true;
+        	}
+        }
+        
+        $scope.searchNameText = function(element) {
+			if ($scope.nameSearchText == "" || !$scope.nameSearchText) {
+				return true;
+			} else if (element.name.toLowerCase().contains($scope.nameSearchText.toLowerCase())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+        
+        $scope.projectSearch = function(element) {
+        	if ($scope.projectForSearch == "" || $scope.projectForSearch == "Any" || !$scope.projectForSearch) {
+        		return true;
+        	} else if (element.project._id == $scope.projectForSearch) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+        
+        $scope.statusSearch = function(element) {
+        	if ($scope.statusForSearch == "" || $scope.statusForSearch == "Any" || !$scope.statusForSearch) {
+        		return true;
+        	} else if (element.status == $scope.statusForSearch) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
+        
+        $scope.checkMembership = function(userId, users) {
+        	for (var i = 0; i < users.length; i++) {
+        		//If user is found on the team, we're good
+        		if (users[i].user._id == userId) {
+        			return "notFalse";
+        		}
+        	}
+        	
+        	//A user was not found on a team, stop
+        	return false;
+        }
   		
 	}
 ]);

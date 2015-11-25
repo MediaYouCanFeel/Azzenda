@@ -12,6 +12,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
             width: '100%'
         });
 		
+        $scope.usersForSearch = [];
+        
         //Open Modal window for creating events
         $scope.createModal = function (size) {
             
@@ -141,6 +143,50 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
     			totUsers += teams[i].users.length;
         	}
         	return totUsers;
+        }
+        
+        $scope.clearFilters = function($event) {
+        	$event.stopPropagation(); 
+            $scope.usersForSearch = [];
+        	
+//        	$scope.usersForSearch = [];
+        }
+        
+        //FILTERS
+        $scope.userSearch = function(element) {
+        	if ($scope.usersForSearch.length > 0) {
+				for (var j = 0; j < $scope.usersForSearch.length; j++) {
+					if (!$scope.checkMembership($scope.usersForSearch[j], element.users)) {
+						return false;
+					}
+				}
+				return true;
+        	} else {
+        		//Search box is empty
+        		return true;
+        	}
+        }
+        
+        $scope.searchNameText = function(element) {
+			if ($scope.nameSearchText == "" || !$scope.nameSearchText) {
+				return true;
+			} else if (element.name.toLowerCase().contains($scope.nameSearchText.toLowerCase())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+        
+        $scope.checkMembership = function(userId, projUsers) {
+        	for (var i = 0; i < projUsers.length; i++) {
+        		//If user is found on the team, we're good
+        		if (projUsers[i]._id == userId) {
+        			return "notFalse";
+        		}
+        	}
+        	
+        	//A user was not found on a team, stop
+        	return false;
         }
 	}
 ]);

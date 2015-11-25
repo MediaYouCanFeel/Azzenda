@@ -42,14 +42,83 @@
 		</div>
 		
 		<div class="col-md-12 well">
-			
 		</div>
 	</div>
 	
 	<!-- Right column -->
 	<div class="col-md-9">
 		<div class="col-md-12 well">
-		
+			<!-- Tabs -->
+			<span class="col-md-12" style="text-align:center" data-ng-init="selectedMod = 'event'">
+				<div ng-click="selectedMod = 'event'" class="col-md-3 btn btn-default">
+					Events
+				</div>
+				<div ng-click="selectedMod = 'project'" class="col-md-3 btn btn-default">
+					Projects
+				</div>
+				<div ng-click="selectedMod = 'team'" class="col-md-3 btn btn-default">
+					Teams
+				</div>
+				<div ng-click="selectedMod = 'task'" class="col-md-3 btn btn-default">
+					Tasks
+				</div>
+			</span>
+			
+			<div ng-if="selectedMod == 'event'" class="col-md-12" style="margin-top:10px;">
+				Events
+			</div>
+			
+			<div ng-if="selectedMod == 'project'" class="col-md-12" style="margin-top:10px;">
+				
+				<span ng-if="user.ownerProjects.length > 0">
+					Owner:
+					<a ng-repeat="project in user.ownerProjects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="project-rep-name list-group-item-heading" data-ng-bind="project.name"></div>
+								<span data-ng-bind="project.teams.length"></span> team<span ng-if="project.teams.length != 1">s</span>, <span data-ng-bind="project.users.length"></span> member<span ng-if="project.users.length != 1">s</span>
+							</div>
+							<div class="col-md-6 project-rep-type">
+								<div class="pull-right" data-ng-bind="project.type"></div>
+							</div>
+						</div>
+					</a>
+				</span>
+				<a ng-repeat="project in user.memberProjects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="project-rep-name list-group-item-heading" data-ng-bind="project.name"></div>
+							<span data-ng-bind="project.teams.length"></span> team<span ng-if="project.teams.length != 1">s</span>, <span data-ng-bind="project.users.length"></span> member<span ng-if="project.users.length != 1">s</span>
+						</div>
+						<div class="col-md-6 project-rep-type">
+							<div class="pull-right" data-ng-bind="project.type"></div>
+						</div>
+					</div>
+				</a>
+			</div>
+			
+			<div ng-if="selectedMod == 'team'" class="col-md-12" style="margin-top:10px;">
+				<a ng-repeat="team in user.memberTeams | orderBy: name" data-ng-href="#!/teams/{{team._id}}" class="list-group-item">
+					<div class="row">
+					<span class="col-md-5">
+						<h4 class="list-group-item-heading"><span data-ng-bind="team.name"></span> (<span data-ng-bind="team.project.name"></span>)</h4>
+						<span data-ng-bind="team.users.length"></span> members
+					</span>
+					</div>
+				</a>
+			</div>
+			
+			<div ng-if="selectedMod == 'task'" class="col-md-12" style="margin-top:10px;" data-ng-controller="TasksController">
+				<a ng-repeat="task in user.ownerTasks | orderBy: name" data-ng-href="#!/tasks/{{task.task._id}}" class="list-group-item">
+					<small class="list-group-item-text">
+					<div class="row">
+					<div class="col-md-12" data-ng-init="getType(task.status)">
+						<span class="project-rep-name list-group-item-heading" data-ng-bind="task.task.name"></span>
+						<progressbar class="progress-detail active pull-right" value="getValue(task.task.status)" type="{{getType(task.task.status)}}"></progressbar>
+					</div>
+				</div>
+				</a>
+			</div>
 		</div>
 	</div>
 	

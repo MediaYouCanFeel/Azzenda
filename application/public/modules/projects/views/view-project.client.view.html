@@ -96,8 +96,8 @@
 	    	</span>
     	</div>
     	
-    	<div class="col-md-12 well">
-	    	<h1>Teams</h1>
+    	<div class="col-md-12 well" ng-if="project.teams.length > 0">
+	    	<h4><strong>Teams</strong></h4>
 	    	<a ng-repeat="team in project.teams" ng-href="/#!/teams/{{team._id}}" class="list-group-item">
 	    		<div class="team-name" data-ng-bind="team.name"></div>
 	    		<span data-ng-bind="team.users.length"></span> members
@@ -108,30 +108,43 @@
     
     <div class="col-md-7 project-col-right">
     	<div class="col-md-12 well" data-ng-controller="TasksController">
-    		<h1>Tasks</h1>
-    		<div data-ng-repeat="task in project.tasks | orderBy: 'deadline'">
-				<div class="col-md-12" data-ng-init="getType(task.status)">
-					<span ng-include="'taskTree'"></span>
-				</div>	
-			</div>
+    		<h4><strong>Tasks</strong></h4>
+    		
+    		<div class="alert alert-warning text-center" ng-if="!(project.tasks.length > 0)" data-ng-controller="ProjectsController">
+    			No Tasks for this project yet, why don't you <a href="" ng-click="taskForProjectModal('md')">create one</a>?
+   			</div>
+    		
+    		<span ng-if="project.tasks.length > 0">
+	    		<div data-ng-repeat="task in project.tasks | orderBy: 'deadline'">
+					<div class="col-md-12" data-ng-init="getType(task.status)">
+						<span ng-include="'taskTree'"></span>
+					</div>	
+				</div>
+			</span>
    		</div>
     	
     	<div class="col-md-12 well" data-ng-controller="ThreadsController">
-			<h4>Threads</h4>
-			<form class="form-horizontal" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="text">New Thread</label>
-                    <div class="controls">
-                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
-                    </div>
-                </div>
-            </fieldset>
-            </form>
-            <div class="form-group pull-right">
-				<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
-            </div>
+			<h4><strong>Threads</strong></h4>
 			
+			<div class="alert alert-warning text-center" ng-if="!(project.threads.length > 0)">
+    			No Threads for this project yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
+   			</div>
+			
+			<span ng-if="project.threads.length > 0">
+				<form class="form-horizontal" novalidate>
+	            <fieldset>
+	                <div class="form-group">
+	                    <label class="control-label" for="text">New Thread</label>
+	                    <div class="controls">
+	                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+	                    </div>
+	                </div>
+	            </fieldset>
+	            </form>
+	            <div class="form-group pull-right">
+					<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
+	            </div>
+			</span>
 		</div>
     	
     </div>

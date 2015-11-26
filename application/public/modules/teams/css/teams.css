@@ -41,3 +41,15 @@
 .team-list {
 	height: 64px;
 }
+
+.full-team-modal {
+	max-height: 300px;
+}
+
+.all-names {
+	display: inline-block;
+	width: 64px;
+	height: 64px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}

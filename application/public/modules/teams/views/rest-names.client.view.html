@@ -1,23 +1,17 @@
-<section data-ng-controller="TeamsController" data-ng-init="findOne()">
+<section class="full-team-modal" data-ng-controller="TeamsController" data-ng-init="findOne()">
     <div class="col-md-12 modal-col well">
         <span class="text-center">
         	<h1><u data-ng-bind="team.name"></u></h1>
         </span>
-        
-        <a data-ng-repeat="user in team.users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" ng-click="ok()" class="list-group-item">
-			<!-- Last, First -->
-            <div class="row">
-           		<div class="col-md-2">
-           			<img class="prof-pic" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
-           			<img class="prof-pic" ng-show="user.profpic==''" src="lib/pictures/pizza.jpg" alt="Profile Picture">
-           		</div>
-           		<div class="col-md-10">
-                	<span data-ng-bind="user.displayName" style="font-size:24px;"></span>
-                </div>
-            </div>
-            
-           
-        </a>
+
+        <div>
+	        <a data-ng-repeat="user in team.users | orderBy:'lastName'" data-ng-href="#!/users/{{user._id}}" ng-click="ok()" class="all-names"  tooltip-placement="bottom" tooltip="{{user.displayName}}">
+				<!-- Last, First -->
+   				<img class="prof-pic" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
+       			<img class="prof-pic" ng-show="user.profpic==''" src="lib/pictures/pizza.jpg" alt="Profile Picture">
+       			
+	        </a>
+        </div>
         
     </div>
 </section>

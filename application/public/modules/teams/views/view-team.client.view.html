@@ -63,7 +63,7 @@
         </div>
         <div data-ng-controller="TasksController" class="pull-right">
         	<span data-ng-init="setProjectId()">
-        		<strong  class="btn btn-yellow" ng-click="taskForTeamModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Task</strong>
+        		<strong class="btn btn-yellow" ng-click="taskForTeamModal('md')" style="font-size: 15px;"><i class="fa fa-plus"></i> &nbsp; New Task</strong>
         	</span>
         </div>
         
@@ -88,7 +88,7 @@
 	<div class="col-md-4">
 		<!-- List of members -->
 		<div class="col-md-12 well">
-			<h4>Members</h4>
+			<h4><strong>Members</strong></h4>
 			<!-- Pics -->
 			<!-- 4 or less users (all pics shown) -->
 			<span ng-if="team.users.length <= 4">
@@ -104,7 +104,7 @@
 					<img class="prof-pic" popover-placement="top" popover="{{user.displayName}}" popover-trigger="mouseenter" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture">
 					<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
 				</a>
-				<span class="extraPics" ng-click="wholeTeam('md')"> <span class="extraNums" data-ng-bind="getString(team.users.length - 3)"></span></span>
+				<span class="extraPics" ng-click="wholeTeam('xs')"> <span class="extraNums" data-ng-bind="getString(team.users.length - 3)"></span></span>
 			</span>
 			
 			<!-- Text -->
@@ -127,41 +127,53 @@
 		
 		<!-- Tasks -->		
 		<div class="col-md-12 well" data-ng-controller="TasksController">
-    		<h1>Tasks</h1>
-    		<div data-ng-repeat="task in team.ownerTasks | orderBy: 'deadline'">
-				<div class="col-md-12">
-					<span ng-include="'taskTree'"></span>
-				</div>	
-			</div>
-			
-			<div data-ng-repeat="task in team.workerTasks | orderBy: 'deadline'">
-				<div class="col-md-12">
-					<span ng-include="'taskTree'"></span>
-				</div>	
-			</div>
+    		<h4><strong>Tasks</strong></h4>
+    		
+    		<div class="alert alert-warning text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
+    			No Tasks for this team yet, why don't you <a href="" ng-click="taskForTeamModal('md')">create one</a>?
+   			</div>
+    		
+    		<span ng-if="team.ownerTasks.length > 0 || team.memberTasks.length > 0" >
+	    		<div data-ng-repeat="task in team.ownerTasks | orderBy: 'deadline'">
+					<div class="col-md-12">
+						<span ng-include="'taskTree'"></span>
+					</div>	
+				</div>
+				
+				<div data-ng-repeat="task in team.workerTasks | orderBy: 'deadline'">
+					<div class="col-md-12">
+						<span ng-include="'taskTree'"></span>
+					</div>	
+				</div>
+			</span>
    		</div>
 	
 		<!-- Threads -->
 		<div class="col-md-12 well" data-ng-controller="ThreadsController">
-			<h4>Threads</h4>
-			<a data-ng-repeat="thread in team.threads" data-ng-href="#!/threads/{{thread}}" class="list-group-item">
-				<span data-ng-bind="thread"></span>
-			</a>
+			<h4><strong>Threads</strong></h4>
+			<div class="alert alert-warning text-center" ng-if="team.threads.length == 0">
+    			No Threads for this team yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
+   			</div>
 			
-			<form class="form-horizontal" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="text">New Thread</label>
-                    <div class="controls">
-                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
-                    </div>
-                </div>
-            </fieldset>
-            </form>
-            <div class="form-group pull-right">
-				<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
-            </div>
-			
+			<span ng-if="team.threads.length > 0" >
+				<a data-ng-repeat="thread in team.threads" data-ng-href="#!/threads/{{thread}}" class="list-group-item">
+					<span data-ng-bind="thread"></span>
+				</a>
+				
+				<form class="form-horizontal" novalidate>
+	            <fieldset>
+	                <div class="form-group">
+	                    <label class="control-label" for="text">New Thread</label>
+	                    <div class="controls">
+	                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+	                    </div>
+	                </div>
+	            </fieldset>
+	            </form>
+	            <div class="form-group pull-right">
+					<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
+	            </div>
+			</span>
 		</div>
 	</div>
 	

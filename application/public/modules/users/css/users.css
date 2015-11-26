@@ -53,3 +53,10 @@
 .roster-stats {
 	margin-top: 8px;
 }
+
+.edit-img-btn {
+	position:relative; 
+	top:-215px; 
+	background: none !important; 
+	border: none !important;
+}

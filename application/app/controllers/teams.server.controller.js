@@ -7,8 +7,10 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Team = mongoose.model('Team'),
 	Task = mongoose.model('Task'),
+	Thread = mongoose.model('Thread'),
 	Project = mongoose.model('Project'),
 	TaskCtrl = require('../../app/controllers/tasks.server.controller'),
+	ThreadCtrl = require('../../app/controllers/threads.server.controller'),
 	_ = require('lodash');
 
 /**
@@ -71,11 +73,22 @@ exports.read = function(req, res) {
 						message: errorHandler.getErrorMessage(err)
 					});
 				} else {
-					var combinedTasks = ownerTasks.concat(workerTasks);
-					TaskCtrl.popTasks.call(this,combinedTasks,function() {
-						req.team.workerTasks = workerTasks;
-						req.team.ownerTasks = ownerTasks;
-						res.jsonp(req.team);
+					Thread.find({_id: {$in: req.team.threads}}).populate('owner', 'displayName profpic').exec(function(err, threds) {
+						if(err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						} else {
+							var combinedTasks = ownerTasks.concat(workerTasks);
+							TaskCtrl.popTasks.call(this,combinedTasks,function() {
+								req.team.workerTasks = workerTasks;
+								req.team.ownerTasks = ownerTasks;
+								ThreadCtrl.popThreads.call(this,threds,function() {
+									req.team.threads = threds;
+									res.jsonp(req.team);
+								});
+							});
+						}
 					});
 				}
 			});
@@ -175,7 +188,7 @@ exports.list = function(req, res) {
 /**
  * Team middleware
  */
-exports.teamByID = function(req, res, next, id) { 
+exports.teamByID = function(req, res, next, id) {
 	Team.findById(id).populate('owners', 'displayName profpic firstName lastName').populate('users', 'displayName profpic firstName lastName').populate('project').lean(req.originalMethod == 'GET').exec(function(err, team) {
 		if (err) return next(err);
 		if (! team) return next(new Error('Failed to load Team ' + id));

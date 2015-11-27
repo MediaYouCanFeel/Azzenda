@@ -3,29 +3,21 @@
 /**
  * Module dependencies.
  */
-var moment = require('moment');
 
 /**
  * Apply filter
  */
 exports.execute = function(filter) {
-	var startDate = moment();
-	var endDate = moment(startDate);
-	var days = filter.params.days;
-	startDate.startOf('day');
-	endDate.endOf('day');
+	var startDate = moment(filter.params.start).set({'second':0,'millisecond':0});
+	var endDate = moment(filter.params.start).add(this.length, 'ms').set({'second':0,'millisecond':0});
 	
 	var oldPossibleDates = this.possDates;
 	var i;
 	for(i=0; i<oldPossibleDates.length; i++) {
-		while(days.indexOf(startDate.day()) == -1) {
-			startDate.add(1, 'day');
-			endDate.add(1, 'day');
-		}
 		var dateRangeStart = moment(oldPossibleDates[i].start);
 		var dateRangeEnd = moment(oldPossibleDates[i].end);
 		if(startDate.isBefore(dateRangeEnd)) {
-			if(endDate.isBefore(dateRangeStart) || endDate == dateRangeStart) {
+			if(endDate.isBefore(dateRangeStart)) {
 				i--;
 			} else {
 				if(startDate.isAfter(dateRangeStart)) {

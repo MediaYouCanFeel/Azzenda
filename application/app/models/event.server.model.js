@@ -7,10 +7,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	moment = require('moment'),
 	map = {
-//		PERSONAL: require('../../app/controllers/events/Personal'),
-//		NONPERSONAL: require('../../app/controllers/events/Nonpersonal')
-//	};
-		FIXED: require('../../app/controllers/eventFilters/Fixed'),
+		FIXEDTIME: require('../../app/controllers/eventFilters/FixedTime'),
 		FIXEDDATE: require('../../app/controllers/eventFilters/FixedDate'),
 		TIMERANGE: require('../../app/controllers/eventFilters/TimeRange'),
 		DAYOFWEEK: require('../../app/controllers/eventFilters/DayOfWeek')
@@ -39,11 +36,6 @@ var EventSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
     },
-//    classType: {
-//    	type: String,
-//    	enum: Object.keys(map),
-//    	required: 'Invalid Event class type'
-//    },
     length: {
     	type: Number,
     	required: 'Please provide an Event length'
@@ -58,12 +50,8 @@ var EventSchema = new Schema({
         ref: 'Project'
     },
     sched: {
-    	start: {
-            type: Date
-        },
-        end: {
-            type: Date
-        }
+    	start: Date,
+        end: Date
     },
     recurring: {
     	type: {
@@ -89,11 +77,7 @@ var EventSchema = new Schema({
         status: {
             type: String,
             enum: ['invited','going','not going']
-        }/*,
-        group: {
-        	type: Schema.ObjectId,
-        	ref: 'Group',
-    	}*/	
+        }	
     }],
     status: {
         type: String,
@@ -110,22 +94,9 @@ var EventSchema = new Schema({
     }],
     possDates: [{
 		start: Date,
-		end: Date,
-		priority: Number
+		end: Date
     }]
 });
-
-//EventSchema.statics.create = function(event, params) {
-//	map[event.classType].create.call(initEvent, event, params);
-//}
-//
-//EventSchema.methods.create = function(params) {
-//	return map[this.classType].create.call(this, params);
-//}
-//
-//EventSchema.methods.list = function(params) {
-//	return map[this.classType].list.call(this, params);
-//}
 
 EventSchema.methods.possFilter = function (filter) {
     return map[filter.type].execute.call(this, filter);
@@ -139,11 +110,7 @@ EventSchema.methods.recurUnrollNext = function(startDate, endDate) {
 			var curDate = moment.max(moment(startDate).startOf('day'),moment(this.sched.start).startOf('day'));
 			var eDate = moment(endDate).endOf('day');
 			var unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));
-			//console.log('unrollInst.sched.start: ' + (new Date(unrollInst.sched.start)));
 			while(eDate.isAfter(unrollInst.sched.start) && curDate.isBefore(this.sched.end)) {
-//					console.log('eDate: ' + eDate._d);
-//					console.log('curDate: ' + curDate._d);
-//					console.log('this.sched.end: ' + (new Date(this.sched.end)));
 					unrolled.push(unrollInst);
 					curDate = moment(unrollInst.sched.end);
 					unrollInst = persMap[this.recurring.type].next.call(this, new Date(parseInt(curDate.format('x'))));

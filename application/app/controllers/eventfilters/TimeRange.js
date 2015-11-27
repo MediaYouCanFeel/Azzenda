@@ -11,16 +11,12 @@ var moment = require('moment');
 exports.execute = function(filter) {
 	var startDate = moment(filter.params.start).set({'second':0,'millisecond':0});
 	var endDate;
-	if(filter.params.end - filter.params.start >= 0) {
+	if(filter.params.end - filter.params.start > 0) {
 		endDate = moment(filter.params.end).set({'second':0,'millisecond':0});
-	} else if(filter.params.end - filter.params.start < 0) {
-		endDate = moment(filter.params.end).add(1, 'day').set({'second':0,'millisecond':0});
 	} else {
-		//throw error or something
+		endDate = moment(filter.params.end).add(1, 'day').set({'second':0,'millisecond':0});
 	}
-	endDate.add(this.length, 'millisecond');
-//	console.log(startDate);
-//	console.log(endDate);
+	endDate.add(this.length, 'ms');
 	
 	var oldPossibleDates = this.possDates;
 	var i;

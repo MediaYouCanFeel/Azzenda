@@ -100,7 +100,7 @@ exports.popThreads = function(rootThreads, callback) {
 	var rootIds = rootThreads.map(function(a) {
 		return a._id;
 	});
-	Thread.find({'path': {$in: rootIds}}).lean().exec(function(err, threads) {
+	Thread.find({'path': {$in: rootIds}}).populate('owner', 'displayName profpic').lean().exec(function(err, threads) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

@@ -42,7 +42,7 @@ exports.create = function(req, res) {
 				} else {
 					project.save(function(err) {
 						if(err) {
-							team.remove(function(errr) {
+							team.remove(function(err) {
 								return res.status(400).send({
 									message: errorHandler.getErrorMessage(err)
 								});

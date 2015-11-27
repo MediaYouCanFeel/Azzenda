@@ -33,10 +33,6 @@
   },
   "_source": "git://github.com/alexk111/ngImgCrop.git",
   "_target": "~0.3.2",
-<<<<<<< HEAD
   "_originalSource": "ngImgCrop",
   "_direct": true
-=======
-  "_originalSource": "ngImgCrop"
->>>>>>> branch 'master' of git@github.com:MediaYouCanFeel/Azzenda.git
 }

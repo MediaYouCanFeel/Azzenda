@@ -10,6 +10,8 @@
 		<!-- Pic + Blurb -->
 		<div class="col-md-12 well">
 			<img class="prof-pic-fit" ng-show="user.profpic!=''" ng-src="data:image/jpeg;base64,{{user.profpic}}" alt="Profile Picture"></img>
+			<img class="prof-pic-fit" ng-show="user.profpic==''" src="lib/pictures/pizza.jpg" alt="Profile Picture">
+			<button class="btn btn-teal edit-img-btn" ng-click="updateProfPicModal('md');"><i class="fa fa-pencil-square-o"></i></button>
 			<p></p>
 			
 			<!-- Projects Owned -->

@@ -212,9 +212,9 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 						}
 					});
 				} else {
-					//MAKE THIS FIXED TIME FILTER
+					//UPDATE THIS FOR FIXED TIME FILTER
 					event.filters.push({
-						type: "FIXED",
+						type: "FIXEDTIME",
 						params: {
 							start: parseInt($scope.sendDate)
 						}

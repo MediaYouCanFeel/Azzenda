@@ -1,6 +1,6 @@
 <section data-ng-controller="ThreadsController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="thread.name"></h1>
+		<h1 data-ng-bind="thread.text"></h1>
 	</div>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == thread.user._id))">
 		<a class="btn btn-primary" href="/#!/threads/{{thread._id}}/edit">

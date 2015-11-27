@@ -156,22 +156,23 @@
    			</div>
 			
 			<span ng-if="team.threads.length > 0" >
-				<a data-ng-repeat="thread in team.threads" data-ng-href="#!/threads/{{thread}}" class="list-group-item">
-					<span data-ng-bind="thread"></span>
-				</a>
+				<div data-ng-repeat="thread in team.threads" class="list-group-item">
+					<strong><a data-ng-bind="thread.owner.displayName" data-ng-href="#!/users/{{thread.owner._id}}"></a></strong>
+					<span data-ng-bind="thread.text" data-ng-init="setInitVotes(thread._id)"></span>
+					
+					<div> <small>
+						<span data-ng-bind="threadUpVotes"></span> upvotes, <span data-ng-bind="threadDownVotes"></span> downvotes, 0 replies
+					</small> </div>
+					
+					<hr>
+					
+					<span class="thread-action" ng-click="upvote(thread._id)"><i class="fa fa-chevron-up"></i> <strong>Upvote</strong> </span>
+					<span class="thread-action" ng-click="downvote(thread._id)"><i class="fa fa-chevron-down"></i> <strong>Downvote</strong> </span>
+					<span class="thread-action" ng-click="reply(thread._id)"><i class="fa fa-comments-o"></i> <strong>Reply</strong> </span>
+				</div>
 				
-				<form class="form-horizontal" novalidate>
-	            <fieldset>
-	                <div class="form-group">
-	                    <label class="control-label" for="text">New Thread</label>
-	                    <div class="controls">
-	                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
-	                    </div>
-	                </div>
-	            </fieldset>
-	            </form>
 	            <div class="form-group pull-right">
-					<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
+					<input id="create-group-button" type="submit" ng-click="createModal('lg')" class="btn btn-yellow" value="Create Thread">
 	            </div>
 			</span>
 		</div>

@@ -5,39 +5,11 @@
         </span>
         <form class="form-horizontal" novalidate>
             <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
-                    <div class="examples">
-                        Examples: "Delivery People", "Cooks"
-                    </div>
-                </div>
-                
-                <!-- Project -->
-                <div class="form-group" data-ng-init="findProjects();">
-                    <label class="control-label" for="project">Project</label>
-                    <div class="fullWidth">
-                        <select class="form-control fullWidth js-example-basic-single" data-tags="false" data-ng-model="project" id="project">
-                            <option ng-repeat="project in projects" data-ng-value="project._id">{{project.name}}</option>
-                        </select>
-                    </div>
-				</div> 
-                
-                <!-- Add to Team -->
-                <div class="form-group">
-                   <label class="control-label" for="members">Team Members</label>
-                   <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="members" id="members" data-ng-init="findUsers()">
-                       <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
-                   </select>
-				</div> 
-                
                 <!-- Description -->
                 <div class="form-group">
-                    <label class="control-label" for="description">Description</label>
+                    <label class="control-label" for="text">What do you want to say?</label>
                     <div class="controls">
-                        <textarea data-ng-model="description" id="description" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
+                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
                     </div>
                 </div>
                 
@@ -52,7 +24,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group pull-right">
-                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Team">
+                            <input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Start Thread">
                         </div>
                     </div>
                 </div>

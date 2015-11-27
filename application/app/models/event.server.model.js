@@ -45,6 +45,7 @@ var EventSchema = new Schema({
         default: '',
         trim: true
     },
+    //should probably remove this
     proj: {
         type: Schema.ObjectId,
         ref: 'Project'
@@ -77,7 +78,7 @@ var EventSchema = new Schema({
         status: {
             type: String,
             enum: ['invited','going','not going']
-        }	
+        }
     }],
     status: {
         type: String,

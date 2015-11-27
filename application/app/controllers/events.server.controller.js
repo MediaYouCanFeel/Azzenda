@@ -168,7 +168,7 @@ exports.schedule = function(req, res) {
 							if(startDate.isAfter(dateRangeStart)) {
 								oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
 								if(endDate.isBefore(dateRangeEnd)) {
-									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
+									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x')))})
 								}
 							} else if(endDate.isBefore(dateRangeEnd)) {
 								oldPossibleDates[i--].start = new Date(parseInt(endDate.format('x')));
@@ -183,12 +183,7 @@ exports.schedule = function(req, res) {
 			}
 			
 			event.possDates = event.possDates.sort(function(a,b) {
-				var prio = b.priority - a.priority;
-				if(prio == 0) {
-					return a.start.getTime() - b.start.getTime();
-				} else {
-					return prio;
-				}
+				return a.start.getTime() - b.start.getTime();
 			});
 			
 			event.status = 'unschedulable';	

@@ -71,7 +71,7 @@ exports.popTasks = function(rootTasks, callback) {
 	var rootIds = rootTasks.map(function(a) {
 		return a._id;
 	});
-	Task.find({'path': {$in: rootIds}}).populate('owners.users.user', 'displayName').populate('owners.team','name').populate('workers.users.user', 'displayName').populate('workers.team','name').lean().exec(function(err, tasks) {
+	Task.find({'path': {$in: rootIds}}).populate('owners.users.user', 'displayName profpic').populate('owners.team','name').populate('workers.users.user', 'displayName profpic').populate('workers.team','name').lean().exec(function(err, tasks) {
 		if(err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -161,7 +161,7 @@ exports.list = function(req, res) {
  * Task middleware
  */
 exports.taskByID = function(req, res, next, id) {
-	Task.findById(id).populate('owners.users.user', 'displayName').populate('owners.team').populate('workers.users.user', 'displayName').populate('workers.team').populate('path').populate('project').lean(req.originalMethod == 'GET').exec(function(err, task) {
+	Task.findById(id).populate('owners.users.user', 'displayName profpic').populate('owners.team').populate('workers.users.user', 'displayName profpic').populate('workers.team').populate('path').populate('project').lean(req.originalMethod == 'GET').exec(function(err, task) {
 		if (err) return next(err);
 		if (! task) return next(new Error('Failed to load Task ' + id));
 		req.task = task;

@@ -1,8 +1,8 @@
 'use strict';
 
 // Threads controller
-angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Threads', 'Teams', '$modal',
-	function($scope, $stateParams, $location, Authentication, Threads, Teams, $modal) {
+angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$state', '$location', 'Authentication', 'Threads', 'Teams', '$modal', '$log',
+	function($scope, $stateParams, $state, $location, Authentication, Threads, Teams, $modal, $log) {
 		$scope.authentication = Authentication;
 
 		
@@ -54,10 +54,14 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				
 				console.log("response._id: " + response._id + "\n$stateParams.threads: " + $stateParams.threads);
 				
+				$scope.ok();
+				
 				// Add this code here
 				Teams.update({
 						_id: $stateParams.teamId,
 						threads: $stateParams.threads.concat(response._id)
+				}, function() {
+					$state.go($state.current, {}, {reload: true});
 				});
 				
 				
@@ -90,7 +94,6 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 			var thread = $scope.thread;
 
 			thread.$update(function() {
-				$location.path('threads/' + thread._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -107,5 +110,36 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				threadId: $stateParams.threadId
 			});
 		};
+		
+		//INTERACTIONS
+		$scope.setInitVotes = function(threadId) {
+			$scope.thread = Threads.get({ 
+				threadId: threadId
+			}, function() {
+				$scope.threadUpVotes = $scope.thread.votes.up;
+				$scope.threadDownVotes = $scope.thread.votes.down;
+			});
+		}
+		
+		$scope.upvote = function(threadId) {
+			$scope.thread = Threads.get({ 
+				threadId: threadId
+			}, function() {
+				$scope.thread.votes.up++;
+				$scope.update();
+				$scope.threadUpVotes = $scope.thread.votes.up;
+
+			});
+		}
+		
+		$scope.downvote = function(threadId) {
+			$scope.thread = Threads.get({ 
+				threadId: threadId
+			}, function() {
+				$scope.thread.votes.down++;
+				$scope.update();
+				$scope.threadDownVotes = $scope.thread.votes.down;
+			});
+		}
 	}
 ]);

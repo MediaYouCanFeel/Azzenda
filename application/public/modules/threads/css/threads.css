@@ -1,0 +1,7 @@
+.thread-action {
+	margin-right: 25px;
+	cursor: pointer;
+}
+.thread-action:hover {
+	text-decoration:underline;
+}

@@ -9,7 +9,6 @@ var moment = require('moment');
  * Get the next instance of the recurring this after curDate
  */
 exports.next = function(curDate) {
-	//console.log(curDate);
 	var weekDays = this.recurring.params.days;
 	var monthDate = moment(this.sched.start.getTime());
 	var curDate = moment(curDate);

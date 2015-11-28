@@ -15,7 +15,7 @@ module.exports = function(app) {
     
 	// Setting up the users profile api
 	app.route('/users/me').get(users.requiresLogin, users.me);
-    app.route('/users/:userId').put(users.requiresLogin, users.hasAuthorization, multipartyMiddleware, users.update).get(users.requiresLogin, users.hasAuthorization, users.read);
+    app.route('/users/:userId').put(users.requiresLogin, users.hasAuthorization, multipartyMiddleware, users.update).get(users.requiresLogin, users.read);
 	app.route('/users').get(users.requiresLogin, users.list).post(users.requiresLogin, users.hasAuthorization, multipartyMiddleware, users.createUser);
 	app.route('/users/accounts').delete(users.removeOAuthProvider);
 

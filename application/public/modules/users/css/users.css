@@ -18,6 +18,14 @@
 	height: 64px;
 }
 
+.prof-pic-thread {
+	width: 48px;
+	height: 48px;
+	margin-left: 0px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
 .prof-pic-128 {
 	width: 128px;
 	height: 128px;

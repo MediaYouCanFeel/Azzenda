@@ -5,6 +5,10 @@ angular.module('threads').config(['$stateProvider',
 	function($stateProvider) {
 		// Threads state routing
 		$stateProvider.
+		state('create-sub-thread', {
+			url: '/create-sub-thread',
+			templateUrl: 'modules/threads/views/create-sub-thread.client.view.html'
+		}).
 		state('listThreads', {
 			url: '/threads',
 			templateUrl: 'modules/threads/views/list-threads.client.view.html'

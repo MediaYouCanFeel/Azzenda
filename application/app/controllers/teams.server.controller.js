@@ -73,7 +73,7 @@ exports.read = function(req, res) {
 						message: errorHandler.getErrorMessage(err)
 					});
 				} else {
-					Thread.find({_id: {$in: req.team.threads}}).populate('owner', 'displayName profpic').exec(function(err, threds) {
+					Thread.find({_id: {$in: req.team.threads}}).populate('owner', 'displayName profpic').lean().exec(function(err, threds) {
 						if(err) {
 							return res.status(400).send({
 								message: errorHandler.getErrorMessage(err)

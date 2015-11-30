@@ -40,7 +40,66 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
             });
         };
 		
-		
+        //Open Modal window for replying to a thread
+        $scope.reply = function (threadId, size) {
+            
+        	$stateParams.threadId = threadId;
+        	
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'modules/threads/views/create-sub-thread.client.view.html',
+              controller: function ($scope, $modalInstance, items) {
+                  console.log('In Modal Controller');
+                                    
+                  $scope.ok = function () {
+                      //$scope.selected.event
+                    modalInstance.close();
+                  };
+
+                  $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                  };
+              },
+              size: size,
+              resolve: {
+                items: function () {
+                }
+              }
+            });
+            
+            //modalInstance.opened.then($scope.initModal);
+            
+            modalInstance.result.then(function (selectedEvent) {
+              $scope.selected = selectedEvent;
+            }, function () {
+              $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+        
+        $scope.createSub = function() {
+        	console.log("parThread: " + $stateParams.threadId);
+        	var thread = new Threads ({
+				text: this.text,
+				parThread: $stateParams.threadId
+			});
+        	
+        	// Redirect after save
+			thread.$save(function(response) {
+				//Send update to Project, Team, etc.
+				
+				console.log("response._id: " + response._id + "\n$stateParams.threads: " + $stateParams.threads);
+				
+				$scope.ok();
+				
+				$state.go($state.current, {}, {reload: true});
+				
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+        }
+        
 		// Create new Thread
 		$scope.create = function() {
 			// Create new Thread object

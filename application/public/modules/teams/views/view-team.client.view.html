@@ -54,6 +54,31 @@
         <ul ng-if="task.subTasks">
         </ul>
     </script>
+    
+    <script type="text/ng-template" id="threadTree">
+		<div class="list-group-item">
+			<div class="row">
+				<div class="col-md-1">
+					<a data-ng-href="#!/users/{{thread.owner._id}}">
+						<img class="prof-pic-thread" ng-show="thread.owner.profpic!=''" ng-src="data:image/jpeg;base64,{{thread.owner.profpic}}" alt="Profile Picture">
+					</a>
+				</div>
+				<div class="col-md-11">
+					<strong><a data-ng-bind="thread.owner.displayName" data-ng-href="#!/users/{{thread.owner._id}}"></a></strong>
+					<span data-ng-bind="thread.text" data-ng-init="setInitVotes(thread._id)"></span>
+					<div> <small>
+						<span data-ng-bind="threadUpVotes"></span> upvotes, <span data-ng-bind="threadDownVotes"></span> downvotes, <span data-ng-bind="thread.subThreads.length"></span> replies
+					</small> </div>
+				</div>
+			</div>	
+			<hr>
+			<span class="thread-action" ng-click="upvote(thread._id)"><i class="fa fa-chevron-up"></i> <strong>Upvote</strong> </span>
+			<span class="thread-action" ng-click="downvote(thread._id)"><i class="fa fa-chevron-down"></i> <strong>Downvote</strong> </span>
+			<span class="thread-action" ng-click="reply(thread._id, 'md')"><i class="fa fa-comments-o"></i> <strong>Reply</strong> </span>
+			
+			<span data-ng-repeat="thread in thread.subThreads" ng-include="'threadTree'"></span>
+		</div>
+    </script>
 	
 	<div class="col-md-12 top-well">
         <div class="col-md-8 event-back">
@@ -156,19 +181,8 @@
    			</div>
 			
 			<span ng-if="team.threads.length > 0" >
-				<div data-ng-repeat="thread in team.threads" class="list-group-item">
-					<strong><a data-ng-bind="thread.owner.displayName" data-ng-href="#!/users/{{thread.owner._id}}"></a></strong>
-					<span data-ng-bind="thread.text" data-ng-init="setInitVotes(thread._id)"></span>
-					
-					<div> <small>
-						<span data-ng-bind="threadUpVotes"></span> upvotes, <span data-ng-bind="threadDownVotes"></span> downvotes, 0 replies
-					</small> </div>
-					
-					<hr>
-					
-					<span class="thread-action" ng-click="upvote(thread._id)"><i class="fa fa-chevron-up"></i> <strong>Upvote</strong> </span>
-					<span class="thread-action" ng-click="downvote(thread._id)"><i class="fa fa-chevron-down"></i> <strong>Downvote</strong> </span>
-					<span class="thread-action" ng-click="reply(thread._id)"><i class="fa fa-comments-o"></i> <strong>Reply</strong> </span>
+				<div data-ng-repeat="thread in team.threads">
+					<span ng-include="'threadTree'"></span>
 				</div>
 				
 	            <div class="form-group pull-right">

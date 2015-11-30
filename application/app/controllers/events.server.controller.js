@@ -25,12 +25,44 @@ exports.create = function(req, res) {
 		delete req.body.desc;
 		var event = new Event(req.body);
 		event.owner = req.user;
+		
 		event.recurring.markModified('params');
 		
 		if(event.recurring.type == 'NONE') {
 			event.sched.end = event.sched.start.getTime() + event.length;
 		}
 		
+		var events = event.recurUnrollNext(event.sched.start, event.sched.end);
+		
+		var eventOb = event.toObject();
+		delete eventOb._id;
+		console.log(eventOb);
+		
+		var i;
+		for(i=1; i<events.length; i++) {
+			var evnt = new Event(eventOb);
+			evnt.sched.start = events[i].sched.start;
+			evnt.sched.end = events[i].sched.end;
+			evnt.save(function(err) {
+				if(err) {
+	            	console.log('Event save error');
+	            	var errMsg = errorHandler.getErrorMessage(err);
+	            	if(errMsg == '') {
+	            		errMsg = err.message;
+	            		if(errMsg == '') {
+	            			errMsg = err;
+	            		}
+	            	}
+	            	console.log(errMsg);
+	                return res.status(400).send({
+	                    message: errMsg
+	                });
+	            }
+			});
+		}
+		
+		event.sched.start = events[0].sched.start;
+		event.sched.end = events[0].sched.end;
 		event.save(function(err) {
             if(err) {
             	console.log('Event save error');
@@ -41,6 +73,76 @@ exports.create = function(req, res) {
             			errMsg = err;
             		}
             	}
+            	console.log(errMsg);
+                return res.status(400).send({
+                    message: errMsg
+                });
+            } else {
+                return res.jsonp(event);
+            }
+        });
+	} else if(req.body.recurring.type != 'NONE'){
+		delete req.body.personal;
+		var event = new Event(req.body);
+		event.owner = req.user;
+		
+		event.recurring.markModified('params');
+		
+		var guests = req.body.guests;
+	    delete req.body.guests;
+		var event = new Event(req.body);
+		
+		var j;
+		for(j=0; j<guests.length; j++) {
+			var curGuest = guests[j].user;
+			event.guests.push({
+				user: curGuest,
+				status: 'invited'
+			});
+		}
+		
+		var events = event.recurUnrollNext(event.sched.start, event.sched.end);
+		
+		var eventOb = event.toObject();
+		delete eventOb._id;
+		console.log(eventOb);
+		
+		var i;
+		for(i=1; i<events.length; i++) {
+			var evnt = new Event(eventOb);
+			evnt.sched.start = events[i].sched.start;
+			evnt.sched.end = events[i].sched.end;
+			evnt.save(function(err) {
+				if(err) {
+	            	console.log('Event save error');
+	            	var errMsg = errorHandler.getErrorMessage(err);
+	            	if(errMsg == '') {
+	            		errMsg = err.message;
+	            		if(errMsg == '') {
+	            			errMsg = err;
+	            		}
+	            	}
+	            	console.log(errMsg);
+	                return res.status(400).send({
+	                    message: errMsg
+	                });
+	            }
+			});
+		}
+		
+		event.sched.start = events[0].sched.start;
+		event.sched.end = events[0].sched.end;
+		event.save(function(err) {
+            if(err) {
+            	console.log('Event save error');
+            	var errMsg = errorHandler.getErrorMessage(err);
+            	if(errMsg == '') {
+            		errMsg = err.message;
+            		if(errMsg == '') {
+            			errMsg = err;
+            		}
+            	}
+            	console.log(errMsg);
                 return res.status(400).send({
                     message: errMsg
                 });
@@ -55,6 +157,15 @@ exports.create = function(req, res) {
 	    delete req.body.sched.start;
 		var event = new Event(req.body);
 		event.owner = req.user;
+		
+		var j;
+		for(j=0; j<guests.length; j++) {
+			var curGuest = guests[j].user;
+			event.guests.push({
+				user: curGuest,
+				status: 'invited'
+			});
+		}
 		
 		event.save(function(err) {
 			if(err) {
@@ -112,12 +223,12 @@ exports.schedule = function(req, res) {
             });
 		} else {
 			var j;
-			for(j=0; j<guests.length; j++) {
-				var curGuest = guests[j];
-				event.guests.push({
-					user: curGuest,
-					status: 'invited'
-				});
+			for(j=0; j<req.event.guests.length; j++) {
+				var curGuest = req.event.guests[j].user;
+//				event.guests.push({
+//					user: curGuest,
+//					status: 'invited'
+//				});
 				
 				var m;
 				var curUserEvents = userEvents.slice(0);
@@ -168,7 +279,7 @@ exports.schedule = function(req, res) {
 							if(startDate.isAfter(dateRangeStart)) {
 								oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
 								if(endDate.isBefore(dateRangeEnd)) {
-									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x'))), prio: 0})
+									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x')))})
 								}
 							} else if(endDate.isBefore(dateRangeEnd)) {
 								oldPossibleDates[i--].start = new Date(parseInt(endDate.format('x')));
@@ -183,12 +294,7 @@ exports.schedule = function(req, res) {
 			}
 			
 			event.possDates = event.possDates.sort(function(a,b) {
-				var prio = b.priority - a.priority;
-				if(prio == 0) {
-					return a.start.getTime() - b.start.getTime();
-				} else {
-					return prio;
-				}
+				return a.start.getTime() - b.start.getTime();
 			});
 			
 			event.status = 'unschedulable';	
@@ -275,50 +381,50 @@ exports.list = function(req, res) {
     var lastDate = moment(parseInt(req.query.endDate));
     console.log(lastDate._d);
     if(_.intersection(req.user.roles,roles).length) {
-        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, events) {
+        Event.find().where('sched.end').gt(currDate).where('sched.start').lt(lastDate).populate('owner', 'displayName profpic').populate('proj', 'name').populate('guests.user', 'displayName profpic').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-            	var i;
-            	for(i=0; i<events.length;) {
-            		var curEvent = events[i];
-            		
-        			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-        			events.splice(i, 1);
-        			if(unrolled) {
-        				var j;
-            			for(j=0; j<unrolled.length; j++) {
-            				events.splice(i++, 0, unrolled[j]);
-            			}
-        			}
-            	}
+//            	var i;
+//            	for(i=0; i<events.length;) {
+//            		var curEvent = events[i];
+//            		
+//        			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+//        			events.splice(i, 1);
+//        			if(unrolled) {
+//        				var j;
+//            			for(j=0; j<unrolled.length; j++) {
+//            				events.splice(i++, 0, unrolled[j]);
+//            			}
+//        			}
+//            	}
                 res.jsonp(events);
             }
         });
     } else {
-        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName').populate('proj', 'name').exec(function(err, events) {
+        Event.find({$or: [{'owner': req.user._id},{'guests.user': req.user._id}]}).where('sched.end').gt(currDate).where('sched.start').lt(lastDate).sort('-created').populate('owner', 'displayName profpic').populate('proj', 'name').populate('guests.user','displayName profpic').exec(function(err, events) {
             if (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-            	var i;
-            	for(i=0; i<events.length; i++) {
-            		var curEvent = events[i];
-            		if(curEvent.status == 'personal') {
-            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-            			events.splice(i, 1);
-            			if(unrolled) {
-            				var j;
-                			for(j=0; j<unrolled.length; j++) {
-                				events.splice(i, 0, unrolled[j]);
-                				i++;
-                			}
-            			}
-            		}
-            	}
+//            	var i;
+//            	for(i=0; i<events.length; i++) {
+//            		var curEvent = events[i];
+//            		if(curEvent.status == 'personal') {
+//            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
+//            			events.splice(i, 1);
+//            			if(unrolled) {
+//            				var j;
+//                			for(j=0; j<unrolled.length; j++) {
+//                				events.splice(i, 0, unrolled[j]);
+//                				i++;
+//                			}
+//            			}
+//            		}
+//            	}
                 res.jsonp(events);
             }
         });

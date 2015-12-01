@@ -855,5 +855,14 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 	            $scope.events = response;
         	}
 		};
+		
+        // Filters
+        $scope.projectFilter = function(element) {
+        	var filter = true;
+        	if (element.project._id != $scope.project) {
+        		filter = false;
+        	} 
+        	return filter;
+        }
     }
 ]);

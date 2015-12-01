@@ -93,23 +93,25 @@
         </div>
         
     </div>
-	
-	<div class="col-md-12">
-		<div class="well">
-			<h1>
-				<i class="fa fa-users"></i>
-				<span data-ng-bind="team.name"></span>
-			</h1>
+
+	<div class="col-md-12">	
+		<div class="col-md-12 well">		
+			<span class="col-md-7">
+				<h1><i class="fa fa-users"></i>
+				<span data-ng-bind="team.name"></span></h1>
+			</span>
+			
+			<span class="col-md-3 col-md-offset-2 text-center project-team-whole">
+				<span class="project-name-team">
+					<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong>
+				</span>
+				<span class="project-team">
+					project team
+				</span>
+			</span>
 		</div>
 	</div>
 
-	<div class="col-md-12">
-		<div class="col-md-12 well">
-			<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong> project team.
-		</div>
-	</div>
-	
-	
 	<div class="col-md-4">
 		<!-- Description -->
 		<div class="col-md-12 well" ng-if="team.description">

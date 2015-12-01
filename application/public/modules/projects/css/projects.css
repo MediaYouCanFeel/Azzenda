@@ -27,3 +27,18 @@
   margin-left: -10px;
   margin-right: 0px;
 }
+
+.project-name-team {
+  font-size: 24px;
+  padding-bottom: 0px;
+  display: block;
+  margin-bottom: -7px;
+}
+
+.project-team {
+  margin-top: -10px;
+}
+
+.project-team-whole {
+  margin-top: 10px;
+}

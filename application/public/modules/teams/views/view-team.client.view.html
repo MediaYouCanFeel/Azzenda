@@ -111,6 +111,11 @@
 	
 	
 	<div class="col-md-4">
+		<!-- Description -->
+		<div class="col-md-12 well" ng-if="team.description">
+			<span data-ng-bind="team.description"></span>
+		</div>
+	
 		<!-- List of members -->
 		<div class="col-md-12 well">
 			<h4><strong>Members</strong></h4>
@@ -135,15 +140,16 @@
 			<!-- Text -->
 			<!-- More than 3 users -->
 			<div>
-				<span ng-repeat="user in team.users | limitTo: 3" data-ng-init="setDynamicPopover()">
-					<a ng-if="team.users.length <= 3 || $index < 2" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
-					</a><span ng-if="team.users.length > 2 && $index < 2">,
-					</span><span ng-if="$index == 0 && team.users.length == 2 || team.users.length > 2 && $index == 1"> and 
+				<span ng-repeat="user in team.users | limitTo: 4" data-ng-init="setDynamicPopover()">
+					<a ng-if="team.users.length < 4 || $index < 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><a ng-if="team.users.length == 4 && $index == 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><span ng-if="$index < team.users.length - 1 && $index < 3 && team.users.length > 2">,
+					</span><span ng-if="$index == team.users.length - 2 || ($index == 2 && team.users.length > 4)"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
-					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 2"></span> others.</a></span>
+					</span><span ng-if="$index == 2 && team.users.length > 4"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a>
+					</span>
 					
 				</span>
-				<!--  --> 
 			</div>			
 		</div>
 	</div>

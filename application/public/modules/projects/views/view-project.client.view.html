@@ -92,7 +92,8 @@
     	<div class="col-md-12 well">
     		Owners:
 	    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
-	    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong>
+	    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong><span ng-if="$index < project.owners.length - 2">, </span>
+	    		<span ng-if="$index == project.owners.length - 2"> and </span>
 	    	</span>
     	</div>
     	

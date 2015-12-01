@@ -18,13 +18,13 @@
 			<span ng-if="user.ownerProjects.length > 0">
 				<hr>
 				<div style="padding-top:5px;">
-					Owner of  
-					<a ng-repeat="proj in user.ownerProjects" data-ng-href="#!/projects/{{proj._id}}">
-						<strong><span data-ng-bind="proj.name">
-						</span></strong><span ng-if="$index < user.ownerProjects.length-1 && user.ownerProjects.length > 2">,
+					Owner of the 
+					<span ng-repeat="proj in user.ownerProjects">
+						<strong><a data-ng-bind="proj.name" data-ng-href="#!/projects/{{proj._id}}">
+						</a></strong><span ng-if="$index < user.ownerProjects.length-1 && user.ownerProjects.length > 2">,
 						</span><span ng-if="$index == user.ownerProjects.length-2 && user.ownerProjects.length > 1"> and 
-						</span><span ng-if="$index == user.ownerProjects.length-1">.</span>
-					</a>
+						</span><span ng-if="$index == user.ownerProjects.length-1"> project<span ng-if="user.ownerProjects.length > 1">s</span>.</span>
+					</span>
 				</div>
 			</span>
 			

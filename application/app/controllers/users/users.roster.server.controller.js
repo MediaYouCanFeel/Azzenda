@@ -154,6 +154,8 @@ exports.update = function(req, res) {
 
 	// For security measurement we remove the roles from the req.body object
 	delete req.body.roles;
+	delete req.body.password;
+	delete req.body.salt;
 
 	if (user) {
 		// Merge existing user
@@ -373,7 +375,9 @@ exports.userByID = function(req, res, next, id) {
  */
 exports.hasAuthorization = function(req, res, next) {
 	var roles = ['admin'];
-    if(_.intersection(req.user.roles,roles).length) {
+	console.log(req.user._id);
+	console.log(req.otherUser._id);
+    if((req.user._id.equals(req.otherUser._id)) || _.intersection(req.user.roles,roles).length) {
 		next();
 	} else {
         return res.status(403).send('User is not authorized');

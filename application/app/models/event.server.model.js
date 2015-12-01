@@ -70,6 +70,34 @@ var EventSchema = new Schema({
     },
     location: String,
     type: String,
+    priority: Number,
+    guestStrategy: {
+    	type: String,
+		//automatic means algorithm will only
+		//invite people who are available, and it will
+		//only invite up to max people
+		//First come first serve means all potential
+		//guests will be invited. once max is hit,
+		//all other guests who have not yet responded
+		//will be removed
+		enum: ['automatic', 'fcfs']
+    },
+    guestRequest: [{
+    	group: {
+    		type: Schema.ObjectId,
+    		ref: String
+    	},
+    	//min determines how many guests to consider necessary
+    	min: {
+    		type: Number,
+    		required: 'Please enter a min number of guests'
+    	},
+    	max: Number,
+    	guests: [{
+    		type: Schema.ObjectId,
+    		ref: 'User'
+    	}]
+    }],	
     guests: [{
         user: {
             type: Schema.ObjectId,
@@ -78,7 +106,8 @@ var EventSchema = new Schema({
         status: {
             type: String,
             enum: ['invited','going','not going']
-        }
+        },
+        required: Boolean
     }],
     status: {
         type: String,

@@ -225,10 +225,6 @@ exports.schedule = function(req, res) {
 			var j;
 			for(j=0; j<req.event.guests.length; j++) {
 				var curGuest = req.event.guests[j].user;
-//				event.guests.push({
-//					user: curGuest,
-//					status: 'invited'
-//				});
 				
 				var m;
 				var curUserEvents = userEvents.slice(0);
@@ -508,8 +504,10 @@ exports.eventByID = function(req, res, next, id) {
  * Event authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.event.owner.id !== req.user.id) {
+	var roles = ['admin']
+	if ((req.event.owner.id.equals(req.user.id)) || _.intersection(req.user.roles,roles).length) {
+		next();
+	} else {
 		return res.status(403).send('User is not authorized');
 	}
-	next();
 };

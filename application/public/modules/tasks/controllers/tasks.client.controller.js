@@ -584,8 +584,6 @@ angular.module('tasks').controller('TasksController', ['$scope', '$stateParams',
   			
   		};
   		
-
-  		
   		$scope.getValue = function(status) {
   			switch(status) {
 	     	  	case "not started":

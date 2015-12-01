@@ -4,7 +4,7 @@
         <h1 class="text-center">Create Event</h1>
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
-                <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
+                <div class="row" ng-init="createPage=1; findProjects(); findTeams(); findEventTypes(); findEventLocs();">
                     
                     <!-- ------ -->
                     <!-- PAGE 1 -->
@@ -31,7 +31,7 @@
                                 </select>
                             </div>
 					    </div> 
-                        
+
                         <!-- Type -->                        
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label> 
@@ -42,7 +42,6 @@
                                 Examples: "Eating", "Baking"
                             </div>
                         </div> 
-                        
                         
                         <!-- Location -->
                         <div class="form-group">
@@ -56,18 +55,21 @@
                         </div>
 
 						<!-- Duration -->
-                       
-                         <div class="form-group">
-                             <label class="control-label text-center" for="durationH">Duration (Hours)</label>
-                             <div class="controls">
-                                <input type="number" id="durationH" ng-model="hourDurationFromModal" placeholder="0"></input>
-                             </div>
+                        <div class="form-group">
+                        	<span class="col-md-6">
+                            <label class="control-label text-center" for="durationH">Duration (Hours)</label>
+                            <div class="controls">
+                               <input type="number" id="durationH" ng-model="hourDurationFromModal" placeholder="0"></input>
+                            </div>
+                            </span>
                              
-                             <label class="control-label text-center" for="durationM">Duration (Minutes)</label>
-                             <div class="controls">
-                                <input type="number" id="durationM" ng-model="minDurationFromModal" placeholder="0"></input>
-                             </div>
-                         </div>
+                            <span class="col-md-6">
+                            <label class="control-label text-center" for="durationM">Duration (Minutes)</label>
+                            <div class="controls">
+                               <input type="number" id="durationM" ng-model="minDurationFromModal" placeholder="0"></input>
+                        	</div>
+                        	</span>
+                        </div>
                        
 
                         <!-- Description -->
@@ -123,7 +125,6 @@
                         </div>
                         
                         <div class="col-md-6 timepicker">
-                        
                             <!-- Earliest Start Time -->
                             <div class="row">
 	                            <div ng-show="fixedFilter || trFilter"  class="form-group">
@@ -144,8 +145,6 @@
 	                                </div>
 	                            </div>
                             </div>
-                            
-                            
                         </div>
                     
                     	<!-- Day of Week -->
@@ -250,44 +249,40 @@
                     <!-- ------ -->
                     <!-- PAGE 3 -->
                     <!-- ------ -->
-                    <div class="col-md-6 modal-col" ng-show="createPage == 3" ng-init="findUsers()">
-                        <div class="text-center modal-heading"><u>Required Guests</u></div>
-                        
-                        <!-- Required Guests -->
-                         <div class="form-group">
-                            <label class="control-label" for="users">Required Guests</label>
-                            <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="guests" id="users">
-                                <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
-                            </select>
-					    </div> 
-                    </div>
-                    
-                    <div class="col-md-6 modal-col" ng-show="createPage == 3">
-                        <div class="text-center modal-heading"><u>Additional Guests</u></div>
-                        
-                        <!-- Additional Guests -->
-                        <div class="row">
-                            <div class="form-group" data-ng-init="findGroups()">
-                                <div class="controls">
-                                    <label class="control-label">I need:</label>
-                                    <select class="form-control js-example-basic-single" multiple="multiple" data-ng-model="groupsNeeded" id="group">
-                                        <option ng-repeat="group in groups" data-ng-value="group._id">{{group.name}}</option>
-                                    </select>
-                                    
-                                    <!-- Number Selectors -->
-                                    <div ng-repeat="groupNeeded in groupsNeeded">
-                                        <div class="row" data-ng-init="thisGroup = findGroup(groupNeeded)">
-                                            <div class="col-md-2">
-                                                <input class="form-control" type="text" ng-model="groupValues['field_' + $index]" />
-                                            </div>
-                                            {{thisGroup.name}}
-                                        </div>
-                                    </div>                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
+                    <div class="modal-col" ng-show="createPage == 3">
+	                    <div class="col-md-6 modal-col" ng-init="findUsers()">
+	                        <!-- Required Guests -->
+	                         <div class="form-group">
+	                            <label class="control-label" for="users">Required Guests</label>
+	                            <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="guests" id="users">
+	                                <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+	                            </select>
+						    </div> 
+	                    </div>
+	                    
+	                    <div class="col-md-6 modal-col">
+	                        <!-- Additional Guests -->
+	                        <div class="row">
+	                            <div class="form-group">
+	                                <div class="controls">
+	                                    <label class="control-label">Optional Guests</label>
+	                                    <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="optionalGuests" id="users">
+	                                		<option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+	                            		</select>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	            	
+	            	    <div class="col-md-12 modal-col" ng-show="project">
+	            	    	<div class="form-group">
+			                <label class="control-label" for="team_assigned">Team</label>
+			                <select class="form-control js-example-basic" data-ng-model="team" id="team">
+			                    <option ng-repeat="team in teams | filter: projectFilter" data-ng-value="team._id">{{team.name}}</option>
+			                </select>
+					</div>
+	            	    </div>
+                	</div>
                 <!-- PAGE 4 -->
                 <div class="col-md-6 modal-col" ng-show="createPage == 4">
                     <div class="text-center modal-heading"><u>Basic Info</u></div>

@@ -1,3 +1,6 @@
+.azzenda-font {
+  font-family: corbert;
+}
 .content {
 	margin-top: 50px;
 }
@@ -70,4 +73,7 @@
   background-repeat: repeat-x;
   border-color: #051F59;
   color: #ffffff;
+}
+.tahoma-font {
+  font-family: tahoma;
 }

@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+var moment = require('moment');
 /**
  * Apply filter
  */

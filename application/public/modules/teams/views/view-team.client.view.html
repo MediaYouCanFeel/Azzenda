@@ -93,24 +93,31 @@
         </div>
         
     </div>
-	
-	<div class="col-md-12">
-		<div class="well">
-			<h1>
-				<i class="fa fa-users"></i>
-				<span data-ng-bind="team.name"></span>
-			</h1>
+
+	<div class="col-md-12">	
+		<div class="col-md-12 well">		
+			<span class="col-md-7">
+				<h1><i class="fa fa-users"></i>
+				<span data-ng-bind="team.name"></span></h1>
+			</span>
+			
+			<span class="col-md-3 col-md-offset-2 text-center project-team-whole">
+				<span class="project-name-team">
+					<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong>
+				</span>
+				<span class="project-team">
+					project team
+				</span>
+			</span>
 		</div>
 	</div>
 
-	<div class="col-md-12">
-		<div class="col-md-12 well">
-			<strong><a data-ng-href="#!/projects/{{team.project._id}}" data-ng-bind="team.project.name"></a></strong> project team.
-		</div>
-	</div>
-	
-	
 	<div class="col-md-4">
+		<!-- Description -->
+		<div class="col-md-12 well" ng-if="team.description">
+			<span data-ng-bind="team.description"></span>
+		</div>
+	
 		<!-- List of members -->
 		<div class="col-md-12 well">
 			<h4><strong>Members</strong></h4>
@@ -135,15 +142,16 @@
 			<!-- Text -->
 			<!-- More than 3 users -->
 			<div>
-				<span ng-repeat="user in team.users | limitTo: 3" data-ng-init="setDynamicPopover()">
-					<a ng-if="team.users.length <= 3 || $index < 2" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
-					</a><span ng-if="team.users.length > 2 && $index < 2">,
-					</span><span ng-if="$index == 0 && team.users.length == 2 || team.users.length > 2 && $index == 1"> and 
+				<span ng-repeat="user in team.users | limitTo: 4" data-ng-init="setDynamicPopover()">
+					<a ng-if="team.users.length < 4 || $index < 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><a ng-if="team.users.length == 4 && $index == 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
+					</a><span ng-if="$index < team.users.length - 1 && $index < 3 && team.users.length > 2">,
+					</span><span ng-if="$index == team.users.length - 2 || ($index == 2 && team.users.length > 4)"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
-					</span><span ng-if="$index == 2 && team.users.length > 3"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 2"></span> others.</a></span>
+					</span><span ng-if="$index == 2 && team.users.length > 4"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a>
+					</span>
 					
 				</span>
-				<!--  --> 
 			</div>			
 		</div>
 	</div>
@@ -154,8 +162,8 @@
 		<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h4><strong>Tasks</strong></h4>
     		
-    		<div class="alert alert-warning text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
-    			No Tasks for this team yet, why don't you <a href="" ng-click="taskForTeamModal('md')">create one</a>?
+    		<div class="alert alert-blue text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
+    			No Tasks for this team yet - why don't you  <strong><u href="" ng-click="taskForTeamModal('md')" style="cursor:pointer">create one</u></strong>?
    			</div>
     		
     		<span ng-if="team.ownerTasks.length > 0 || team.memberTasks.length > 0" >
@@ -176,8 +184,8 @@
 		<!-- Threads -->
 		<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4><strong>Threads</strong></h4>
-			<div class="alert alert-warning text-center" ng-if="team.threads.length == 0">
-    			No Threads for this team yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
+			<div class="alert alert-blue text-center" ng-if="team.threads.length == 0">
+    			No Threads for this team yet - why don't you <strong><u ng-click="createModal('lg')" style="cursor:pointer">create one</u></strong>?
    			</div>
 			
 			<span ng-if="team.threads.length > 0" >

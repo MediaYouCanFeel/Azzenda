@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$http', '$location', 'Authentication', 'Upload',
-	function($scope, $http, $location, Authentication, Upload) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'Upload',
+	function($scope, $stateParams, $http, $location, Authentication, Upload) {
 		$scope.authentication = Authentication;
 		$scope.activePic = false;
 		// If user is signed in then redirect back home
@@ -20,14 +20,30 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 			}
 		}
         
-		$scope.signup = function(dataUrl) {
+        $scope.doProfPicEndStuff = function(croppedDataUrl) {
+        	console.log("croppedDataUrl: " + croppedDataUrl);
+        	$scope.setUrl(croppedDataUrl); 
+        	$scope.ok();
+        	$scope.showProfPicUrl();
+        }
+        
+        $scope.setUrl = function(croppedDataUrl) {
+        	$stateParams.url = croppedDataUrl;
+        }
+        
+        $scope.showProfPicUrl = function() {
+        	$scope.url = $stateParams.url;
+        }
+        
+		$scope.signup = function() {
+			console.log("dataUrl: " + $stateParams.url);
 			Upload.upload({
 				url: '/auth/signup', 
 				method: 'POST', 
 				headers: {'Content-Type': 'multipart/form-data'},
 				fields: {credentials: $scope.credentials,
-					activeImg: $scope.activePic},
-				file: Upload.dataUrltoBlob(dataUrl)              
+					activeImg: $stateParams.activePic},
+				file: Upload.dataUrltoBlob($stateParams.url)              
 			}).success(function (response, status) {
 				// If successful we assign the response to the global user model
 				$scope.authentication.user = response;

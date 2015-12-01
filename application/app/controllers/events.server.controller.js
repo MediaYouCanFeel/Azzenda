@@ -90,7 +90,6 @@ exports.create = function(req, res) {
 		
 		var guests = req.body.guests;
 	    delete req.body.guests;
-		var event = new Event(req.body);
 		
 		var j;
 		for(j=0; j<guests.length; j++) {

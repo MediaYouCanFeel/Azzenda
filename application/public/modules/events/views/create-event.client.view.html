@@ -5,6 +5,10 @@
         <form class="form-horizontal" data-ng-submit="create()" id="createEventForm" novalidate>
             <fieldset>
                 <div class="row" ng-init="createPage=1; findProjects(); findEventTypes(); findEventLocs();">
+                    
+                    <!-- ------ -->
+                    <!-- PAGE 1 -->
+                    <!-- ------ -->
                     <div class="modal-col" ng-show="createPage == 1">
                         <div class="text-center modal-heading"><u>Basic Info</u></div>
                         <!-- Name -->
@@ -76,7 +80,9 @@
 
                     </div>
                 
+                	<!-- ------ -->
                 	<!-- PAGE 2 -->
+                	<!-- ------ -->
                     <div class="modal-col" ng-show="createPage == 2" ng-init="fixedDate=true; fixedFilter=true">
                         <div class="text-center modal-heading"><u>Date/Time</u></div>
 
@@ -101,7 +107,6 @@
 						</div>
 
                         <!-- Fixed -->
-                        
                         <div class="col-md-6">
                             <!-- Date -->
                             <div ng-show="fixedFilter" class="form-group">
@@ -172,9 +177,79 @@
                     		</div>
                     	</div>
                     
+	                    <div class="col-md-12">
+                    		<hr>
+                    		<div class="text-center modal-heading"><u>Recurring</u></div>
+                    	</div>
+	                    	
+                    	<span ng-init="recType = 'NONE'"></span>
+                    	
+                   		<div class="col-md-12 modal-col form-group">
+                   			<div class="controls">
+                   				<input type="radio" id="noRec" ng-model="recType" name="Rec" ng-value="'NONE'" />
+                   					<label>None</label>
+                   				<input type="radio" id="weekRec" ng-model="recType" name="Rec" ng-value="'WEEKLY'">
+                   					<label>Weekly</label>
+                   				<input type="radio" id="monthRec" ng-model="recType" name="Rec" ng-value="'MONTHLY'">
+                   					<label>Month</label>
+                   			</div>
+                   		</div>
+                    	
+	                    	
+                    	<!-- Day of Week -->
+                    	<div class="row">
+	                   		<div ng-show="recType == 'WEEKLY'" class="form-group">
+	                        	<span class="formTitles modal-col">Which day(s) of the week?</span>
+	                            <div class="controls col-md-12 button-labels">
+	                            	<input type="checkbox" id="sun" ng-model="sun" name="dayOfWeek" value=true>
+	                                	<label class="btn btn-no-hover" id="sunLab" for="sun">Sun</label>
+	                                 <input type="checkbox" id="mon" ng-model="mon" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="monLab" for="mon">Mon</label>
+	                                 </input>
+	                                 <input type="checkbox" id="tue" ng-model="tue" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="tueLab" for="tue">Tue</label>
+	                                 </input>
+	                                 <input type="checkbox" id="wed" ng-model="wed" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="wedLab" for="wed">Wed</label>
+	                                 </input>
+	                                 <input type="checkbox" id="thu" ng-model="thu" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="thuLab" for="thu">Thu</label>
+	                                 </input>
+	                                 <input type="checkbox" id="fri" ng-model="fri" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="friLab" for="fri">Fri</label>
+	                                 </input>
+	                                 <input type="checkbox" id="sat" ng-model="sat" name="dayOfWeek" value=true>
+	                                 	<label class="btn btn-no-hover" id="satLab" for="sat">Sat</label>
+	                                 </input>
+	                              </div>
+	                   		</div>
+                   		</div>
+                   		
+                   		<!-- Month -->
+                   		<div ng-show="recType == 'MONTHLY'" class="col-md-12 modal-col form-group" ng-init="recMd = getRecMonthDay()">
+                   			<span data-ng-bind="recMd"></span>
+                   		</div>
+                   
+                   		<div class="row" ng-show="recType != 'NONE'">
+                   			<div class="col-md-6 col-md-offset-3 modal-col">
+	                   			<div class="form-group">
+	                          		<label class="control-label text-center" for="endDate">End Date</label>
+	                          		<div class="controls">
+	                                	<p class="input-group">
+	                                    	<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="recEndDate" is-open="opened1" min-date="minDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
+	                                    	<span class="input-group-btn">
+	                                      		<button type="button" class="btn btn-teal" ng-click="open1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+	                                    	</span>
+	                                  	</p>
+	                        		</div>
+	                    		</div>
+                   			</div>
+                   		</div> 
                      </div>
                     
+                    <!-- ------ -->
                     <!-- PAGE 3 -->
+                    <!-- ------ -->
                     <div class="col-md-6 modal-col" ng-show="createPage == 3" ng-init="findUsers()">
                         <div class="text-center modal-heading"><u>Required Guests</u></div>
                         

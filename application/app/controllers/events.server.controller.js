@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     MongoPromise = require('mongoose').Types.Promise,
 	_ = require('lodash');
+require('twix');
 
 
 
@@ -88,12 +89,13 @@ exports.create = function(req, res) {
 		
 		event.recurring.markModified('params');
 		
+		console.log()
 		var guests = req.body.guests;
 	    delete req.body.guests;
 		
 		var j;
 		for(j=0; j<guests.length; j++) {
-			var curGuest = guests[j].user;
+			var curGuest = guests[j];
 			event.guests.push({
 				user: curGuest,
 				status: 'invited'
@@ -159,7 +161,7 @@ exports.create = function(req, res) {
 		
 		var j;
 		for(j=0; j<guests.length; j++) {
-			var curGuest = guests[j].user;
+			var curGuest = guests[j];
 			event.guests.push({
 				user: curGuest,
 				status: 'invited'
@@ -188,7 +190,11 @@ exports.create = function(req, res) {
 };
 
 exports.schedule = function(req, res) {
+	console.log("scheduling event");
 	var event = req.event;
+	var guests = event.guests.map(function(guest) {
+		return guest.user;
+	});
 	//Make this a parameter that can be passed by the front-end
 	var lasttDate = moment().add(30, 'day').endOf('day');
 	var currDate = moment();
@@ -221,72 +227,31 @@ exports.schedule = function(req, res) {
                 message: errMsg
             });
 		} else {
-			var j;
-			for(j=0; j<req.event.guests.length; j++) {
-				var curGuest = req.event.guests[j].user;
-				
-				var m;
-				var curUserEvents = userEvents.slice(0);
-				for(m=0; m<curUserEvents.length; m++) {
-					var guestCheck = (String(curUserEvents[m].owner) == String(curGuest));
-					if(!guestCheck) {
-						for(var cGuest in curUserEvents.guests) {
-							if(String(cGuest.user) == String(curGuest)) {
-								guestCheck = true;
-								break;
-							}
-						}
-					}
-					if(guestCheck) {
-						var curEvent = curUserEvents[m];
-            			var unrolled = curEvent.recurUnrollNext(currDate,lasttDate);
-            			curUserEvents = curUserEvents.splice(m, 1);
-            			if(unrolled) {
-            				var n;
-                			for(n=0; n<unrolled.length; n++) {
-                				console.log("INFOR: " + curUserEvents);
-                				if(!unrolled[n].recurring) {
-                					curUserEvents = curUserEvents.splice(m++, 0, unrolled[n]);
-                				}
-                			}
-            			}
-					} else {
-						curUserEvents = curUserEvents.splice(m,1);
-						m--;
-					}
-				}
-				curUserEvents = curUserEvents.sort(function(a,b) {
-					return a.sched.start.getTime() - b.sched.start.getTime();
-				});
-				
-				var oldPossibleDates = event.possDates;
-				var i;
-				var l=0;
-				for(i=0; i<oldPossibleDates.length && l<curUserEvents.length; i++) {
-					var startDate = moment(curUserEvents[l].sched.start);
-					var endDate = moment(curUserEvents[l].sched.end);
-					var dateRangeStart = moment(oldPossibleDates[i].start);
-					var dateRangeEnd = moment(oldPossibleDates[i].end);
-					if(startDate.isBefore(dateRangeEnd)) {
-						if(endDate.isBefore(dateRangeStart) || endDate.isSame(dateRangeStart)) {
-							i--;
-						} else {
-							if(startDate.isAfter(dateRangeStart)) {
-								oldPossibleDates[i].end = new Date(parseInt(startDate.format('x')));
-								if(endDate.isBefore(dateRangeEnd)) {
-									oldPossibleDates.splice(i+1,0,{start: new Date(parseInt(endDate.format('x'))), end: new Date(parseInt(dateRangeEnd.format('x')))})
-								}
-							} else if(endDate.isBefore(dateRangeEnd)) {
-								oldPossibleDates[i--].start = new Date(parseInt(endDate.format('x')));
-							} else {
-								oldPossibleDates = oldPossibleDates.splice(i--,1);
-							}
-						}
+			var oldPossibleDates = event.possDates;
+			var i;
+			var l=0;
+			for(i=0; i<oldPossibleDates.length && l<userEvents.length;) {
+				var userDateRange = moment(userEvents[l].sched.start).twix(userEvents[l].sched.end);
+				var oldDateRange = moment(oldPossibleDates[i].start).twix(oldPossibleDates[i].end);
+				if(userDateRange.overlaps(oldDateRange) || userDateRange.engulfs(oldDateRange) || oldDateRange.engulfs(userDateRange) || oldDateRange.overlaps(userDateRange)) {
+					var newDateRange = oldDateRange.difference(userDateRange);
+					var tempI = i;
+					oldPossibleDates.splice(tempI,1);
+					newDateRange.forEach(function(dateRange) {
+						oldPossibleDates.splice(tempI++, 0, {
+							start: new Date(parseInt(dateRange.start().format('x'))),
+							end: new Date(parseInt(dateRange.end().format('x'))),
+						});
+					});
+				} else {
+					if(userDateRange.start().isBefore(oldDateRange.start())) {
 						l++;
+					} else {
+						i++;
 					}
 				}
-				event.possDates = oldPossibleDates;
 			}
+			event.possDates = oldPossibleDates;
 			
 			event.possDates = event.possDates.sort(function(a,b) {
 				return a.start.getTime() - b.start.getTime();

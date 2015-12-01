@@ -23,7 +23,7 @@ exports.signup = function(req, res) {
     //var creator = req.user;
 	var file = req.files.file;
     
-    User.find({roles: 'adminn'}).exec(function(err,users) {
+    User.find({roles: 'admin'}).exec(function(err,users) {
         if(err) {
         	return res.status(400).send({
     			message: msg

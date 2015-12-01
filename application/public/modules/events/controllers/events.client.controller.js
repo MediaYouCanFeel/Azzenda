@@ -391,6 +391,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			$scope.event = Events.update({
 					_id: $stateParams.eventId,
 					going: status
+			}, function(response) {
+				console.log(response);
 			});
 		};  
 		

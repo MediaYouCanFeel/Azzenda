@@ -162,8 +162,8 @@
 		<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h4><strong>Tasks</strong></h4>
     		
-    		<div class="alert alert-warning text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
-    			No Tasks for this team yet, why don't you <a href="" ng-click="taskForTeamModal('md')">create one</a>?
+    		<div class="alert alert-blue text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
+    			No Tasks for this team yet - why don't you  <strong><u href="" ng-click="taskForTeamModal('md')" style="cursor:pointer">create one</u></strong>?
    			</div>
     		
     		<span ng-if="team.ownerTasks.length > 0 || team.memberTasks.length > 0" >
@@ -184,8 +184,8 @@
 		<!-- Threads -->
 		<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4><strong>Threads</strong></h4>
-			<div class="alert alert-warning text-center" ng-if="team.threads.length == 0">
-    			No Threads for this team yet, why don't you <a href="" ng-click="createModal('lg')">create one</a>?
+			<div class="alert alert-blue text-center" ng-if="team.threads.length == 0">
+    			No Threads for this team yet - why don't you <strong><u ng-click="createModal('lg')" style="cursor:pointer">create one</u></strong>?
    			</div>
 			
 			<span ng-if="team.threads.length > 0" >

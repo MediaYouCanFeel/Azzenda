@@ -50,6 +50,10 @@ var EventSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Project'
     },
+    teams: [{
+    	type: Schema.ObjectId,
+    	ref: 'Team'
+    }],
     sched: {
     	start: Date,
         end: Date

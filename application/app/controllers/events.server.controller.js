@@ -168,7 +168,10 @@ exports.create = function(req, res) {
 	    var opGuests = req.body.opGuests || [];
 	    delete req.body.reqGuests;
 	    delete req.body.opGuests;
+	    var schedStart = req.body.sched.start;
+	    var schedEnd = req.body.sched.end;
 	    delete req.body.sched.start;
+	    delete req.body.sched.end;
 		var event = new Event(req.body);
 		event.owner = req.user;
 		
@@ -206,6 +209,8 @@ exports.create = function(req, res) {
                 });
             } else {
             	req.event = event;
+            	req.body.schedStart = schedStart;
+            	req.body.schedEnd = schedEnd;
                 exports.schedule(req, res);
             }
 		});
@@ -213,17 +218,21 @@ exports.create = function(req, res) {
 };
 
 exports.schedule = function(req, res) {
-	console.log("scheduling event");
 	var event = req.event;
+	//getting the list of required guests
 	var guests = event.guests.filter(function(guest) {
 		return guest.required;
 	}).map(function(guest){
 		return guest.user;
 	});
 	
+	console.log(moment(req.body.schedStart)._d);
+	console.log(moment(req.body.schedEnd)._d);
+	
 	//Make these parameters that can be passed by the front-end
-	var lasttDate = moment().add(30, 'day').endOf('day');
-	var currDate = moment().add(1, 'hour');
+	var currDate = moment(req.body.schedStart || moment().add(1, 'h'));
+	var lasttDate = moment(req.body.schedEnd || moment().add(30, 'd'));
+	
 	event.possDates = {
 			start: parseInt(currDate.format('x')),
 			end: parseInt(lasttDate.format('x'))

@@ -63,7 +63,7 @@ exports.read = function(req, res) {
 exports.update = function(req, res) {
 	var thread = req.thread ;
 
-	if req.body
+//	if req.body
 	
 	thread = _.extend(thread , req.body);
 	

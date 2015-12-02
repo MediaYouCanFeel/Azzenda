@@ -20,7 +20,7 @@ module.exports = function(app) {
 	app.route('/events/:eventId')
 		.get(users.requiresLogin, events.read)
 		.put(users.requiresLogin, function(req, res, next) {
-			if(req.body.going) {
+			if(req.body.going != null) {
 				events.rsvp(req, res);
 			} else {
 				events.hasAuthorization(req, res, next);

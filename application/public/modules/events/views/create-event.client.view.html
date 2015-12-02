@@ -79,6 +79,16 @@
                                 <textarea data-ng-model="description" id="description" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="5" required></textarea>
                             </div>
                         </div>
+                        
+                        <!-- Priority -->
+                        <div class="form-group">
+                            <label class="control-label" for="priority">Priority</label>
+                            <select id="select2_type" type="hidden" data-tags="true" class="form-control" data-ng-model="priority">
+                                <option data-ng-value="0">Low</option>
+                                <option data-ng-value="1">Medium</option>
+                                <option data-ng-value="2">High</option>
+                            </select>
+                        </div>
 
                     </div>
                 
@@ -266,7 +276,7 @@
 	                            <div class="form-group">
 	                                <div class="controls">
 	                                    <label class="control-label">Optional Guests</label>
-	                                    <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="optionalGuests" id="users">
+	                                    <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="opGuests" id="users">
 	                                		<option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
 	                            		</select>
 	                                </div>
@@ -276,11 +286,17 @@
 	            	
 	            	    <div class="col-md-12 modal-col" ng-show="project">
 	            	    	<div class="form-group">
-			                <label class="control-label" for="team_assigned">Team</label>
-			                <select class="form-control js-example-basic" data-ng-model="team" id="team">
-			                    <option ng-repeat="team in teams | filter: projectFilter" data-ng-value="team._id">{{team.name}}</option>
-			                </select>
-					</div>
+				                <label class="control-label" for="team_assigned">Team</label>
+				                <select class="form-control js-example-basic" data-ng-model="team" id="team">
+				                    <option ng-repeat="team in teams | filter: projectFilter" data-ng-value="team._id">{{team.name}}</option>
+				                </select>
+							</div>
+							
+							<div class="form-group">
+				                <label class="control-label" for="inviteAllProject">Invite all members of Project</label>
+				                <input type="checkbox">
+							</div>
+							
 	            	    </div>
                 	</div>
                 <!-- PAGE 4 -->

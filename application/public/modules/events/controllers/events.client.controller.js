@@ -201,7 +201,8 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 //required Guests
                 reqGuests: this.guests,
                 //optional Guests. POPULATE THIS
-                opGuests: []
+                opGuests: this.opGuests,
+                priority: this.priority
 			});
 			
 			//Add event filters

@@ -702,7 +702,7 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
         
         $scope.thisUser = function(element) {
         	var filter = false;
-        	if (element.user == $scope.authentication.user._id) {
+        	if (element.user._id == $scope.authentication.user._id) {
         		filter = true;
         	}
         	

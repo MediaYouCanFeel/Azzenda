@@ -122,6 +122,17 @@
 	            <hr>
 	            
 	            <div class="top-bottom-padding">
+	                <i class="fa fa-exclamation fa-2x red"></i> 
+	                <span class="left-right-padding event-info">
+	                	<span ng-if="event.priority == 0">Low Priority</span>
+	                	<span ng-if="event.priority == 1">Medium Priority</span>
+	                	<span ng-if="event.priority == 2">High Priority</span>
+	                </span>
+	            </div>
+	            
+	            <hr>
+	            
+	            <div class="top-bottom-padding">
 	                <span data-ng-bind="event.desc"></span>
 	            </div>
             </div>
@@ -129,18 +140,23 @@
         
         <!-- Guest list info -->
         <div ng-hide="event.status == 'personal'" class="col-md-4" class="text-center">
-        	<div class="row well guest-well" ng-controller="RostersController" ng-init="findUsers()">
+        	<div class="row well guest-well" ng-controller="RostersController">
 		        <div class="guest-list-header">Required Guests</div>
 		        
 		        <div class="top-bottom-padding">
 		        	<hr>
 		        </div>
 		        
-		        <a data-ng-repeat="user in event.guests" data-ng-href="#!/users/{{user._id}}" class="list-group-item">
+		        <a data-ng-repeat="guest in event.guests" data-ng-href="#!/users/{{guest.user._id}}" class="list-group-item">
 					<!-- Last, First -->
 		            <div class="h4">
-		                <span data-ng-bind="user.user"></span> <span data-ng-bind="user.status"></span>
+		            	<img class="prof-pic" ng-show="guest.user.profpic!=''" ng-src="data:image/jpeg;base64,{{guest.user.profpic}}" alt="Profile Picture">
+		                <span data-ng-bind="guest.user.displayName"></span> 
+		                <span ng-if="guest.status == 'going'"><i class="fa fa-check"></i></span>
+		                <span ng-if="guest.status == 'invited'"><i class="fa fa-question"></i></span>
+		                <span ng-if="guest.status == 'not going'"><i class="fa fa-times"></i></span>
 		            </div>
+		            <span ng-if="guest.required">Required guest</span>
 		        </a>		        
 		    </div>		    
         </div>

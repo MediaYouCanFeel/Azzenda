@@ -482,7 +482,7 @@ exports.rsvp = function(req, res) {
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, event) {
+	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').populate('guests.user', 'displayName profpic').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;

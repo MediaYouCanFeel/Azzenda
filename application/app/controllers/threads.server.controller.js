@@ -61,13 +61,26 @@ exports.read = function(req, res) {
  * Update a Thread
  */
 exports.update = function(req, res) {
-	var thread = req.thread ;
-
-//	if req.body
+	var thread = req.thread;
+	var upvote = req.body.upvote;
+	delete req.body.upvote;
 	
 	thread = _.extend(thread , req.body);
 	
-	
+	if(upvote != null) {
+		var upvoteIndex = thread.votes.up.indexOf(req.user._id);
+		var downvoteIndex = thread.votes.down.indexOf(req.user._id);
+		if(upvoteIndex != -1) {
+			thread.votes.up.splice(upvoteIndex, 1);
+		} else if(Boolean(upvote)) {
+			thread.votes.up.push(req.user);
+		} 
+		if(downvoteIndex != -1) {
+			thread.votes.down.splice(downvoteIndex, 1);
+		} else if(!Boolean(upvote)) {
+			thread.votes.down.push(req.user);
+		}
+	}
 
 	thread.save(function(err) {
 		if (err) {
@@ -147,7 +160,7 @@ exports.list = function(req, res) {
  * Thread middleware
  */
 exports.threadByID = function(req, res, next, id) { 
-	Thread.findById(id).populate('owner', 'displayName').lean(req.originalMethod == 'GET').exec(function(err, thread) {
+	Thread.findById(id).populate('owner', 'displayName profpic').populate('votes.up', 'displayName profpic').populate('votes.down', 'displayName profpic').lean(req.originalMethod == 'GET').exec(function(err, thread) {
 		if (err) return next(err);
 		if (! thread) return next(new Error('Failed to load Thread ' + id));
 		req.thread = thread;

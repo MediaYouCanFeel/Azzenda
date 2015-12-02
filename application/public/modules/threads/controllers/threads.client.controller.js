@@ -181,24 +181,36 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 		}
 		
 		$scope.upvote = function(threadId) {
-			$scope.thread = Threads.get({ 
-				threadId: threadId
-			}, function() {
-				$scope.thread.votes.up++;
-				$scope.update();
-				$scope.threadUpVotes = $scope.thread.votes.up;
-
+			Threads.update({
+				_id: threadId,
+				upvote: true
+			}, function(response) {
+				$scope.thread = response;
 			});
+//			$scope.thread = Threads.get({ 
+//				threadId: threadId
+//			}, function() {
+//				$scope.thread.votes.up++;
+//				$scope.update();
+//				$scope.threadUpVotes = $scope.thread.votes.up;
+//
+//			});
 		}
 		
 		$scope.downvote = function(threadId) {
-			$scope.thread = Threads.get({ 
-				threadId: threadId
-			}, function() {
-				$scope.thread.votes.down++;
-				$scope.update();
-				$scope.threadDownVotes = $scope.thread.votes.down;
+			Threads.update({
+				_id: threadId,
+				upvote: false
+			}, function(response) {
+				$scope.thread = response;
 			});
+//			$scope.thread = Threads.get({ 
+//				threadId: threadId
+//			}, function() {
+//				$scope.thread.votes.down++;
+//				$scope.update();
+//				$scope.threadDownVotes = $scope.thread.votes.down;
+//			});
 		}
 	}
 ]);

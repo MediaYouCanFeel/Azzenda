@@ -153,18 +153,30 @@ exports.create = function(req, res) {
         });
 	} else {
 		delete req.body.personal;
-	    var guests = req.body.guests;
-	    delete req.body.guests;
+	    var reqGuests = req.body.reqGuests;
+	    var opGuests = req.body.opGuests;
+	    delete req.body.reqGuests;
+	    delete req.body.opGuests;
 	    delete req.body.sched.start;
 		var event = new Event(req.body);
 		event.owner = req.user;
 		
 		var j;
-		for(j=0; j<guests.length; j++) {
-			var curGuest = guests[j];
+		for(j=0; j<reqGuests.length; j++) {
+			var curGuest = reqGuests[j];
 			event.guests.push({
 				user: curGuest,
-				status: 'invited'
+				status: 'invited',
+				required: true
+			});
+		}
+		
+		for(j=0; j<opGuests.length; j++) {
+			var curGuest = opGuests[j];
+			event.guests.push({
+				user: curGuest,
+				status: 'invited',
+				required: false
 			});
 		}
 		
@@ -192,12 +204,15 @@ exports.create = function(req, res) {
 exports.schedule = function(req, res) {
 	console.log("scheduling event");
 	var event = req.event;
-	var guests = event.guests.map(function(guest) {
+	var guests = event.guests.filter(function(guest) {
+		return guest.required;
+	}).map(function(guest){
 		return guest.user;
 	});
-	//Make this a parameter that can be passed by the front-end
+	
+	//Make these parameters that can be passed by the front-end
 	var lasttDate = moment().add(30, 'day').endOf('day');
-	var currDate = moment();
+	var currDate = moment().add(1, 'hour');
 	event.possDates = {
 			start: parseInt(currDate.format('x')),
 			end: parseInt(lasttDate.format('x'))
@@ -213,7 +228,7 @@ exports.schedule = function(req, res) {
 		return a.start.getTime() - b.start.getTime();
 	});
 	
-	Event.find({$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
+	Event.find({$and: [{$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]},{priority: {$gte: event.priority}}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
 		if(err) {
 			console.log('Personal Event Error');
         	var errMsg = errorHandler.getErrorMessage(err);
@@ -231,7 +246,7 @@ exports.schedule = function(req, res) {
 			var i;
 			var l=0;
 			for(i=0; i<oldPossibleDates.length && l<userEvents.length;) {
-				var userDateRange = moment(userEvents[l].sched.start).twix(userEvents[l].sched.end);
+				var userDateRange = moment(userEvents[l].sched.start).subtract(15, 'minutes').twix(moment(userEvents[l].sched.end).add(15, 'minutes'));
 				var oldDateRange = moment(oldPossibleDates[i].start).twix(oldPossibleDates[i].end);
 				if(userDateRange.overlaps(oldDateRange) || userDateRange.engulfs(oldDateRange) || oldDateRange.engulfs(userDateRange) || oldDateRange.overlaps(userDateRange)) {
 					var newDateRange = oldDateRange.difference(userDateRange);

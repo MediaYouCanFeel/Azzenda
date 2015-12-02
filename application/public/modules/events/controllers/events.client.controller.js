@@ -198,7 +198,10 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 	start: thisSchedStart,
                 	end: thisSchedEnd
                 },
-                guests: this.guests
+                //required Guests
+                reqGuests: this.guests,
+                //optional Guests. POPULATE THIS
+                opGuests: []
 			});
 			
 			//Add event filters

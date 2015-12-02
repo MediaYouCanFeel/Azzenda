@@ -70,7 +70,10 @@ var EventSchema = new Schema({
     },
     location: String,
     type: String,
-    priority: Number,
+    priority: {
+    	type: Number,
+    	default: 0
+    },
     guestStrategy: {
     	type: String,
 		//automatic means algorithm will only
@@ -105,9 +108,13 @@ var EventSchema = new Schema({
         },
         status: {
             type: String,
-            enum: ['invited','going','not going']
+            enum: ['invited','going','not going'],
+            default: 'invited'
         },
-        required: Boolean
+        required: {
+        	type: Boolean,
+        	default: false
+        }
     }],
     status: {
         type: String,

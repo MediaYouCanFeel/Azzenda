@@ -89,9 +89,9 @@ exports.create = function(req, res) {
 		
 		event.recurring.markModified('params');
 		
-		var reqGuests = req.body.reqGuests;
+		var reqGuests = req.body.reqGuests || [];
 	    delete req.body.reqGuests;
-	    var opGuests = req.body.opGuests;
+	    var opGuests = req.body.opGuests || [];
 	    delete req.body.opGuests;
 		
 		var j;
@@ -164,8 +164,8 @@ exports.create = function(req, res) {
         });
 	} else {
 		delete req.body.personal;
-	    var reqGuests = req.body.reqGuests;
-	    var opGuests = req.body.opGuests;
+	    var reqGuests = req.body.reqGuests || [];
+	    var opGuests = req.body.opGuests || [];
 	    delete req.body.reqGuests;
 	    delete req.body.opGuests;
 	    delete req.body.sched.start;
@@ -319,6 +319,7 @@ exports.schedule = function(req, res) {
  * Show the current Event
  */
 exports.read = function(req, res) {
+	req.event.populate('guests.user', 'displayName profpic');
 	res.jsonp(req.event);
 };
 
@@ -455,16 +456,11 @@ exports.rsvp = function(req, res) {
     var user = req.user;
     var going = req.body.going;
     
-    var i;
-    for(i=0; i<event.guests.length; i++) {
-    	if(String(event.guests[i].user) == String(user._id)) {
-    		if(going) {
-    			event.guests[i].status = 'going';
-    		} else {
-    			event.guests[i].status = 'not going';
-    		}
-    		break;
-    	}
+    var guestIndex = _.findIndex(event.guests, {'user': user._id});
+    if(going) {
+    	event.guests[guestIndex].status = 'going';
+    } else {
+    	event.guests[guestIndex].status = 'not going';
     }
     
     event.save(function(err) {
@@ -482,7 +478,7 @@ exports.rsvp = function(req, res) {
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').populate('guests.user', 'displayName profpic').exec(function(err, event) {
+	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;

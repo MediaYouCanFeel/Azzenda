@@ -28,14 +28,14 @@ var ThreadSchema = new Schema({
 		ref: 'Thread'
 	}],
 	votes: {
-		up: {
-			type: Number,
-			default: 0
-		},
-		down: {
-			type: Number,
-			default: 0
-		}
+		up: [{
+			type: Schema.ObjectId,
+			ref: 'User'
+		}],
+		down: [{
+			type: Schema.ObjectId,
+			ref: 'User'
+		}],
 	},
     archived: {
         type: Boolean,

@@ -89,16 +89,27 @@ exports.create = function(req, res) {
 		
 		event.recurring.markModified('params');
 		
-		console.log()
-		var guests = req.body.guests;
-	    delete req.body.guests;
+		var reqGuests = req.body.reqGuests;
+	    delete req.body.reqGuests;
+	    var opGuests = req.body.opGuests;
+	    delete req.body.opGuests;
 		
 		var j;
-		for(j=0; j<guests.length; j++) {
-			var curGuest = guests[j];
+		for(j=0; j<reqGuests.length; j++) {
+			var curGuest = reqGuests[j];
 			event.guests.push({
 				user: curGuest,
-				status: 'invited'
+				status: 'invited',
+				required: true
+			});
+		}
+		
+		for(j=0; j<opGuests.length; j++) {
+			var curGuest = opGuests[j];
+			event.guests.push({
+				user: curGuest,
+				status: 'invited',
+				required: false
 			});
 		}
 		

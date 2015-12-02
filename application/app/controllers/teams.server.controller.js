@@ -101,8 +101,14 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var team = req.team ;
+	var thread = req.body.thread;
+	delete req.body.thread;
 
 	team = _.extend(team , req.body);
+	
+	if(thread) {
+		team.threads.push(thread);
+	}
 
 	team.save(function(err) {
 		if (err) {

@@ -118,7 +118,7 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				// Add this code here
 				Teams.update({
 						_id: $stateParams.teamId,
-						threads: $stateParams.threads.concat(response._id)
+						thread: response._id
 				}, function() {
 					$state.go($state.current, {}, {reload: true});
 				});

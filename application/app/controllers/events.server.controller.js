@@ -84,15 +84,16 @@ exports.create = function(req, res) {
         });
 	} else if(req.body.recurring.type != 'NONE'){
 		delete req.body.personal;
-		var event = new Event(req.body);
-		event.owner = req.user;
-		
 		event.recurring.markModified('params');
-		
 		var reqGuests = req.body.reqGuests || [];
 	    delete req.body.reqGuests;
 	    var opGuests = req.body.opGuests || [];
 	    delete req.body.opGuests;
+	    var projInvite = req.body.projInvite;
+	    delete req.body.projInvite;
+	    
+	    var event = new Event(req.body);
+	    event.owner = req.user;
 		
 		var j;
 		for(j=0; j<reqGuests.length; j++) {
@@ -103,6 +104,25 @@ exports.create = function(req, res) {
 				required: true
 			});
 		}
+		
+		//populate teams and users for the event;
+		event.populate('teams', 'users');
+		
+		for(j=0; j<event.teams.length; j++) {
+			var teamUsers; = event.teams[j].users;
+			teamUsers.forEach(function(teamUser) {
+				opGuests.push(teamUser);
+			});
+		}
+		
+		if(projInvite) {
+			event.populate('proj', 'users');
+			event.proj.users.forEach(function(projUser) {
+				opGuests.push(projUser);
+			});
+		}
+		
+		opGuests = _.difference(opGuests, [reqGuests]);
 		
 		for(j=0; j<opGuests.length; j++) {
 			var curGuest = opGuests[j];
@@ -172,6 +192,7 @@ exports.create = function(req, res) {
 	    var schedEnd = req.body.sched.end;
 	    delete req.body.sched.start;
 	    delete req.body.sched.end;
+	    
 		var event = new Event(req.body);
 		event.owner = req.user;
 		

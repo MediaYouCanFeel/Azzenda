@@ -195,7 +195,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
                 length: parseInt($scope.getLength(this.hourDurationFromModal, this.minDurationFromModal)),
                 location: thisLoc,
                 type: thisType,
+                //If users are invited using either proj or teams below, they will 
+                //as of now always be optional guests
                 proj: thisProj,
+                //whether or not to invite the entire project
+                projInvite: false,
+                //the list of team ids that you would like to invite
+                teams: [],
                 personal: $scope.personal,
                 recurring: {
                 	type: rec,

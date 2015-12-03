@@ -65,9 +65,9 @@
 				</div>
 				<div class="col-md-11">
 					<strong><a data-ng-bind="thread.owner.displayName" data-ng-href="#!/users/{{thread.owner._id}}"></a></strong>
-					<span data-ng-bind="thread.text" data-ng-init="setInitVotes(thread._id)"></span>
+					<span data-ng-bind="thread.text"></span>
 					<div> <small>
-						<span data-ng-bind="threadUpVotes"></span> upvotes, <span data-ng-bind="threadDownVotes"></span> downvotes, <span data-ng-bind="thread.subThreads.length"></span> replies
+						<span data-ng-bind="thread.votes.up.length"></span> upvotes, <span data-ng-bind="thread.votes.down.length"></span> downvotes, <span data-ng-bind="thread.subThreads.length"></span> replies
 					</small> </div>
 				</div>
 			</div>	

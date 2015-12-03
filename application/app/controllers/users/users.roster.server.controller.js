@@ -376,8 +376,9 @@ exports.userByID = function(req, res, next, id) {
 exports.hasAuthorization = function(req, res, next) {
 	var roles = ['admin'];
 	console.log(req.user._id);
-	console.log(req.otherUser._id);
-    if((req.user._id.equals(req.otherUser._id)) || _.intersection(req.user.roles,roles).length) {
+//	console.log(req.otherUser._id);
+    //(req.user._id.equals(req.otherUser._id || '0')) ||
+	if( _.intersection(req.user.roles,roles).length) {
 		next();
 	} else {
         return res.status(403).send('User is not authorized');

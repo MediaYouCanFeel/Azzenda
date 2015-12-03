@@ -85,7 +85,7 @@
         
     <div class="col-md-5 project-col-left">
 		
-		<div class="col-md-12 well">
+		<div ng-if="project.description" class="col-md-12 well">
 	    	<span data-ng-bind="project.description"></span>
     	</div>    	
 
@@ -99,7 +99,7 @@
     	
     	<div class="col-md-12 well" ng-if="project.teams.length > 0">
 	    	<h4><strong>Teams</strong></h4>
-	    	<a ng-repeat="team in project.teams" ng-href="/#!/teams/{{team._id}}" class="list-group-item">
+	    	<a ng-repeat="team in project.teams | orderBy: 'name' " ng-href="/#!/teams/{{team._id}}" class="list-group-item">
 	    		<div class="team-name" data-ng-bind="team.name"></div>
 	    		<span data-ng-bind="team.users.length"></span> members
 	    	</a>

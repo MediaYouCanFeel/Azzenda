@@ -27,7 +27,7 @@ module.exports = function(app) {
 			} else {
 				events.hasAuthorization(req, res, next);
 			}
-		}, events.update})
+		}, events.update)
 		.delete(users.requiresLogin, events.hasAuthorization, events.delete);
 
 	// Finish by binding the Event middleware

@@ -22,16 +22,12 @@ module.exports = function(app) {
 		.put(users.requiresLogin, function(req, res, next) {
 			if(req.body.going != null) {
 				events.rsvp(req, res);
+			} else if(req.body.schedule) {
+				events.schedule(req, res);
 			} else {
 				events.hasAuthorization(req, res, next);
 			}
-		}, function(req, res, next) {
-			if(req.body.schedule) {
-				events.schedule(req, res);
-			} else {
-				events.update(req, res);
-			}
-		})
+		}, events.update})
 		.delete(users.requiresLogin, events.hasAuthorization, events.delete);
 
 	// Finish by binding the Event middleware

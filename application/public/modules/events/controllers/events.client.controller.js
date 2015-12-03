@@ -114,6 +114,13 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 			var thisLoc = null;
 			var thisType = null;
 			var thisProj = null;
+			var thisSchedStart = null;
+			var thisSchedEnd = null; 
+			var recDays = null;
+			
+			console.log("BEFORE");
+			$scope.combineDateTimes(this.dateFromModal, this.timeFromModal);
+			console.log("AFTER");
 			
 			//For non-personal events
 			if (!$scope.personal) {
@@ -121,17 +128,19 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				thisLoc = this.location;
 				thisType = this.type;
 				thisProj = this.project;
+				//these values now represent the earliest and latest an event can be scheduled for,
+				//when creating a non-recurring non-personal event
+				//the values below are just example values.
+				thisSchedStart = moment().add(1, 'h').toDate();
+				thisSchedEnd = moment().add(30, 'd').toDate();
+			} else {
+				thisSchedStart = $scope.sendDate; //Range start
 			}
 			
-			var recDays = null;
+			//old code
+//			var thisSchedStart = $scope.sendDate; //Range start
 			
-			console.log("BEFORE");
-			$scope.combineDateTimes(this.dateFromModal, this.timeFromModal);
-			console.log("AFTER");
-			
-			var thisSchedStart = $scope.sendDate; //Range start
-
-			var thisSchedEnd = null;
+//			var thisSchedEnd = null;
 			
 			//if it is a recurring event
 			if (($scope.recType != 'NONE') && $scope.recType) {
@@ -317,6 +326,20 @@ angular.module('events').controller('EventsController', ['$scope', '$stateParams
 				$scope.error = errorResponse.data.message;
 			});
 		};
+		
+		// Reschedule existing event
+		$scope.reschedule = function() {
+			Events.update({
+				_id: $stateParams.eventId,
+				schedule: true,
+				//again, this is the range in which to schedule the event
+				//these are just some default values
+				schedStart: moment().add(1, 'h').toDate(),
+				schedEnd: moment().add(30, 'd').toDate()
+			}, function(response) {
+				//callback for updating page. response is new event
+			});
+		}
         
         //Find a list of Projects
         //NOTE: This returns a list of all active (non-archived) projects

@@ -89,9 +89,9 @@ exports.create = function(req, res) {
 		
 		event.recurring.markModified('params');
 		
-		var reqGuests = req.body.reqGuests;
+		var reqGuests = req.body.reqGuests || [];
 	    delete req.body.reqGuests;
-	    var opGuests = req.body.opGuests;
+	    var opGuests = req.body.opGuests || [];
 	    delete req.body.opGuests;
 		
 		var j;
@@ -164,11 +164,14 @@ exports.create = function(req, res) {
         });
 	} else {
 		delete req.body.personal;
-	    var reqGuests = req.body.reqGuests;
-	    var opGuests = req.body.opGuests;
+	    var reqGuests = req.body.reqGuests || [];
+	    var opGuests = req.body.opGuests || [];
 	    delete req.body.reqGuests;
 	    delete req.body.opGuests;
+	    var schedStart = req.body.sched.start;
+	    var schedEnd = req.body.sched.end;
 	    delete req.body.sched.start;
+	    delete req.body.sched.end;
 		var event = new Event(req.body);
 		event.owner = req.user;
 		
@@ -206,6 +209,8 @@ exports.create = function(req, res) {
                 });
             } else {
             	req.event = event;
+            	req.body.schedStart = schedStart;
+            	req.body.schedEnd = schedEnd;
                 exports.schedule(req, res);
             }
 		});
@@ -213,17 +218,21 @@ exports.create = function(req, res) {
 };
 
 exports.schedule = function(req, res) {
-	console.log("scheduling event");
 	var event = req.event;
+	//getting the list of required guests
 	var guests = event.guests.filter(function(guest) {
 		return guest.required;
 	}).map(function(guest){
 		return guest.user;
 	});
 	
+	console.log(moment(req.body.schedStart)._d);
+	console.log(moment(req.body.schedEnd)._d);
+	
 	//Make these parameters that can be passed by the front-end
-	var lasttDate = moment().add(30, 'day').endOf('day');
-	var currDate = moment().add(1, 'hour');
+	var currDate = moment(req.body.schedStart || moment().add(1, 'h'));
+	var lasttDate = moment(req.body.schedEnd || moment().add(30, 'd'));
+	
 	event.possDates = {
 			start: parseInt(currDate.format('x')),
 			end: parseInt(lasttDate.format('x'))
@@ -319,6 +328,7 @@ exports.schedule = function(req, res) {
  * Show the current Event
  */
 exports.read = function(req, res) {
+	req.event.populate('guests.user', 'displayName profpic');
 	res.jsonp(req.event);
 };
 
@@ -455,16 +465,11 @@ exports.rsvp = function(req, res) {
     var user = req.user;
     var going = req.body.going;
     
-    var i;
-    for(i=0; i<event.guests.length; i++) {
-    	if(String(event.guests[i].user) == String(user._id)) {
-    		if(going) {
-    			event.guests[i].status = 'going';
-    		} else {
-    			event.guests[i].status = 'not going';
-    		}
-    		break;
-    	}
+    var guestIndex = _.findIndex(event.guests, {'user': user._id});
+    if(going) {
+    	event.guests[guestIndex].status = 'going';
+    } else {
+    	event.guests[guestIndex].status = 'not going';
     }
     
     event.save(function(err) {
@@ -482,7 +487,7 @@ exports.rsvp = function(req, res) {
  * Event middleware
  */
 exports.eventByID = function(req, res, next, id) { 
-	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').populate('guests.user', 'displayName profpic').exec(function(err, event) {
+	Event.findById(id).populate('owner', 'displayName').populate('proj', 'name').exec(function(err, event) {
 		if (err) return next(err);
 		if (! event) return next(new Error('Failed to load Event ' + id));
 		req.event = event;

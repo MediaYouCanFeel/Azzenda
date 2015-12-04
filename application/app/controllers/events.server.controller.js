@@ -353,8 +353,16 @@ exports.schedule = function(req, res) {
  * Show the current Event
  */
 exports.read = function(req, res) {
-	req.event.populate('guests.user', 'displayName profpic');
-	res.jsonp(req.event);
+	req.event.populate({path: 'guests.user', select: 'displayName profpic'}, function(err, event){
+		if(err) {
+			console.log(err);
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(req.event);
+		}
+	});
 };
 
 /**

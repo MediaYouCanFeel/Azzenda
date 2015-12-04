@@ -16,7 +16,7 @@
                 </strong>
             </h2>
             <div class="list-group" data-ng-init="findEvents()">
-				<a ng-repeat="event in events | orderBy : 'sched.start' | limitTo: 3 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
+				<a ng-repeat="event in events | orderBy : 'sched.start' | limitTo: 5 " data-ng-href="#!/events/{{event._id}}" ng-class="{'list-group-item-personal': event.status == 'personal', 'list-group-item' : true}">
 					
 					<div class="event-rep-name">
                         <span data-ng-bind="event.name"></span>
@@ -38,21 +38,36 @@
 					    	<div class="pull-right event-rep-proj">
 						    	<strong data-ng-bind="event.proj.name"> </strong>
 						        
-						        <i class="fa fa-ellipsis-v"></i>
-					        	<span data-ng-bind="event.type.name"></span>
+						        <i class="fa fa-ellipsis-v" ng-if="event.proj.name && event.type"></i>
+					        	<span data-ng-bind="event.type"></span>
 			        		</div>
 		        		</div>
 	        		</span>
-				</a>   
+				</a>
+				<a ng-if="events.length > 5" ng-href="/#!/events" class="list-group-item text-center">
+    				<div class="team-name">+ {{events.length - 5}} more</div>
+    			</a>   
 			</div>
         </div>
-        <div class="col-md-12 row well">
+        <div class="col-md-12 row well" data-ng-controller="TasksController" data-ng-init="find()">
             <h2>
                 <strong>
-                    <a ng-href="/#!/finances">Finances</a>
+                    <a ng-href="/#!/tasks">Tasks</a>
                 </strong>
             </h2>
-            <p>This is a look at the current financial situation.</p>
+        	<a data-ng-repeat="task in tasks | limitTo: 5" data-ng-href="#!/tasks/{{task._id}}" class="list-group-item">
+				<small class="list-group-item-text">
+				<div class="row">
+					<div class="col-md-12" data-ng-init="getType(task.status)">
+						<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
+						<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
+						<div data-ng-bind="task.project.name" style="font-size:14px;"></div>
+					</div>
+				</div>
+	        </a>
+	        <a ng-if="tasks.length > 5" ng-href="/#!/tasks" class="list-group-item text-center">
+    			<div class="team-name">+ {{tasks.length - 5}} more</div>
+    		</a>
         </div>
     </div>
     <div class="col-md-5">
@@ -63,7 +78,7 @@
                 </strong>
             </h2>
             <div class="list-group" data-ng-controller="ProjectsController" data-ng-init="find()">
-		        <a data-ng-repeat="project in projects | orderBy: name" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
+		        <a data-ng-repeat="project in projects | orderBy: 'name' | limitTo: 5" data-ng-href="#!/projects/{{project._id}}" class="list-group-item">
 					<small class="list-group-item-text">
 					<div class="row">
 						<div class="col-md-6 project-rep-name">
@@ -74,34 +89,27 @@
 						</div>
 					</div>
 		        </a>
+		        <a ng-if="projects.length > 5" ng-href="/#!/projects" class="list-group-item text-center">
+	    			<div class="team-name">+ {{projects.length - 5}} more</div>
+	    		</a>
 		    </div>
         </div>
-        <div class="row well">
+        <div class="row well" data-ng-controller="TeamsController" data-ng-init="find()">
             <h2>
                 <strong>
-                    <a ng-href="/#!/groups">Groups</a>
+                    <a ng-href="/#!/groups">Teams</a>
                 </strong>
             </h2>
-            <div class="list-group">
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Top-Tier Executive Board</h3>
-                    </div>
-                    <p>You, Ben Heuser, and Emma Green.</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Editors</h3>
-                    </div>
-                    <p>You, Michelle Stone, Valentina Verano, and 2 others.</p>
-                </div>
-                <div class="list-group-item">
-                    <div class="list-group-item-heading">
-                        <h3>Directors</h3>
-                    </div>
-                    <p>You and Ben Heuser.</p>
-                </div>
-            </div>
+	    	<a ng-repeat="team in teams | orderBy: 'name' | limitTo: 5" ng-href="/#!/teams/{{team._id}}" class="list-group-item">
+	    		<div class="team-name">
+	    			<span data-ng-bind="team.name"></span>
+	    			(<span data-ng-bind="team.project.name"></span>)
+	    		</div>
+	    		<span data-ng-bind="team.users.length"></span> members
+	    	</a>
+	    	<a ng-if="teams.length > 5" ng-href="/#!/teams" class="list-group-item text-center">
+	    		<div class="team-name">+ {{teams.length - 5}} more</div>
+	    	</a>
         </div>
     </div>
 </section>

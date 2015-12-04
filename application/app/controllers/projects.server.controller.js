@@ -10,6 +10,7 @@ var mongoose = require('mongoose'),
 	Team = mongoose.model('Team'),
 	Task = mongoose.model('Task'),
 	TaskCtrl = require('../../app/controllers/tasks.server.controller'),
+	ThreadCtrl = require('../../app/controllers/threads.server.controller'),
 	_ = require('lodash');
 
 /**
@@ -44,10 +45,20 @@ exports.read = function(req, res) {
 						message: errorHandler.getErrorMessage(err)
 					});
 				} else {
-					TaskCtrl.popTasks.call(this, tasks, function() {
-						req.project.teams = teams;
-						req.project.tasks = tasks;
-						res.jsonp(req.project);
+					Thread.find({_id: {$in: req.project.threads}}).populate('owner', 'displayName profpic').populate('votes.up', 'displayName profpic').populate('votes.down', 'displayName profpic').lean().exec(function(err, threds) {
+						if(err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						} else {
+							TaskCtrl.popTasks.call(this,tasks,function() {
+								req.project.tasks = tasks;
+								ThreadCtrl.popThreads.call(this,threds,function() {
+									req.project.threads = threds;
+									res.jsonp(req.project);
+								});
+							});
+						}
 					});
 				}
 			});
@@ -140,17 +151,9 @@ exports.list = function(req, res) {
 									projects[i].tasks = [];
 								}
 							}
-							
-//							var opts = [{'path': 'owners.users.user', 'select': 'displayName'}];
-//					        Task.populate(allRootTasks, opts, function(err,results) {
-//					            if (err) throw err;
-//					            console.log(results);
-//					            allRootTasks = results;
-//					            console.log(allRootTasks);
 					            TaskCtrl.popTasks.call(this, allRootTasks, function() {
 									res.jsonp(projects);
 								});
-//					        });
 						}
 					});
 				}

@@ -374,14 +374,12 @@ exports.userByID = function(req, res, next, id) {
  * User authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	var roles = ['admin'];
-	console.log(req.user._id);
-	console.log(req.otherUser._id);
-	if( _.intersection(req.user.roles,roles).length) {
+//	var roles = ['admin'];
+//	if( _.intersection(req.user.roles,roles).length) {
 		next();
-	} else if(req.otherUser && (req.user._id.equals(req.otherUser._id))){
-		next();
-	} else {
-        return res.status(403).send('User is not authorized');
-    }
+//	} else if(req.otherUser && (req.user._id.equals(req.otherUser._id))){
+//		next();
+//	} else {
+//        return res.status(403).send('User is not authorized');
+//    }
 };

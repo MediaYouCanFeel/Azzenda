@@ -146,7 +146,7 @@
 					<a ng-if="team.users.length < 4 || $index < 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
 					</a><a ng-if="team.users.length == 4 && $index == 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
 					</a><span ng-if="$index < team.users.length - 1 && $index < 3 && team.users.length > 2">,
-					</span><span ng-if="$index == team.users.length - 2 || ($index == 2 && team.users.length > 4)"> and 
+					</span><span ng-if="($index == team.users.length - 2 && team.users.length != 5) || ($index == 2 && team.users.length > 4)"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
 					</span><span ng-if="$index == 2 && team.users.length > 4"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a>
 					</span>
@@ -162,11 +162,11 @@
 		<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h4><strong>Tasks</strong></h4>
     		
-    		<div class="alert alert-blue text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
+    		<div class="alert alert-blue text-center" ng-if="!(team.workerTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
     			No Tasks for this team yet - why don't you  <strong><u href="" ng-click="taskForTeamModal('md')" style="cursor:pointer">create one</u></strong>?
    			</div>
     		
-    		<span ng-if="team.ownerTasks.length > 0 || team.memberTasks.length > 0" >
+    		<span ng-if="team.ownerTasks.length > 0 || team.workerTasks.length > 0" >
 	    		<div data-ng-repeat="task in team.ownerTasks | orderBy: 'deadline'">
 					<div class="col-md-12">
 						<span ng-include="'taskTree'"></span>

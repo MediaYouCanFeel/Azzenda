@@ -17,7 +17,13 @@ module.exports = function(app) {
 
 	app.route('/projects/:projectId')
 		.get(users.requiresLogin, projects.read)
-		.put(users.requiresLogin, projects.hasAuthorization, projects.update)
+		.put(users.requiresLogin, function(req, res, next) {
+			if(req.body.thread != null) {
+				projects.addThread(req, res);
+			} else {
+				projects.hasAuthorization(req, res, next);
+			}
+		}, projects.update)
 		.delete(users.requiresLogin, projects.hasAuthorization, projects.delete);
 
 	// Finish by binding the Project middleware

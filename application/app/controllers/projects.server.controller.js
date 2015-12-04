@@ -73,12 +73,29 @@ exports.update = function(req, res) {
 	var project = req.project ;
 	var thread = req.body.thread;
 	delete req.body.thread;
-
-	project = _.extend(project , req.body);
 	
 	if(thread) {
 		project.threads.push(thread);
 	}
+
+	project.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(project);
+		}
+	});
+};
+
+/**
+ * Update a Project
+ */
+exports.update = function(req, res) {
+	var project = req.project ;
+
+	project = _.extend(project , req.body);
 
 	project.save(function(err) {
 		if (err) {

@@ -57,30 +57,45 @@ exports.read = function(req, res) {
 	});
 };
 
+
+/**
+ * Vote on a Thread
+ */
+exports.vote = function(req, res) {
+	var thread = req.thread;
+	var upvote = req.body.upvote;
+	
+	var upvoteIndex = thread.votes.up.indexOf(req.user._id);
+	var downvoteIndex = thread.votes.down.indexOf(req.user._id);
+	if(upvoteIndex != -1) {
+		thread.votes.up.splice(upvoteIndex, 1);
+	} else if(Boolean(upvote)) {
+		thread.votes.up.push(req.user);
+	} 
+	if(downvoteIndex != -1) {
+		thread.votes.down.splice(downvoteIndex, 1);
+	} else if(!Boolean(upvote)) {
+		thread.votes.down.push(req.user);
+	}
+
+	thread.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(thread);
+		}
+	});
+}
+
 /**
  * Update a Thread
  */
 exports.update = function(req, res) {
 	var thread = req.thread;
-	var upvote = req.body.upvote;
-	delete req.body.upvote;
 	
 	thread = _.extend(thread , req.body);
-	
-	if(upvote != null) {
-		var upvoteIndex = thread.votes.up.indexOf(req.user._id);
-		var downvoteIndex = thread.votes.down.indexOf(req.user._id);
-		if(upvoteIndex != -1) {
-			thread.votes.up.splice(upvoteIndex, 1);
-		} else if(Boolean(upvote)) {
-			thread.votes.up.push(req.user);
-		} 
-		if(downvoteIndex != -1) {
-			thread.votes.down.splice(downvoteIndex, 1);
-		} else if(!Boolean(upvote)) {
-			thread.votes.down.push(req.user);
-		}
-	}
 
 	thread.save(function(err) {
 		if (err) {
@@ -172,9 +187,9 @@ exports.threadByID = function(req, res, next, id) {
  * Thread authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-//	if(req.thread.owner.id === req.user.id) {
+	if(req.thread.owner._id === req.user._id) {
 		next();
-		//return;
-//	}
-//	return res.status(403).send('User is not authorized');
+	} else {
+		return res.status(403).send('User is not authorized');
+	}
 };

@@ -97,18 +97,33 @@ exports.read = function(req, res) {
 };
 
 /**
+ * Add thread to Team
+ */
+exports.addThread = function(req, res) {
+	var team = req.team ;
+	var thread = req.body.thread;
+	delete req.body.thread;
+	
+	team.threads.push(thread);
+
+	team.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(team);
+		}
+	});
+};
+
+/**
  * Update a Team
  */
 exports.update = function(req, res) {
 	var team = req.team ;
-	var thread = req.body.thread;
-	delete req.body.thread;
 
 	team = _.extend(team , req.body);
-	
-	if(thread) {
-		team.threads.push(thread);
-	}
 
 	team.save(function(err) {
 		if (err) {
@@ -163,8 +178,6 @@ exports.list = function(req, res) {
 								message: errorHandler.getErrorMessage(err)
 							});
 						} else {
-							console.log(workerTasks);
-							console.log(ownerTasks);
 							for(var i=0, j=0, k=0; i<teams.length; i++) {
 								if(j >= ownerTasks.length) {
 									teams[i].ownerTasks = [];
@@ -207,11 +220,9 @@ exports.teamByID = function(req, res, next, id) {
  * Team authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-//	for(var owner in req.team.owners) {
-//		if(owner.id === req.user.id) {
-			next();
-//			return;
-//		}
-//	}
-//	return res.status(403).send('User is not authorized');
+	if(_.findIndex(req.team.owners, {'user': req.user._id}) != -1) {
+		next();
+	} else {
+		return res.status(403).send('User is not authorized');
+	}
 };

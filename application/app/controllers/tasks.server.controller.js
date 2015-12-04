@@ -21,7 +21,6 @@ exports.create = function(req, res) {
 				user: usr
 			};
 		});
-		console.log(req.body.owners.users);
 	}
 	if(req.body.workers.users) {
 		req.body.workers.users = req.body.workers.users.map(function(usr) {

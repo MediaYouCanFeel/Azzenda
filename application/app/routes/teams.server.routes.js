@@ -12,7 +12,13 @@ module.exports = function(app) {
 
 	app.route('/teams/:teamId')
 		.get(teams.read)
-		.put(users.requiresLogin, teams.hasAuthorization, teams.update)
+		.put(users.requiresLogin, function(req, res, next) {
+			if(req.body.thread != null) {
+				teams.addThread(req, res);
+			} else {
+				teams.hasAuthorization(req, res, next);
+			}
+		}, teams.update)
 		.delete(users.requiresLogin, teams.hasAuthorization, teams.delete);
 
 	// Finish by binding the Team middleware

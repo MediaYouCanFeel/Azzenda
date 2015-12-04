@@ -116,13 +116,23 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				$scope.ok();
 				
 				// Add this code here
-				Teams.update({
+				if ($location.path().startsWith('/teams')) {
+				    Teams.update({
+							_id: $stateParams.teamId,
+							thread: response._id
+					}, function() {
+						$state.go($state.current, {}, {reload: true});
+					});
+				}
+			    
+				if($location.path().startsWith('/projects')) {
+					Projects.update({
 						_id: $stateParams.teamId,
 						thread: response._id
-				}, function() {
-					$state.go($state.current, {}, {reload: true});
-				});
-				
+					}, function() {
+						$state.go($state.current, {}, {reload: true});
+					});
+				}
 				
 				// Clear form fields
 				$scope.name = '';

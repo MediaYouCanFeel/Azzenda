@@ -181,8 +181,10 @@ exports.projectByID = function(req, res, next, id) {
  * Project authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	//if (req.project.user.id !== req.user.id) {
-		//return res.status(403).send('User is not authorized');
-	//}
-	next();
+	var roles = ['admin'];
+	if (_.intersection(req.user.roles,roles).length) {
+		next();
+	} else {
+		return res.status(403).send('User is not authorized');
+	}
 };

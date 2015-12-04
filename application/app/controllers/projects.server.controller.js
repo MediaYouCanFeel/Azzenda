@@ -51,6 +51,7 @@ exports.read = function(req, res) {
 								message: errorHandler.getErrorMessage(err)
 							});
 						} else {
+							req.project.teams = teams;
 							TaskCtrl.popTasks.call(this,tasks,function() {
 								req.project.tasks = tasks;
 								ThreadCtrl.popThreads.call(this,threds,function() {

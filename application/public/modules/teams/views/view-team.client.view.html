@@ -146,7 +146,7 @@
 					<a ng-if="team.users.length < 4 || $index < 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
 					</a><a ng-if="team.users.length == 4 && $index == 3" class="display-name" tooltip-placement="bottom" tooltip="{{user.displayName}}" data-ng-href="#!/users/{{user._id}}" data-ng-bind="user.firstName">
 					</a><span ng-if="$index < team.users.length - 1 && $index < 3 && team.users.length > 2">,
-					</span><span ng-if="$index == team.users.length - 2 || ($index == 2 && team.users.length > 4)"> and 
+					</span><span ng-if="($index == team.users.length - 2 && team.users.length != 5) || ($index == 2 && team.users.length > 4)"> and 
 					</span><span ng-if="$index == team.users.length - 1">.
 					</span><span ng-if="$index == 2 && team.users.length > 4"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="team.users.length - 3"></span> others.</a>
 					</span>

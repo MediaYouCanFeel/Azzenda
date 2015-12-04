@@ -130,7 +130,6 @@ describe('angularjs pers-event-1', function() {
         var now = new Date();
         if (now.getHours() < 12) {
         	toggMer.click();
-        	toggMer.click();
         }
         
         weekRec.click();
@@ -166,7 +165,6 @@ describe('angularjs pers-event-1', function() {
         //sets PM
         var now = new Date();
         if (now.getHours() < 12) {
-        	toggMer.click();
         	toggMer.click();
         }
         

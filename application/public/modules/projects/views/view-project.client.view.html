@@ -54,7 +54,31 @@
         <ul ng-if="task.subTasks">
         </ul>
     </script>
-	
+	<script type="text/ng-template" id="threadTree">
+		<div class="list-group-item">
+			<div class="row">
+				<div class="col-md-1">
+					<a data-ng-href="#!/users/{{thread.owner._id}}">
+						<img class="prof-pic-thread" ng-show="thread.owner.profpic!=''" ng-src="data:image/jpeg;base64,{{thread.owner.profpic}}" alt="Profile Picture">
+					</a>
+				</div>
+				<div class="col-md-11">
+					<strong><a data-ng-bind="thread.owner.displayName" data-ng-href="#!/users/{{thread.owner._id}}"></a></strong>
+					<span data-ng-bind="thread.text"></span>
+					<div> <small>
+						<span data-ng-bind="thread.votes.up.length"></span> upvotes, <span data-ng-bind="thread.votes.down.length"></span> downvotes, <span data-ng-bind="thread.subThreads.length"></span> replies
+					</small> </div>
+				</div>
+			</div>	
+			<hr>
+			<span class="thread-action" ng-click="upvote(thread._id)"><i class="fa fa-chevron-up"></i> <strong>Upvote</strong> </span>
+			<span class="thread-action" ng-click="downvote(thread._id)"><i class="fa fa-chevron-down"></i> <strong>Downvote</strong> </span>
+			<span class="thread-action" ng-click="reply(thread._id, 'md')"><i class="fa fa-comments-o"></i> <strong>Reply</strong> </span>
+			
+			<span data-ng-repeat="thread in thread.subThreads" ng-include="'threadTree'"></span>
+		</div>
+    </script>
+    
 	<div class="col-md-12 top-well">
         <div class="col-md-8 event-back">
             <a ng-href="/#!/projects" class="btn btn-blue" style="margin-bottom: -20px;">
@@ -132,18 +156,12 @@
    			</div>
 			
 			<span ng-if="project.threads.length > 0">
-				<form class="form-horizontal" novalidate>
-	            <fieldset>
-	                <div class="form-group">
-	                    <label class="control-label" for="text">New Thread</label>
-	                    <div class="controls">
-	                        <textarea data-ng-model="text" id="text" class="form-control" placeholder="We would like a large pie with pepperoni, pineapple and cheesy crust." rows="3" required></textarea>
-	                    </div>
-	                </div>
-	            </fieldset>
-	            </form>
+				<div data-ng-repeat="thread in team.threads">
+					<span ng-include="'threadTree'"></span>
+				</div>
+				
 	            <div class="form-group pull-right">
-					<input id="create-group-button" type="submit" ng-click="create()" class="btn btn-yellow" value="Create Thread">
+					<input id="create-group-button" type="submit" ng-click="createModal('lg')" class="btn btn-yellow" value="Create Thread">
 	            </div>
 			</span>
 		</div>

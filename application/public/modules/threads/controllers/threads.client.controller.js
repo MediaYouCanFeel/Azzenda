@@ -1,8 +1,8 @@
 'use strict';
 
 // Threads controller
-angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$state', '$location', 'Authentication', 'Threads', 'Teams', '$modal', '$log',
-	function($scope, $stateParams, $state, $location, Authentication, Threads, Teams, $modal, $log) {
+angular.module('threads').controller('ThreadsController', ['$scope', '$stateParams', '$state', '$location', 'Authentication', 'Threads', 'Teams', 'Projects', '$modal', '$log',
+	function($scope, $stateParams, $state, $location, Authentication, Threads, Teams, Projects, $modal, $log) {
 		$scope.authentication = Authentication;
 
 		
@@ -127,7 +127,7 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 			    
 				if($location.path().startsWith('/projects')) {
 					Projects.update({
-						_id: $stateParams.teamId,
+						_id: $stateParams.projectId,
 						thread: response._id
 					}, function() {
 						$state.go($state.current, {}, {reload: true});

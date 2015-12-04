@@ -62,6 +62,7 @@
 					<div class="col-md-12" data-ng-init="getType(task.status)">
 						<span class="project-rep-name list-group-item-heading" data-ng-bind="task.name"></span>
 						<progressbar class="progress-detail active pull-right" value="getValue(task.status)" type="{{getType(task.status)}}"></progressbar>
+						<div data-ng-bind="task.project.name" style="font-size:14px;"></div>
 					</div>
 				</div>
 	        </a>

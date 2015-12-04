@@ -42,7 +42,7 @@
     	</div>
     	
 	    <div class="list-group">
-	        <a data-ng-repeat="team in teams | filter: userSearch | filter: searchNameText | filter: searchProject" data-ng-href="#!/teams/{{team._id}}" class="list-group-item team-list">
+	        <a data-ng-repeat="team in teams | filter: userSearch | filter: searchNameText | filter: searchProject | orderBy: 'name'" data-ng-href="#!/teams/{{team._id}}" class="list-group-item team-list">
 				<span class="">
 					<span class="col-md-5">
 						<h4 class="list-group-item-heading"><span data-ng-bind="team.name"></span> (<span data-ng-bind="team.project.name"></span>)</h4>

@@ -162,11 +162,11 @@
 		<div class="col-md-12 well" data-ng-controller="TasksController">
     		<h4><strong>Tasks</strong></h4>
     		
-    		<div class="alert alert-blue text-center" ng-if="!(team.memberTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
+    		<div class="alert alert-blue text-center" ng-if="!(team.workerTasks.length > 0 || team.ownerTasks.length > 0)" data-ng-controller="TeamsController">
     			No Tasks for this team yet - why don't you  <strong><u href="" ng-click="taskForTeamModal('md')" style="cursor:pointer">create one</u></strong>?
    			</div>
     		
-    		<span ng-if="team.ownerTasks.length > 0 || team.memberTasks.length > 0" >
+    		<span ng-if="team.ownerTasks.length > 0 || team.workerTasks.length > 0" >
 	    		<div data-ng-repeat="task in team.ownerTasks | orderBy: 'deadline'">
 					<div class="col-md-12">
 						<span ng-include="'taskTree'"></span>

@@ -109,7 +109,7 @@ exports.create = function(req, res) {
 		event.populate('teams', 'users');
 		
 		for(j=0; j<event.teams.length; j++) {
-			var teamUsers; = event.teams[j].users;
+			var teamUsers = event.teams[j].users;
 			teamUsers.forEach(function(teamUser) {
 				opGuests.push(teamUser);
 			});

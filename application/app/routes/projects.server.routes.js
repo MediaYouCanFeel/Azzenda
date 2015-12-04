@@ -13,7 +13,7 @@ module.exports = function(app) {
 				projects.list(req,res);
 			}
 		})
-		.post(users.requiresLogin, projects.create);
+		.post(users.requiresLogin, projects.hasAuthorization, projects.create);
 
 	app.route('/projects/:projectId')
 		.get(users.requiresLogin, projects.read)

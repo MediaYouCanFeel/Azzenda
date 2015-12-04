@@ -60,8 +60,14 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var project = req.project ;
+	var thread = req.body.thread;
+	delete req.body.thread;
 
 	project = _.extend(project , req.body);
+	
+	if(thread) {
+		project.threads.push(thread);
+	}
 
 	project.save(function(err) {
 		if (err) {

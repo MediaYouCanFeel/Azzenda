@@ -106,82 +106,95 @@ exports.create = function(req, res) {
 		}
 		
 		//populate teams and users for the event;
-		event.populate('teams', 'users');
-		
-		for(j=0; j<event.teams.length; j++) {
-			var teamUsers = event.teams[j].users;
-			teamUsers.forEach(function(teamUser) {
-				opGuests.push(teamUser);
-			});
-		}
-		
-		if(projInvite) {
-			event.populate('proj', 'users');
-			event.proj.users.forEach(function(projUser) {
-				opGuests.push(projUser);
-			});
-		}
-		
-		opGuests = _.difference(opGuests, [reqGuests]);
-		
-		for(j=0; j<opGuests.length; j++) {
-			var curGuest = opGuests[j];
-			event.guests.push({
-				user: curGuest,
-				status: 'invited',
-				required: false
-			});
-		}
-		
-		var events = event.recurUnrollNext(event.sched.start, event.sched.end);
-		
-		var eventOb = event.toObject();
-		delete eventOb._id;
-		console.log(eventOb);
-		
-		var i;
-		for(i=1; i<events.length; i++) {
-			var evnt = new Event(eventOb);
-			evnt.sched.start = events[i].sched.start;
-			evnt.sched.end = events[i].sched.end;
-			evnt.save(function(err) {
-				if(err) {
-	            	console.log('Event save error');
-	            	var errMsg = errorHandler.getErrorMessage(err);
-	            	if(errMsg == '') {
-	            		errMsg = err.message;
-	            		if(errMsg == '') {
-	            			errMsg = err;
-	            		}
-	            	}
-	            	console.log(errMsg);
-	                return res.status(400).send({
-	                    message: errMsg
-	                });
-	            }
-			});
-		}
-		
-		event.sched.start = events[0].sched.start;
-		event.sched.end = events[0].sched.end;
-		event.save(function(err) {
-            if(err) {
-            	console.log('Event save error');
-            	var errMsg = errorHandler.getErrorMessage(err);
-            	if(errMsg == '') {
-            		errMsg = err.message;
-            		if(errMsg == '') {
-            			errMsg = err;
-            		}
-            	}
-            	console.log(errMsg);
-                return res.status(400).send({
-                    message: errMsg
+		event.populate({path: 'teams', select: 'users'}, function(err, event) {
+			if(err) {
+				return res.status(400).send({
+                    message: err
                 });
-            } else {
-                return res.jsonp(event);
-            }
-        });
+			} else {
+				for(j=0; j<event.teams.length; j++) {
+					var teamUsers = event.teams[j].users;
+					teamUsers.forEach(function(teamUser) {
+						opGuests.push(teamUser);
+					});
+				}
+				
+				event.populate({path: 'proj', select: 'users'}, function(err, event) {
+					if(err) {
+						return res.status(400).send({
+		                    message: err
+		                });
+					} else {
+						if(projInvite) {
+							event.proj.users.forEach(function(projUser) {
+								opGuests.push(projUser);
+							});
+						}
+						
+						opGuests = _.difference(opGuests, [reqGuests]);
+						
+						for(j=0; j<opGuests.length; j++) {
+							var curGuest = opGuests[j];
+							event.guests.push({
+								user: curGuest,
+								status: 'invited',
+								required: false
+							});
+						}
+						
+						var events = event.recurUnrollNext(event.sched.start, event.sched.end);
+						
+						var eventOb = event.toObject();
+						delete eventOb._id;
+						console.log(eventOb);
+						
+						var i;
+						for(i=1; i<events.length; i++) {
+							var evnt = new Event(eventOb);
+							evnt.sched.start = events[i].sched.start;
+							evnt.sched.end = events[i].sched.end;
+							evnt.save(function(err) {
+								if(err) {
+					            	console.log('Event save error');
+					            	var errMsg = errorHandler.getErrorMessage(err);
+					            	if(errMsg == '') {
+					            		errMsg = err.message;
+					            		if(errMsg == '') {
+					            			errMsg = err;
+					            		}
+					            	}
+					            	console.log(errMsg);
+					                return res.status(400).send({
+					                    message: errMsg
+					                });
+					            }
+							});
+						}
+						
+						event.sched.start = events[0].sched.start;
+						event.sched.end = events[0].sched.end;
+						event.save(function(err) {
+				            if(err) {
+				            	console.log('Event save error');
+				            	var errMsg = errorHandler.getErrorMessage(err);
+				            	if(errMsg == '') {
+				            		errMsg = err.message;
+				            		if(errMsg == '') {
+				            			errMsg = err;
+				            		}
+				            	}
+				            	console.log(errMsg);
+				                return res.status(400).send({
+				                    message: errMsg
+				                });
+				            } else {
+				                return res.jsonp(event);
+				            }
+				        });
+					}
+				});
+			}
+		});
 	} else {
 		delete req.body.personal;
 	    var reqGuests = req.body.reqGuests || [];
@@ -192,6 +205,8 @@ exports.create = function(req, res) {
 	    var schedEnd = req.body.sched.end;
 	    delete req.body.sched.start;
 	    delete req.body.sched.end;
+	    var projInvite = req.body.projInvite;
+	    delete req.body.projInvite;
 	    
 		var event = new Event(req.body);
 		event.owner = req.user;
@@ -206,41 +221,73 @@ exports.create = function(req, res) {
 			});
 		}
 		
-		for(j=0; j<opGuests.length; j++) {
-			var curGuest = opGuests[j];
-			event.guests.push({
-				user: curGuest,
-				status: 'invited',
-				required: false
-			});
-		}
-		
-		event.save(function(err) {
+		//populate teams and users for the event;
+		event.populate({path: 'teams', select: 'users'}, function(err, event) {
 			if(err) {
-            	console.log('Event save error');
-            	var errMsg = errorHandler.getErrorMessage(err);
-            	if(errMsg == '') {
-            		errMsg = err.message;
-            		if(errMsg == '') {
-            			errMsg = err;
-            		}
-            	}
-                return res.status(400).send({
-                    message: errMsg
+				return res.status(400).send({
+                    message: err
                 });
-            } else {
-            	req.event = event;
-            	req.body.schedStart = schedStart;
-            	req.body.schedEnd = schedEnd;
-                exports.schedule(req, res);
-            }
+			} else {
+				for(j=0; j<event.teams.length; j++) {
+					var teamUsers = event.teams[j].users;
+					teamUsers.forEach(function(teamUser) {
+						opGuests.push(teamUser);
+					});
+				}
+				
+				event.populate({path: 'proj', select: 'users'}, function(err, event) {
+					if(err) {
+						return res.status(400).send({
+		                    message: err
+		                });
+					} else {
+						if(projInvite) {
+							event.proj.users.forEach(function(projUser) {
+								opGuests.push(projUser);
+							});
+						}
+						
+						opGuests = _.difference(opGuests, [reqGuests]);
+		
+						for(j=0; j<opGuests.length; j++) {
+							var curGuest = opGuests[j];
+							event.guests.push({
+								user: curGuest,
+								status: 'invited',
+								required: false
+							});
+						}
+						
+						event.save(function(err) {
+							if(err) {
+				            	console.log('Event save error');
+				            	var errMsg = errorHandler.getErrorMessage(err);
+				            	if(errMsg == '') {
+				            		errMsg = err.message;
+				            		if(errMsg == '') {
+				            			errMsg = err;
+				            		}
+				            	}
+				                return res.status(400).send({
+				                    message: errMsg
+				                });
+				            } else {
+				            	req.event = event;
+				            	req.body.schedStart = schedStart;
+				            	req.body.schedEnd = schedEnd;
+				                exports.schedule(req, res);
+				            }
+						});
+					}
+				});
+			}
 		});
 	}
 };
 
 exports.schedule = function(req, res) {
 	var event = req.event;
-	if(event.recurring.type == 'None' && event.status != 'personal') {
+	if(event.recurring.type == 'NONE' && event.status != 'personal') {
 		//getting the list of required guests
 		var guests = event.guests.filter(function(guest) {
 			return guest.required;
@@ -379,7 +426,16 @@ exports.update = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(event);
+			event.populate({path: 'guests.user', select: 'displayName profpic'}, function(err, evnt){
+				if(err) {
+					console.log(err);
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					res.jsonp(evnt);
+				}
+			});
 		}
 	});
 };
@@ -416,19 +472,6 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-//            	var i;
-//            	for(i=0; i<events.length;) {
-//            		var curEvent = events[i];
-//            		
-//        			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-//        			events.splice(i, 1);
-//        			if(unrolled) {
-//        				var j;
-//            			for(j=0; j<unrolled.length; j++) {
-//            				events.splice(i++, 0, unrolled[j]);
-//            			}
-//        			}
-//            	}
                 res.jsonp(events);
             }
         });
@@ -439,21 +482,6 @@ exports.list = function(req, res) {
                     message: errorHandler.getErrorMessage(err)
                 });
             } else {
-//            	var i;
-//            	for(i=0; i<events.length; i++) {
-//            		var curEvent = events[i];
-//            		if(curEvent.status == 'personal') {
-//            			var unrolled = curEvent.recurUnrollNext(currDate,lastDate);
-//            			events.splice(i, 1);
-//            			if(unrolled) {
-//            				var j;
-//                			for(j=0; j<unrolled.length; j++) {
-//                				events.splice(i, 0, unrolled[j]);
-//                				i++;
-//                			}
-//            			}
-//            		}
-//            	}
                 res.jsonp(events);
             }
         });
@@ -511,7 +539,16 @@ exports.rsvp = function(req, res) {
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(event);
+			event.populate({path: 'guests.user', select: 'displayName profpic'}, function(err, evnt){
+				if(err) {
+					console.log(err);
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					res.jsonp(evnt);
+				}
+			});
 		}
 	});
 };

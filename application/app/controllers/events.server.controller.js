@@ -240,109 +240,113 @@ exports.create = function(req, res) {
 
 exports.schedule = function(req, res) {
 	var event = req.event;
-	//getting the list of required guests
-	var guests = event.guests.filter(function(guest) {
-		return guest.required;
-	}).map(function(guest){
-		return guest.user;
-	});
-	
-	console.log(moment(req.body.schedStart)._d);
-	console.log(moment(req.body.schedEnd)._d);
-	
-	//Make these parameters that can be passed by the front-end
-	var currDate = moment(req.body.schedStart || moment().add(1, 'h'));
-	var lasttDate = moment(req.body.schedEnd || moment().add(30, 'd'));
-	
-	event.possDates = {
-			start: parseInt(currDate.format('x')),
-			end: parseInt(lasttDate.format('x'))
-	};
-	
-	var i;
-	for(i=0; i<event.filters.length; i++) {
-		event.filters[i].markModified('params');
-		event.possFilter(event.filters[i]);
-	}
-	
-	event.possDates = event.possDates.sort(function(a,b) {
-		return a.start.getTime() - b.start.getTime();
-	});
-	
-	Event.find({$and: [{$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]},{priority: {$gte: event.priority}}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
-		if(err) {
-			console.log('Personal Event Error');
-        	var errMsg = errorHandler.getErrorMessage(err);
-        	if(errMsg == '') {
-        		errMsg = err.message;
-        		if(errMsg == '') {
-        			errMsg = err;
-        		}
-        	}
-            return res.status(400).send({
-                message: errMsg
-            });
-		} else {
-			var oldPossibleDates = event.possDates;
-			var i;
-			var l=0;
-			for(i=0; i<oldPossibleDates.length && l<userEvents.length;) {
-				var userDateRange = moment(userEvents[l].sched.start).subtract(15, 'minutes').twix(moment(userEvents[l].sched.end).add(15, 'minutes'));
-				var oldDateRange = moment(oldPossibleDates[i].start).twix(oldPossibleDates[i].end);
-				if(userDateRange.overlaps(oldDateRange) || userDateRange.engulfs(oldDateRange) || oldDateRange.engulfs(userDateRange) || oldDateRange.overlaps(userDateRange)) {
-					var newDateRange = oldDateRange.difference(userDateRange);
-					var tempI = i;
-					oldPossibleDates.splice(tempI,1);
-					newDateRange.forEach(function(dateRange) {
-						oldPossibleDates.splice(tempI++, 0, {
-							start: new Date(parseInt(dateRange.start().format('x'))),
-							end: new Date(parseInt(dateRange.end().format('x'))),
+	if(event.recurring.type == 'None' && event.status != 'personal') {
+		//getting the list of required guests
+		var guests = event.guests.filter(function(guest) {
+			return guest.required;
+		}).map(function(guest){
+			return guest.user;
+		});
+		
+		console.log(moment(req.body.schedStart)._d);
+		console.log(moment(req.body.schedEnd)._d);
+		
+		//Make these parameters that can be passed by the front-end
+		var currDate = moment(req.body.schedStart || moment().add(1, 'h'));
+		var lasttDate = moment(req.body.schedEnd || moment().add(30, 'd'));
+		
+		event.possDates = {
+				start: parseInt(currDate.format('x')),
+				end: parseInt(lasttDate.format('x'))
+		};
+		
+		var i;
+		for(i=0; i<event.filters.length; i++) {
+			event.filters[i].markModified('params');
+			event.possFilter(event.filters[i]);
+		}
+		
+		event.possDates = event.possDates.sort(function(a,b) {
+			return a.start.getTime() - b.start.getTime();
+		});
+		
+		Event.find({$and: [{$or: [{$and: [{status: 'personal'},{owner: {$in: guests}}]},{$and: [{'guests.user': {$in: guests}},{'guests.status': {$in: ['invited','going']}}]}]},{priority: {$gte: event.priority}}]}).where('sched.end').gt(new Date()).sort('sched.start').exec(function(err,userEvents) {
+			if(err) {
+				console.log('Personal Event Error');
+	        	var errMsg = errorHandler.getErrorMessage(err);
+	        	if(errMsg == '') {
+	        		errMsg = err.message;
+	        		if(errMsg == '') {
+	        			errMsg = err;
+	        		}
+	        	}
+	            return res.status(400).send({
+	                message: errMsg
+	            });
+			} else {
+				var oldPossibleDates = event.possDates;
+				var i;
+				var l=0;
+				for(i=0; i<oldPossibleDates.length && l<userEvents.length;) {
+					var userDateRange = moment(userEvents[l].sched.start).subtract(15, 'minutes').twix(moment(userEvents[l].sched.end).add(15, 'minutes'));
+					var oldDateRange = moment(oldPossibleDates[i].start).twix(oldPossibleDates[i].end);
+					if(userDateRange.overlaps(oldDateRange) || userDateRange.engulfs(oldDateRange) || oldDateRange.engulfs(userDateRange) || oldDateRange.overlaps(userDateRange)) {
+						var newDateRange = oldDateRange.difference(userDateRange);
+						var tempI = i;
+						oldPossibleDates.splice(tempI,1);
+						newDateRange.forEach(function(dateRange) {
+							oldPossibleDates.splice(tempI++, 0, {
+								start: new Date(parseInt(dateRange.start().format('x'))),
+								end: new Date(parseInt(dateRange.end().format('x'))),
+							});
 						});
-					});
-				} else {
-					if(userDateRange.start().isBefore(oldDateRange.start())) {
-						l++;
 					} else {
-						i++;
+						if(userDateRange.start().isBefore(oldDateRange.start())) {
+							l++;
+						} else {
+							i++;
+						}
 					}
 				}
-			}
-			event.possDates = oldPossibleDates;
-			
-			event.possDates = event.possDates.sort(function(a,b) {
-				return a.start.getTime() - b.start.getTime();
-			});
-			
-			event.status = 'unschedulable';	
-			for(i=0; i<event.possDates.length; i++) {
-				var posDate = event.possDates[i];
-				if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
-					event.sched.start = posDate.start;
-					event.sched.end = posDate.start.getTime() + event.length;
-					event.status = 'scheduled';
-					break;
+				event.possDates = oldPossibleDates;
+				
+				event.possDates = event.possDates.sort(function(a,b) {
+					return a.start.getTime() - b.start.getTime();
+				});
+				
+				event.status = 'unschedulable';	
+				for(i=0; i<event.possDates.length; i++) {
+					var posDate = event.possDates[i];
+					if((posDate.end.getTime() - posDate.start.getTime()) >= event.length) {
+						event.sched.start = posDate.start;
+						event.sched.end = posDate.start.getTime() + event.length;
+						event.status = 'scheduled';
+						break;
+					}
 				}
+				            	
+	            event.save(function(err) {
+	                if(err) {
+	                	console.log('Event save error');
+	                	var errMsg = errorHandler.getErrorMessage(err);
+	                	if(errMsg == '') {
+	                		errMsg = err.message;
+	                		if(errMsg == '') {
+	                			errMsg = err;
+	                		}
+	                	}
+	                    return res.status(400).send({
+	                        message: errMsg
+	                    });
+	                } else {
+	                    return res.jsonp(event);
+	                }
+	            });
 			}
-			            	
-            event.save(function(err) {
-                if(err) {
-                	console.log('Event save error');
-                	var errMsg = errorHandler.getErrorMessage(err);
-                	if(errMsg == '') {
-                		errMsg = err.message;
-                		if(errMsg == '') {
-                			errMsg = err;
-                		}
-                	}
-                    return res.status(400).send({
-                        message: errMsg
-                    });
-                } else {
-                    return res.jsonp(event);
-                }
-            });
-		}
-	});
+		});
+	} else {
+		return res.jsonp(event);
+	}
 }
 
 /**

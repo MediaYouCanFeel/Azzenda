@@ -1,6 +1,10 @@
 .azzenda-font {
   font-family: corbert;
 }
+.tangible-font {
+  font-family: 'Segoe UI';
+  font-weight: bold;
+}
 .content {
 	margin-top: 50px;
 }

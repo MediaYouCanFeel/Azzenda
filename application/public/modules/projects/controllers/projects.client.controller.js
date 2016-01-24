@@ -100,7 +100,17 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 				$scope.error = errorResponse.data.message;
 			});
 		};
-
+		
+		$scope.updatePart = function() {
+			$scope.project = Projects.update({
+					_id: $stateParams.projectId,
+					name: $scope.project.name,
+					type: $scope.project.type
+			}, function() {
+				$scope.findOne();
+			});
+		}
+		
 		// Find a list of Projects
 		$scope.find = function() {
 			$scope.projects = Projects.query();

@@ -97,11 +97,51 @@
 	    <div class="col-md-12 well">
 	        <div class="col-md-8 project-name">
 	            <i class="fa fa-paperclip"></i>
-	            <span data-ng-bind="project.name"></span>
+	            <!-- Project Name -->
+	            <span ng-if="!editName" data-ng-bind="project.name" data-ng-init="editName = false"></span> 
+            	
+            	<!-- Editable Project Name -->
+            	<span ng-if="editName"> 
+					<input type="text" data-ng-model="project.name" id="name" placeholder="{{project.name}}" style="font-size: 45px; height: 60px; width: 80%">
+                </span>
+	            
+	            <!-- Edit Controls -->
+	            <span ng-click="editName = !editName;" style="font-size:14px;">
+	            	<!-- Enter Edit Mode -->
+	            	<i ng-if="!editName" class="fa fa-pencil edit-pencil"></i>
+	            	
+	            	<!-- Save Changes -->
+	            	<i ng-if="editName" ng-click="updatePart();" class="fa fa-floppy-o edit-save"></i>
+	            	
+	            	<!-- Discard Changes -->
+	            	<i ng-if="editName" ng-click="findOne()" class="fa fa-times edit-cancel"></i>
+	            </span>
 	        </div> 
 	        <div class="col-md-4">
 	        	<div class="pull-right project-type">
-	        		<span data-ng-bind="project.type"></span>
+	        		<!-- Project Type -->
+	        		<div ng-if="!editType" data-ng-bind="project.type" data-ng-init="editType = false"></div>
+	        		
+	        		<!-- Editable Project Type -->
+	        		<div class="form-group" style="min-width:300px;">
+	        		<span ng-if="editType" class="form-group" data-ng-controller="ProjectsController">
+	                    <select type="hidden" data-tags="true" class="form-control" data-ng-model="project.type" data-ng-init="findTypes()">
+	                    	<option ng-repeat="type in projectTypes" data-ng-value="type">{{type}}</option>
+	                    </select>
+	        		</span>
+	        		</div>
+	        		
+	        		<!-- Edit Controls -->
+		            <span ng-click="editType = !editType;" style="font-size:14px;">
+		            	<!-- Enter Edit Mode -->
+		            	<i ng-if="!editType" class="fa fa-pencil edit-pencil" style="right: 0px;"></i>
+		            	
+		            	<!-- Save Changes -->
+		            	<i ng-if="editType" ng-click="updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
+		            	
+		            	<!-- Discard Changes -->
+		            	<i ng-if="editType" ng-click="findOne()" class="fa fa-times edit-cancel" style="right: 0px;"></i>
+		            </span>
 	        	</div>
 	        </div>  
 	    </div>
@@ -110,7 +150,26 @@
     <div class="col-md-5 project-col-left">
 		
 		<div ng-if="project.description" class="col-md-12 well">
-	    	<span data-ng-bind="project.description"></span>
+	    	<!-- Description -->
+	    	<span ng-if="!editDesc" data-ng-bind="project.description"></span>
+	    	
+	    	<!-- Editable Project Name -->
+           	<span ng-if="editDesc"> 
+				<input type="text" data-ng-model="project.description" id="description" placeholder="{{project.description}}">
+            </span>
+            
+            <!-- Edit Controls -->
+            <span ng-click="editDesc = !editDesc;" style="font-size:14px;">
+            	<!-- Enter Edit Mode -->
+            	<i ng-if="!editDesc" class="fa fa-pencil edit-pencil"></i>
+            	
+            	<!-- Save Changes -->
+            	<i ng-if="editDesc" ng-click="updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
+            	
+            	<!-- Discard Changes -->
+            	<i ng-if="editDesc" ng-click="findOne()" class="fa fa-times edit-cancel" style="right: 0px;"></i>
+            </span>
+	    	
     	</div>    	
 
     	<div class="col-md-12 well">
@@ -148,14 +207,14 @@
 			</span>
    		</div>
     	
-    	<div class="col-md-12 well" data-ng-controller="ThreadsController">
+    	<!-- Threads -->
+		<div class="col-md-12 well" data-ng-controller="ThreadsController">
 			<h4><strong>Threads</strong></h4>
-			
-			<div class="alert alert-blue text-center" ng-if="!(project.threads.length > 0)">
-    			No Threads for this project yet, why don't you <strong><u ng-click="createModal('lg')" style="cursor:pointer">create one</u></strong>?
+			<div class="alert alert-blue text-center" ng-if="project.threads.length == 0">
+    			No Threads for this project yet - why don't you <strong><u ng-click="createModal('lg')" style="cursor:pointer">create one</u></strong>?
    			</div>
 			
-			<span ng-if="project.threads.length > 0">
+			<span ng-if="project.threads.length > 0" >
 				<div data-ng-repeat="thread in project.threads">
 					<span ng-include="'threadTree'"></span>
 				</div>

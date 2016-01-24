@@ -70,7 +70,7 @@ exports.read = function(req, res) {
 /**
  * Update a Project
  */
-exports.update = function(req, res) {
+exports.addThread = function(req, res) {
 	var project = req.project ;
 	var thread = req.body.thread;
 	delete req.body.thread;

@@ -117,7 +117,8 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				
 				// Add this code here
 				if ($location.path().startsWith('/teams')) {
-				    Teams.update({
+				    console.log("TEAMS THREAD");
+					Teams.update({
 							_id: $stateParams.teamId,
 							thread: response._id
 					}, function() {
@@ -126,6 +127,7 @@ angular.module('threads').controller('ThreadsController', ['$scope', '$statePara
 				}
 			    
 				if($location.path().startsWith('/projects')) {
+					console.log("PROJECTS THREAD");
 					Projects.update({
 						_id: $stateParams.projectId,
 						thread: response._id

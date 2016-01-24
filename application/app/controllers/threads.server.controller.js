@@ -174,8 +174,12 @@ exports.list = function(req, res) {
 /**
  * Thread middleware
  */
-exports.threadByID = function(req, res, next, id) { 
-	Thread.findById(id).populate('owner', 'displayName profpic').populate('votes.up', 'displayName profpic').populate('votes.down', 'displayName profpic').lean(req.originalMethod == 'GET').exec(function(err, thread) {
+exports.threadByID = function(req, res, next, id) {
+	var threadRequest = Thread.findById(id);
+	if(req.originalMethod != 'PUT') {
+		threadRequest = threadRequest.populate('owner', 'displayName profpic').populate('votes.up', 'displayName profpic').populate('votes.down', 'displayName profpic');
+	}
+	threadRequest.lean(req.originalMethod == 'GET').exec(function(err, thread) {
 		if (err) return next(err);
 		if (! thread) return next(new Error('Failed to load Thread ' + id));
 		req.thread = thread;

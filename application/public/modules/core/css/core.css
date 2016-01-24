@@ -81,3 +81,35 @@
 .tahoma-font {
   font-family: tahoma;
 }
+
+.edit-pencil {
+  position: absolute; 
+  padding-left:10px; 
+  top: 15px; 
+  color: #bbb;
+  cursor:pointer;
+
+}
+
+.edit-pencil:hover {
+  color: #000000;
+   -webkit-transition: color 0.2s linear;
+  -moz-transition: color 0.2s linear;
+  -ms-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
+}
+
+.edit-save {
+  position: absolute; 
+  padding-left:10px; 
+  top: 5px;	
+  cursor:pointer;
+}
+
+.edit-cancel {
+  position: absolute;
+  padding-left:10px; 
+  top: 22px;
+  cursor:pointer;
+}

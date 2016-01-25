@@ -120,7 +120,7 @@
 	        <div class="col-md-4">
 	        	<div class="pull-right project-type">
 	        		<!-- Project Type -->
-	        		<div ng-if="!editType" data-ng-bind="project.type" data-ng-init="editType = false"></div>
+	        		<div ng-if="!editType" data-ng-bind="project.type" data-ng-init="editType = false" style="text-align: right;"></div>
 	        		
 	        		<!-- Editable Project Type -->
 	        		<div class="form-group" style="min-width:300px;">
@@ -155,13 +155,13 @@
 	    	
 	    	<!-- Editable Project Name -->
            	<span ng-if="editDesc"> 
-				<input type="text" data-ng-model="project.description" id="description" placeholder="{{project.description}}">
+				<input type="text" data-ng-model="project.description" id="description" placeholder="{{project.description}}" style="width:400px;">
             </span>
             
             <!-- Edit Controls -->
             <span ng-click="editDesc = !editDesc;" style="font-size:14px;">
             	<!-- Enter Edit Mode -->
-            	<i ng-if="!editDesc" class="fa fa-pencil edit-pencil"></i>
+            	<i ng-if="!editDesc" class="fa fa-pencil edit-pencil" style="right: 10px;"></i>
             	
             	<!-- Save Changes -->
             	<i ng-if="editDesc" ng-click="updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
@@ -173,11 +173,61 @@
     	</div>    	
 
     	<div class="col-md-12 well">
-    		Owners:
-	    	<span ng-repeat="owner in project.owners" ng-controller="UsersController">
-	    		<strong><a ng-href="/#!/users/{{owner._id}}" data-ng-bind="owner.displayName"></a></strong><span ng-if="$index < project.owners.length - 2">, </span>
-	    		<span ng-if="$index == project.owners.length - 2"> and </span>
+    		<h4 style="margin-top: -5px;"><strong>Owners</strong></h4>
+	    	
+	    	<!-- Owners -->
+	    	<span ng-if="!editOwners">
+		    	<span ng-if="project.owners.length <= 4">
+					<a ng-repeat="owner in project.owners | limitTo: 4" data-ng-href="#!/users/{{owner._id}}">
+						<img class="prof-pic" popover-placement="top" popover="{{owner.displayName}}" popover-trigger="mouseenter" ng-show="owner.profpic!=''" ng-src="data:image/jpeg;base64,{{owner.profpic}}" alt="Profile Picture">
+						<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
+					</a>
+				</span>
+				
+				<!-- More than 4 users (some pics shown) -->
+				<span ng-if="project.owners.length > 4">
+					<a ng-repeat="owner in project.owners | limitTo: 3" data-ng-href="#!/users/{{owner._id}}">
+						<img class="prof-pic" popover-placement="top" popover="{{owner.displayName}}" popover-trigger="mouseenter" ng-show="owner.profpic!=''" ng-src="data:image/jpeg;base64,{{owner.profpic}}" alt="Profile Picture">
+						<!-- <img class="prof-pic" src="lib/pictures/pizza.jpg" alt="Profile Picture"> -->
+					</a>
+					<span class="extraPics" ng-click="wholeTeam('xs')"> <span class="extraNums" data-ng-bind="getString(project.owners.length - 3)"></span></span>
+				</span>
+				
+				<!-- Text -->
+				<!-- More than 3 users -->
+				<div>
+					<span ng-repeat="owner in project.owners | limitTo: 4" data-ng-init="setDynamicPopover()">
+						<a ng-if="project.owners.length < 4 || $index < 3" class="display-name" tooltip-placement="bottom" tooltip="{{owner.displayName}}" data-ng-href="#!/users/{{owner._id}}" data-ng-bind="owner.firstName">
+						</a><a ng-if="project.owners.length == 4 && $index == 3" class="display-name" tooltip-placement="bottom" tooltip="{{owner.displayName}}" data-ng-href="#!/users/{{owner._id}}" data-ng-bind="owner.firstName">
+						</a><span ng-if="$index < project.owners.length - 1 && $index < 3 && project.owners.length > 2">,
+						</span><span ng-if="($index == project.owners.length - 2 && project.owners.length != 5) || ($index == 2 && project.owners.length > 4)"> and 
+						</span><span ng-if="$index == project.owners.length - 1">.
+						</span><span ng-if="$index == 2 && project.owners.length > 4"><a tooltip-placement="bottom" tooltip="{{dynamicPopover}}" ng-click="wholeTeam('md')"><span data-ng-bind="project.owners.length - 3"></span> others.</a>
+						</span>
+						
+					</span>
+				</div>
 	    	</span>
+	    	
+	    	<!-- Editable Project Name -->
+           	<span ng-if="editOwners"> 
+				<select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="project.owners" id="owners" data-ng-init="findUsers()" data-ng-controller="ProjectsController">
+                    <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+                </select>
+            </span>
+            
+            <!-- Edit Controls -->
+            <span ng-click="editOwners = !editOwners" style="font-size:14px;">
+            	<!-- Enter Edit Mode -->
+            	<i ng-if="!editOwners" class="fa fa-pencil edit-pencil" style="right: 10px;"></i>
+            	
+            	<!-- Save Changes -->
+            	<i ng-if="editOwners" ng-click="updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
+            	
+            	<!-- Discard Changes -->
+            	<i ng-if="editOwners" ng-click="findOne()" class="fa fa-times edit-cancel" style="right: 0px;"></i>
+            </span>
+	    	
     	</div>
     	
     	<div class="col-md-12 well" ng-if="project.teams.length > 0">

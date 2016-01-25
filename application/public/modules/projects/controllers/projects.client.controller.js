@@ -105,7 +105,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 			$scope.project = Projects.update({
 					_id: $stateParams.projectId,
 					name: $scope.project.name,
-					type: $scope.project.type
+					type: $scope.project.type,
+					description: $scope.project.description,
+					owners: $scope.project.owners
 			}, function() {
 				$scope.findOne();
 			});

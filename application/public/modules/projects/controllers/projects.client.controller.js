@@ -5,8 +5,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 	function($scope, $stateParams, $location, Authentication, Projects, Users, $modal, $log) {
 		$scope.authentication = Authentication;
 
-        //Projects.listArchived();
-        
 		//dropdown init
         angular.element('select').select2({ 
             width: '100%'
@@ -199,6 +197,14 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
         	
         	//A user was not found on a team, stop
         	return false;
+        }
+        
+        $scope.enterEditDescMode = function() {
+        	$scope.inEditDescMode = true;
+        }
+        
+        $scope.exitEditDescMode = function() {
+        	$scope.inEditDescMode = false;
         }
 	}
 ]);

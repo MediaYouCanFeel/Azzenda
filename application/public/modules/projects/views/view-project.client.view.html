@@ -149,7 +149,7 @@
         
     <div class="col-md-5 project-col-left">
 		
-		<div ng-if="project.description" class="col-md-12 well">
+		<div ng-if="project.description || inEditDescMode" class="col-md-12 well">
 	    	<!-- Description -->
 	    	<span ng-if="!editDesc" data-ng-bind="project.description"></span>
 	    	
@@ -161,20 +161,42 @@
             <!-- Edit Controls -->
             <span ng-click="editDesc = !editDesc;" style="font-size:14px;">
             	<!-- Enter Edit Mode -->
-            	<i ng-if="!editDesc" class="fa fa-pencil edit-pencil" style="right: 10px;"></i>
+            	<i ng-if="!editDesc" ng-click="enterEditDescMode();" class="fa fa-pencil edit-pencil" style="right: 10px;"></i>
             	
             	<!-- Save Changes -->
-            	<i ng-if="editDesc" ng-click="updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
+            	<i ng-if="editDesc" ng-click="exitEditDescMode(); updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
             	
             	<!-- Discard Changes -->
-            	<i ng-if="editDesc" ng-click="findOne()" class="fa fa-times edit-cancel" style="right: 0px;"></i>
+            	<i ng-if="editDesc" ng-click="exitEditDescMode(); findOne();" class="fa fa-times edit-cancel" style="right: 0px;"></i>
             </span>
 	    	
     	</div>    	
 
+		<div ng-if="!(project.description || inEditDescMode)" class="col-md-12 well">
+	    	<!-- Description -->
+	    	<span ng-if="!editDescNone">No description for this Project. Add one?</span>
+	    	
+	    	<!-- Editable Project Name -->
+           	<span ng-if="editDescNone"> 
+				<input type="text" data-ng-model="project.description2" id="description" placeholder="{{project.description}}" style="width:400px;">
+            </span>
+            
+            <!-- Edit Controls -->
+            <span ng-click="editDescNone = !editDescNone;" style="font-size:14px;">
+            	<!-- Enter Edit Mode -->
+            	<i ng-if="!editDescNone" class="fa fa-pencil edit-pencil" style="right: 10px;"></i>
+            	
+            	<!-- Save Changes -->
+            	<i ng-if="editDescNone" ng-click="project.description = project.description2; exitEditDescMode(); updatePart();" class="fa fa-floppy-o edit-save" style="right: 0px;"></i>
+            	
+            	<!-- Discard Changes -->
+            	<i ng-if="editDescNone" ng-click="findOne();" class="fa fa-times edit-cancel" style="right: 0px;"></i>
+            </span>
+	    	
+    	</div>
+
     	<div class="col-md-12 well">
     		<h4 style="margin-top: -5px;"><strong>Owners</strong></h4>
-	    	
 	    	<!-- Owners -->
 	    	<span ng-if="!editOwners">
 		    	<span ng-if="project.owners.length <= 4">

@@ -220,9 +220,9 @@ exports.teamByID = function(req, res, next, id) {
  * Team authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if(_.findIndex(req.team.owners, {'user': req.user._id}) != -1) {
+//	if(_.findIndex(req.team.owners, {'user': req.user._id}) != -1) {
 		next();
-	} else {
-		return res.status(403).send('User is not authorized');
-	}
+//	} else {
+//		return res.status(403).send('User is not authorized');
+//	}
 };

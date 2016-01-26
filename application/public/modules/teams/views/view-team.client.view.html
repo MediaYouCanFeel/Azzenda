@@ -96,9 +96,28 @@
 
 	<div class="col-md-12">	
 		<div class="col-md-12 well">		
-			<span class="col-md-7">
-				<h1><i class="fa fa-users"></i>
-				<span data-ng-bind="team.name"></span></h1>
+			<span class="col-md-7 project-name">
+				<i class="fa fa-users"></i>
+				
+				<!-- Team Name -->
+				<span ng-if="!editName" data-ng-bind="team.name" data-ng-init="editName = false"></span>
+				
+				<!-- Editable Project Name -->
+            	<span ng-if="editName"> 
+					<input type="text" data-ng-model="team.name" id="name" placeholder="{{team.name}}" style="font-size: 45px; height: 60px; width: 80%">
+                </span>
+                
+                <!-- Edit Controls -->
+	            <span ng-click="editName = !editName;" style="font-size:14px;">
+	            	<!-- Enter Edit Mode -->
+	            	<i ng-if="!editName" class="fa fa-pencil edit-pencil"></i>
+	            	
+	            	<!-- Save Changes -->
+	            	<i ng-if="editName" ng-click="updatePart();" class="fa fa-floppy-o edit-save"></i>
+	            	
+	            	<!-- Discard Changes -->
+	            	<i ng-if="editName" ng-click="findOne()" class="fa fa-times edit-cancel"></i>
+	            </span>
 			</span>
 			
 			<span class="col-md-3 col-md-offset-2 text-center project-team-whole">
@@ -120,7 +139,11 @@
 	
 		<!-- List of members -->
 		<div class="col-md-12 well">
-			<h4><strong>Members</strong></h4>
+			<strong class="h4">Members</strong>
+			<span class="btn btn-teal pull-right" ng-click="joinGroup();">Join</span>
+			
+			<br>
+			
 			<!-- Pics -->
 			<!-- 4 or less users (all pics shown) -->
 			<span ng-if="team.users.length <= 4">
@@ -152,7 +175,12 @@
 					</span>
 					
 				</span>
-			</div>			
+			</div>	
+			
+			<!-- <label class="control-label" for="members">Add a new member</label>
+            <select class="form-control js-example-basic-multiple" multiple="multiple" data-ng-model="members" id="members" data-ng-init="findUsers()">
+                <option ng-repeat="user in users" data-ng-value="user._id">{{user.displayName}}</option>
+            </select>  -->		
 		</div>
 	</div>
 	

@@ -186,6 +186,39 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 			});
 		};
 
+		$scope.updatePart = function() {
+			$scope.team = Teams.update({
+					_id: $stateParams.teamId,
+					name: $scope.team.name,
+					description: $scope.team.descriptionz,
+			}, function() {
+				$scope.findOne();
+			});
+		}
+		
+		$scope.joinGroup = function() {
+			$scope.getTeamUserIds();
+			if ($scope.teamUserIds.indexOf($scope.authentication.user._id) == -1) {
+				$scope.teamUserIds.push($scope.authentication.user._id);
+			}
+			console.log($scope.authentication.user._id);
+			$scope.team = Teams.update({
+				_id: $stateParams.teamId,
+				users: $scope.teamUserIds
+			}, function() {
+				$scope.findOne();
+			});
+		}
+		
+		$scope.getTeamUserIds = function() {
+			$scope.teamUserIds = [];
+			for (var i = 0; i < $scope.team.users.length; i++) {
+				if ($scope.teamUserIds.indexOf($scope.team.users[i]._id) == -1) {
+					$scope.teamUserIds.push($scope.team.users[i]._id);
+				}
+			}
+		}
+		
 		// Find a list of Teams
 		$scope.find = function() {
 			$scope.teams = Teams.query();

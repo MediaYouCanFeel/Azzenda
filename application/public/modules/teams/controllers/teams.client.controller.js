@@ -212,8 +212,9 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		
 		$scope.leaveGroup = function() {
 			$scope.getTeamUserIds();
-			if ($scope.teamUserIds.indexOf($scope.authentication.user._id) != -1) {
-				$scope.teamUserIds.pop($scope.authentication.user._id);
+			var arrOfUser = $scope.teamUserIds.indexOf($scope.authentication.user._id);
+			if (arrOfUser != -1) {
+				$scope.teamUserIds.splice(arrOfUser, 1);
 			}
 			console.log($scope.authentication.user._id);
 			$scope.team = Teams.update({

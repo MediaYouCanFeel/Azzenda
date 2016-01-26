@@ -140,7 +140,8 @@
 		<!-- List of members -->
 		<div class="col-md-12 well">
 			<strong class="h4">Members</strong>
-			<span class="btn btn-teal pull-right" ng-click="joinGroup();">Join</span>
+			<span ng-if="!inTeam" class="btn btn-blue pull-right" ng-click="joinGroup();">Join</span>
+			<span ng-if="inTeam" class="btn btn-teal pull-right" ng-click="leaveGroup();">Leave</span>
 			
 			<br>
 			

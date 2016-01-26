@@ -210,6 +210,20 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 			});
 		}
 		
+		$scope.leaveGroup = function() {
+			$scope.getTeamUserIds();
+			if ($scope.teamUserIds.indexOf($scope.authentication.user._id) != -1) {
+				$scope.teamUserIds.pop($scope.authentication.user._id);
+			}
+			console.log($scope.authentication.user._id);
+			$scope.team = Teams.update({
+				_id: $stateParams.teamId,
+				users: $scope.teamUserIds
+			}, function() {
+				$scope.findOne();
+			});
+		}
+		
 		$scope.getTeamUserIds = function() {
 			$scope.teamUserIds = [];
 			for (var i = 0; i < $scope.team.users.length; i++) {
@@ -217,6 +231,12 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 					$scope.teamUserIds.push($scope.team.users[i]._id);
 				}
 			}
+		}
+		
+		$scope.isInTeam = function() {
+			$scope.getTeamUserIds();
+			console.log("IN TEAM: " + ($scope.teamUserIds.indexOf($scope.authentication.user._id) != -1));
+			$scope.inTeam = ($scope.teamUserIds.indexOf($scope.authentication.user._id) != -1)
 		}
 		
 		// Find a list of Teams
@@ -228,6 +248,8 @@ angular.module('teams').controller('TeamsController', ['$scope', '$stateParams',
 		$scope.findOne = function() {
 			$scope.team = Teams.get({ 
 				teamId: $stateParams.teamId
+			}, function() {
+				$scope.isInTeam();
 			});
 		};
 		
